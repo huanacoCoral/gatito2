@@ -1,0 +1,21 @@
+
+/* 1. El contenedor debe ser relativo para que el botón no "flote" por toda la pantalla */
+.contenedor-padre {
+    position: relative;
+    min-height: 200px; /* Solo para que veas el ejemplo */
+}
+
+/* 2. El botón se posiciona respecto al padre */
+.recarga-datos {
+    position: absolute;
+    top: 10px;    /* Distancia desde arriba */
+    right: 10px;  /* Distancia desde la derecha */
+}
+
+/*para tabla */
+.truncate-cell {
+  max-width: 150px; /* Ajusta según necesites */
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}

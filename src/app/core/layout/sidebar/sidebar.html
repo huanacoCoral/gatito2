@@ -1,0 +1,27 @@
+<div class="sidebar-container">
+  <mat-card-actions align="end" class="salida-container">
+    <button mat-fab extended color="warn" class="btn-salir">
+      <mat-icon>logout</mat-icon>
+      <span>Salir</span>
+    </button>
+  </mat-card-actions>
+
+  <nav class="sidebar">
+    <div class="sidebar-header">
+      <h3>Menú Principal</h3>
+    </div>
+    
+    <ul>
+      @for (item of menu; track item.label) {
+        <li>
+          <a [routerLink]="item.route" routerLinkActive="active-link">
+            <mat-icon class="menu-icon">chevron_right</mat-icon>
+            {{ item.label }}
+          </a>
+        </li>
+      } @empty {
+        <li class="empty-msg">No tienes acceso a ninguna opción.</li>
+      }
+    </ul>
+  </nav>
+</div>

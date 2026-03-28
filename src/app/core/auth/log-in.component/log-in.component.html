@@ -1,0 +1,37 @@
+<!-- Usamos clases de Bootstrap como 'd-flex', 'justify-content-center', 'align-items-center' para centrar -->
+<p>te datos la vienvenido</p>
+<div class="d-flex justify-content-center align-items-center" style="height: 100vh; background-color: #f0f0f0;">
+
+  <mat-card style="width: 400px;">
+    <mat-card-header>
+      <mat-card-title>INICIAR SECION </mat-card-title>
+      <mat-card-subtitle>Ingresa TU iNFORMACION</mat-card-subtitle>
+    </mat-card-header>
+
+    <mat-card-content>
+      <form [formGroup]="signUpFormGroup" (ngSubmit)="onSubmit()">
+        <!-- Campo de Usuario/Email -->
+        <mat-form-field appearance="fill" style="width: 100%;">
+          <mat-label>Usuario o Email</mat-label>
+          <input matInput type="email" required formControlName="usuario" name="usuario">
+          <mat-icon matSuffix>person</mat-icon>
+        </mat-form-field>
+        <!-- Campo de Contraseña -->
+        <mat-form-field appearance="fill" style="width: 100%;">
+          <mat-label>Contraseña</mat-label>
+          <input matInput type="text" required formControlName="contrasena" name="contrasena">
+          <mat-icon matSuffix>lock</mat-icon>
+        </mat-form-field>
+      </form>
+      <!-- Botón de Envío -->
+        <button (click)="iniciarSesion()"
+        mat-raised-button color="primary" type="submit" style="width: 100%; margin-top: 20px;">
+          Iniciar Sesion X
+        </button>
+      <button [routerLink]="['/auth/sign-up']"
+         routerLinkActive="router-link-active"
+          mat-stroked-button>Registrarse
+        </button>
+    </mat-card-content>
+  </mat-card>
+</div>

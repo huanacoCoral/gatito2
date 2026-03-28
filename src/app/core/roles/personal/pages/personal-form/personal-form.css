@@ -1,0 +1,26 @@
+/* Contenedor principal del formulario */
+.grid-form {
+  display: grid;
+  /* Define columnas que se ajustan solas: mínimo 250px, máximo 1 fracción */
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  /* Espacio entre campos (vertical y horizontal) */
+  gap: 16px; 
+  padding: 10px 0;
+}
+
+/* Campos que deben ocupar todo el ancho (como Dirección u Observaciones) */
+.full-width {
+  grid-column: 1 / -1;
+}
+
+/* Ajuste opcional para que todos los inputs midan lo mismo */
+mat-form-field {
+  width: 100%;
+}
+
+/* En pantallas muy pequeñas (celulares), forzar una sola columna */
+@media (max-width: 480px) {
+  .grid-form {
+    grid-template-columns: 1fr;
+  }
+}

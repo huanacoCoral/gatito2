@@ -1,0 +1,159 @@
+<div class="container">
+  <h2>Asignar Horarios</h2>
+  <p class="subtitle">Ingrese los datos para la programación semanal</p>
+
+  <div class="form-grid">
+
+    <mat-form-field>
+      <mat-label>Fecha Inicio</mat-label>
+      <input matInput [matDatepicker]="picker" (click)="picker.open()" [(ngModel)]="fechaInicio">
+      <mat-hint>MM/DD/YYYY</mat-hint>
+      <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+      <mat-datepicker #picker></mat-datepicker>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Fecha Fin</mat-label>
+      <input matInput [matDatepicker]="pickerFin"  [(ngModel)]="fechaFin">
+      <mat-hint>MM/DD/YYYY</mat-hint>
+      <mat-datepicker-toggle matIconSuffix [for]="pickerFin"></mat-datepicker-toggle>
+      <mat-datepicker #pickerFin></mat-datepicker>
+    </mat-form-field>
+    <button (click)="generarCalendario()"> generar calendario</button>
+  </div>
+
+  <mat-card class="schedule-card">
+    <mat-card-header>
+      <mat-card-title>Horarios Disponibles</mat-card-title>
+    </mat-card-header>
+
+    <!--mat-card-content>
+      <table class="custom-table">
+        <thead>
+          <tr>
+            <th>Lunes</th>
+            <th>Martes</th>
+            <th>Miércoles</th>
+            <th>Jueves</th>
+            <th>Viernes</th>
+            <th>Sábado</th>
+            <th>Domingo</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>--:--</td>
+            <td>--:--</td>
+            <td>--:--</td>
+            <td>--:--</td>
+            <td>--:--</td>
+            <td>--:--</td>
+            <td>--:--</td>
+          </tr>
+          <tr>
+            <td>--:--</td>
+            <td>--:--</td>
+            <td>--:--</td>
+            <td>--:--</td>
+            <td>--:--</td>
+            <td>--:--</td>
+            <td>--:--</td>
+          </tr>
+          <tr>
+            <td>--:--</td>
+            <td>--:--</td>
+            <td>--:--</td>
+            <td>--:--</td>
+            <td>--:--</td>
+            <td>--:--</td>
+            <td>--:--</td>
+          </tr>
+        </tbody>
+      </table>
+    </mat-card-content-->
+    <mat-card-content>
+
+  <table class="custom-table">
+
+    <thead>
+  <tr>
+    @for (dia of asSemana; track dia) {
+      <th>{{ dia }}</th>
+    }
+  </tr>
+</thead>
+
+<tbody>
+  @for (fila of tabla; track $index) {
+    <tr>
+      @for (celda of fila; track $index) {
+        
+        <td (click)="editarHorario(celda)"> 
+            {{ celda }}
+        </td>
+        <dialog #miDialogo>
+            <p>¡Contenido del mismo componente!</p>
+            
+            <button (click)="miDialogo.close()">Cerrar</button>
+        </dialog>
+      }
+    </tr>
+  }
+</tbody>
+  </table>
+
+</mat-card-content>
+  </mat-card>
+
+  <div class="form-grid footer-inputs">
+    <mat-form-field appearance="outline">
+      <mat-label>CI (Cédula de Identidad)</mat-label>
+      <mat-select [(ngModel)]="idVoluntario" placeholder="Ej. 1234567"> <!-- Asegúrate de incluir el control del form -->
+        @for (valor of personal; track valor.ci) {
+        <mat-option [value]="valor.id_voluntario">
+          {{ valor.ci }}
+        </mat-option>
+        } @empty {
+        <mat-option disabled>No hay turnos disponibles</mat-option>
+        }
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Turno</mat-label>
+      <mat-select [(ngModel)]="turnoSeleccionado" placeholder="Mañana/Tarde/Noche">
+        <!-- Asegúrate de incluir el control del form -->
+        @for (valor of turno; track valor.id_turno) {
+        <mat-option [value]="valor.id_turno">
+          {{ valor.nombre }}
+        </mat-option>
+        } @empty {
+        <mat-option disabled>No hay turnos disponibles</mat-option>
+        }
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Día</mat-label>
+      <mat-select [(ngModel)] ="dia"> <!-- Asegúrate de incluir el control del form -->
+        <mat-option value="1">Lunes</mat-option>
+        <mat-option value="2">Martes</mat-option>
+        <mat-option value="3">Miercoles</mat-option>
+        <mat-option value="4">Jueves</mat-option>
+        <mat-option value="5">Viernes</mat-option>
+        <mat-option value="6">Sabado</mat-option>
+        <mat-option value="7">Domingo</mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+
+  
+   @if(botonesEditar){
+    <button mat-raised-button color="primary" >Actualizar</button>
+   <button mat-raised-button color="primary" >Cancelar</button>
+   }@else{
+    <button mat-raised-button color="primary" (click)="guardarHorario()">Guardar Horario</button>
+   }
+  
+  
+</div>

@@ -1,0 +1,129 @@
+<h2 mat-dialog-title>Hi {{data.name}}</h2>
+<p> cambiar la ista de perosnal, mostrar cargo y rol, para mandara a editar</p>
+<mat-dialog-content>
+  <div class="form-container">
+    <div class="form-header">
+      <h2>Registro de Personal</h2>
+      <p>Complete los datos para dar de alta en el sistema.</p>
+    </div>
+
+    <form [formGroup]="form" class="grid-form" class="grid-form">
+      <mat-form-field appearance="outline">
+        <mat-label>Nombre</mat-label>
+        <input matInput formControlName="nombre" placeholder="Ej. Juan">
+        @if (form.get('nombre')?.invalid && form.get('nombre')?.touched) {
+        <mat-error>El nombre es obligatorio</mat-error>
+        }
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Apellido Paterno</mat-label>
+        <input matInput formControlName="apellido_paterno">
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Apellido Materno</mat-label>
+        <input matInput formControlName="apellido_materno">
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>C.I. (Documento)</mat-label>
+        <input matInput formControlName="ci">
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Teléfono</mat-label>
+        <input matInput formControlName="telefono" type="tel">
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Tel. Emergencia</mat-label>
+        <input matInput formControlName="telefono_emergencia">
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Fecha de Nacimiento</mat-label>
+        <input matInput [matDatepicker]="picker" formControlName="fecha_nacimiento">
+        <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+        <mat-datepicker #picker></mat-datepicker>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Sexo</mat-label>
+        <mat-select formControlName="sexo">
+          <mat-option value="M">Masculino</mat-option>
+          <mat-option value="F">Femenino</mat-option>
+          <mat-option value="O">Otro</mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Correo Personal</mat-label>
+        <input matInput formControlName="correo_personal" type="email" placeholder="usuario@email.com">
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Dirección de Domicilio</mat-label>
+        <input matInput formControlName="direccion">
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Observaciones</mat-label>
+        <textarea matInput formControlName="observaciones" rows="3"></textarea>
+      </mat-form-field>
+
+
+    </form>
+    @if (this.data.tipo==="editar") {
+    <form [formGroup]="formularioEstadoRol">
+      <mat-form-field>
+        <mat-label>Estado</mat-label>
+        <input matInput formControlName="estado">
+      </mat-form-field>
+      <mat-form-field>
+        <mat-label>Agregar Rol</mat-label>
+        <mat-select formControlName="rol">
+          @for (valor of rol; track valor.id_rol) {
+          <mat-option [value]="valor.id_rol">{{ valor.nombre }}</mat-option>
+          }
+        </mat-select>
+      </mat-form-field>
+      <mat-form-field>
+        <mat-label>Agregar Cargo</mat-label>
+        <mat-select formControlName="cargo">
+          @for (valor of cargo; track valor.id_rol) {
+          <mat-option [value]="valor.id_cargo">{{ valor.nombre }}</mat-option>
+          }
+        </mat-select>
+      </mat-form-field>
+      <mat-form-field>
+        <mat-label>Agregar Usuario</mat-label>
+        <input matInput formControlName="usuario">
+      </mat-form-field>
+      <mat-form-field>
+        <mat-label>Agregar Constrasena</mat-label>
+        <input matInput formControlName="contrasena">
+      </mat-form-field>
+    </form>
+    }
+
+
+  </div>
+</mat-dialog-content>
+<mat-dialog-actions>
+  <button mat-button type="button" (click)="onNoClick()" class="btn-cancel">
+    Cancelar
+  </button>
+  @if(data.tipo==="editar"){
+  <button mat-raised-button type="submit" (click)="guardar();onNoClick()" [disabled]="form.invalid" class="btn-save">
+    Actualizar Registro
+  </button>
+  }
+  @else{
+  <button mat-raised-button type="submit" (click)="guardar();onNoClick()" [disabled]="form.invalid" class="btn-save">
+    Guardar Registro
+  </button>
+  }
+
+
+</mat-dialog-actions>
