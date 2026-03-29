@@ -1,0 +1,45 @@
+<p>visualizar-inf works!</p>
+<h2 mat-dialog-title>Hi 
+    
+<mat-dialog-content>
+    <p>Datos del Personal Seleccionado</p>
+    <p><strong>id </strong>
+    {{data.datos.id_voluntario}}</p>
+    <p><strong>Nombre completo:</strong> 
+      {{ data.datos.nombre }} {{ data.datos.apellido_paterno }} {{ data.datos.apellido_materno }}
+    </p>
+    <p><strong>Cedula de identidad:</strong> 
+      {{ data.datos.ci }} 
+    </p>
+    <p><strong>telefono:</strong> 
+      {{ data.datos.ci }} 
+    </p>
+    <p><strong>telefono Emergencia</strong>
+        {{data.datos.telefono_emergencia?data.datos.telefono_emergencia:"no cuenta"}}
+    </p>
+    <p><strong>fecha_nacimiento</strong>
+        {{data.datos.fecha_nacimiento?data.datos.fecha_nacimiento:"no cuenta"}}
+    </p>
+    <p><strong>sexo</strong>
+        {{data.datos.sexo?data.datos.sexo:"no cuenta"}}
+    </p>
+    <p><strong>direccion</strong>
+        {{data.datos.direccion?data.datos.direccion:"no cuenta"}}
+    </p>
+    <p><strong>correo_personal</strong>
+        {{data.datos.correo_personal?data.datos.correo_personal:"no cuenta"}}
+    </p>
+    <p><strong>estado</strong>
+        {{data.datos.estado?data.datos.estado:"no cuenta"}}
+    </p>
+    <p><strong>observaciones</strong>
+        {{data.datos.observaciones?data.datos.observaciones:"no cuenta"}}
+    </p>
+    
+    
+    
+</mat-dialog-content>
+<mat-dialog-actions>
+  <button mat-button (click)="onNoClick()">No Thanks</button>
+  <button mat-button  (click)="onNoClick()">Ok</button>
+</mat-dialog-actions>
