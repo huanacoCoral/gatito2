@@ -7,7 +7,7 @@ import { PersonalService } from '../../personal.service';
 import { MatSelectModule } from '@angular/material/select';
 import { MatOptionModule, provideNativeDateAdapter } from '@angular/material/core';
 import { MatDatepickerModule } from '@angular/material/datepicker';
-import { FormsModule } from '@angular/forms';
+import { FormControl, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { JsonPipe } from '@angular/common';
 
 @Component({
@@ -20,7 +20,7 @@ import { JsonPipe } from '@angular/common';
     MatOptionModule,
     MatDatepickerModule,
   FormsModule,
-JsonPipe],
+JsonPipe, ReactiveFormsModule],
   templateUrl: './horarios.html',
   styleUrl: './horarios.css',
   providers: [provideNativeDateAdapter()]
@@ -46,6 +46,11 @@ export class Horarios implements OnInit {
     this.inicializarTabla();
     
   }
+  readonly fechas = new FormGroup({
+    start: new FormControl<Date | null>(null),
+    end: new FormControl<Date | null>(null),
+  });
+
   generarCalendario(){
     /*const fechas={
       "fechaInicio":this.fechaInicio,
@@ -60,8 +65,8 @@ export class Horarios implements OnInit {
       }
     })*/
     const fechas = {
-    fechaInicio: '2026-03-01',
-    fechaFin: '2026-03-27'
+    fechaInicio: this.fechas.get('start')?.value,
+    fechaFin: this.fechas.get('end')?.value
   };
 
   this.http.listarTrayectoroariTurno(fechas)

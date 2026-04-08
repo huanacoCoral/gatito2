@@ -7,5 +7,17 @@ import { Component } from '@angular/core';
   styleUrl: './reportes.css',
 })
 export class Reportes {
+emergencias: any[] = [];
 
+crearEmergencia() {
+  console.log("Ir a crear emergencia");
+}
+
+ver(e: any) {
+  console.log("Ver", e);
+}
+
+editar(e: any) {
+  console.log("Editar", e);
+}
 }

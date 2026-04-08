@@ -1,1 +1,61 @@
 <p>reportes works!</p>
+<div class="container">
+
+  <!-- HEADER -->
+  <div class="header">
+    <h2>Gestión de Emergencias</h2>
+
+    <button class="btn-crear" (click)="crearEmergencia()">
+      + Nueva Emergencia
+    </button>
+  </div>
+
+  <!-- FILTROS (opcional pero pro 😎) -->
+  <div class="filtros">
+    <input type="text" placeholder="Buscar por dirección o persona...">
+    
+    <select>
+      <option value="">Todas las gravedades</option>
+      <option value="1">Leve</option>
+      <option value="2">Media</option>
+      <option value="3">Alta</option>
+    </select>
+  </div>
+
+  <!-- TABLA -->
+  <div class="tabla-container">
+
+    <table>
+      <thead>
+        <tr>
+          <th>Fecha</th>
+          <th>Dirección</th>
+          <th>Persona</th>
+          <th>Teléfono</th>
+          <th>Gravedad</th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        @for(e of emergencias;track e.id){
+        <tr >
+          <td>{{ e.fecha }}</td>
+          <td>{{ e.direccion }}</td>
+          <td>{{ e.nombrePersona }}</td>
+          <td>{{ e.cel_ref }}</td>
+          <td>{{ e.gravedad?.nombre }}</td>
+
+          <td>
+            <button (click)="ver(e)">👁</button>
+            <button (click)="editar(e)">✏️</button>
+          </td>
+        </tr>
+    }
+      </tbody>
+
+    </table>
+
+  </div>
+
+</div>

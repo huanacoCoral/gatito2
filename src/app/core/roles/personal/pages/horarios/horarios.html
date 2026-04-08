@@ -4,7 +4,7 @@
 
   <div class="form-grid">
 
-    <mat-form-field>
+    <!--mat-form-field>
       <mat-label>Fecha Inicio</mat-label>
       <input matInput [matDatepicker]="picker" (click)="picker.open()" [(ngModel)]="fechaInicio">
       <mat-hint>MM/DD/YYYY</mat-hint>
@@ -18,7 +18,26 @@
       <mat-hint>MM/DD/YYYY</mat-hint>
       <mat-datepicker-toggle matIconSuffix [for]="pickerFin"></mat-datepicker-toggle>
       <mat-datepicker #pickerFin></mat-datepicker>
-    </mat-form-field>
+    </mat-form-field-->
+
+    <mat-form-field>
+  <mat-label>Enter a date range</mat-label>
+  <mat-date-range-input [formGroup]="fechas" [rangePicker]="picker">
+    <input matStartDate formControlName="start" placeholder="Start date">
+    <input matEndDate formControlName="end" placeholder="End date">
+  </mat-date-range-input>
+  <mat-hint>MM/DD/YYYY – MM/DD/YYYY</mat-hint>
+  <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+  <mat-date-range-picker #picker></mat-date-range-picker>
+
+  @if (fechas.controls.start.hasError('matStartDateInvalid')) {
+    <mat-error>Invalid start date</mat-error>
+  }
+  @if (fechas.controls.end.hasError('matEndDateInvalid')) {
+    <mat-error>Invalid end date</mat-error>
+  }
+</mat-form-field>
+
     <button (click)="generarCalendario()"> generar calendario</button>
   </div>
 

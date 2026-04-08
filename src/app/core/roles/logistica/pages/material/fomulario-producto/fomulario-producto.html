@@ -1,1 +1,54 @@
-<p>fomulario-producto works!</p>
+
+<div class="form-container">
+
+  <h2>Formulario de Producto</h2>
+
+  <input type="text" placeholder="Nombre"
+    [(ngModel)]="producto.nombre">
+
+  <input type="number" placeholder="Cantidad"
+    [(ngModel)]="producto.cantidad">
+
+  <input type="number" placeholder="Cantidad por unidad"
+    [(ngModel)]="producto.cantidadUnidad">
+
+  <input type="text" placeholder="Unidad de medida (Ej: litros, cajas)"
+    [(ngModel)]="producto.unidadMedida">
+
+  <input type="text" placeholder="Marca"
+    [(ngModel)]="producto.marca">
+
+  <select [(ngModel)]="producto.estado">
+    <option value="">Seleccione estado</option>
+    <option value="BUENO">Bueno</option>
+    <option value="REGULAR">Regular</option>
+    <option value="MALO">Malo</option>
+  </select>
+
+  <label>Fecha creación</label>
+  <input type="date" [(ngModel)]="producto.fechaCreacion">
+
+  <label>Fecha caducidad</label>
+  <input type="date" [(ngModel)]="producto.fechaCaducidad">
+
+  <input type="text" placeholder="Registro de mantenimiento"
+    [(ngModel)]="producto.registroMantenimiento">
+
+  <label>Fecha adquisición</label>
+  <input type="date" [(ngModel)]="producto.fechaAdquisicion">
+
+  <!-- SELECT VOLUNTARIO -->
+  <select [(ngModel)]="producto.id_voluntario">
+    <option value="">Seleccione responsable</option>
+    <option *ngFor="let v of voluntarios" [value]="v.id_voluntario">
+      {{ v.nombre }} {{ v.apellido_paterno }}
+    </option>
+  </select>
+  @if(botonActualizar){
+    <button (click)="guardar()">actualizar</button>
+  }@else{
+    <button (click)="guardar()">Guardar</button>
+  }
+  <button (click)="cancelar()">Cancelar</button>
+  
+</div>

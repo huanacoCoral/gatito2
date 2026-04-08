@@ -36,10 +36,50 @@ export class logisticaService {
       
     }))
    }
-   
-   
-   
+   //material
+   listarMaterial():Observable<any>{
+    return this._http.get(this.API_URL+'/material/listar-infomres-ingresoMaterial ').pipe(tap((res:any)=>{
+      //console.log("respuesta de creacio nde personal",res);
+      
+    }))
+   }
+   //crear-ingresar-material
+   crearIngresarMaterial(data:any):Observable<any>{
+    return this._http.post(this.API_URL+'/material/crear-ingresar-material',data).pipe(tap((res:any)=>{
+      //console.log("respuesta de creacio nde personal",res);
+      
+    }))
+   }
+   listarLoteMaterial():Observable<any>{
+    return this._http.get(this.API_URL+'/material/listar-lote-material').pipe(tap((res:any)=>{
+      //console.log("respuesta de creacio nde personal",res);
+      
+    }))
+   }
+   crearLote(data:any):Observable<any>{
+    return this._http.post(this.API_URL+'/material/crear-lote',data).pipe(tap((res:any)=>{
+      //console.log("respuesta de creacio nde personal",res);
+      
+    }))
+   }
+   actualizarLote(id: number, data: any): Observable<any> {
+  // Usamos backticks (`) para poder meter la variable ${id} fácilmente
+  return this._http.patch(`${this.API_URL}/material/actualizarlote-${id}`, data).pipe(
+    tap((res: any) => {
+      // Aquí puedes manejar la respuesta si lo necesitas
+    })
+  );
+
   
-   
+}
+   ///------------------producto
+  listarProductos(): Observable<any> {
+  // Usamos backticks (`) para poder meter la variable ${id} fácilmente
+  return this._http.get(`${this.API_URL}/producto/listar-ingreso-producto`).pipe(
+    tap((res: any) => {
+      // Aquí puedes manejar la respuesta si lo necesitas
+    })
+  );
+}
 
 }
