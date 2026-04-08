@@ -10,7 +10,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { Material } from '../material';
-import { logisticaService } from '../../../services/logistica.routes';
+import { logisticaService } from '../../../services/logistica.service';
 import { MatStepperModule } from '@angular/material/stepper';
 import { Observable } from 'rxjs';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';

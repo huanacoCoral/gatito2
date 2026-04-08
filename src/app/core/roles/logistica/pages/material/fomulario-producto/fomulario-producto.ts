@@ -1,5 +1,5 @@
 import { Component, inject } from '@angular/core';
-import { logisticaService } from '../../../services/logistica.routes';
+import { logisticaService } from '../../../services/logistica.service';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { MatButtonModule } from '@angular/material/button';

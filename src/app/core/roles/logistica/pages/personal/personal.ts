@@ -9,7 +9,7 @@ import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 import { MatSort, MatSortModule } from '@angular/material/sort';
 import { MatStepperModule } from '@angular/material/stepper';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
-import { logisticaService } from '../../services/logistica.routes';
+import { logisticaService } from '../../services/logistica.service';
 import { MatDialog } from '@angular/material/dialog';
 import { VisualizarInf } from './visualizar-inf/visualizar-inf';
 

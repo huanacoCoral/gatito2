@@ -11,7 +11,7 @@ import { MatSortModule, MatSort } from '@angular/material/sort';
 import { MatTableModule, MatTableDataSource } from '@angular/material/table';
 import { FomularioMaterial } from './fomulario-material/fomulario-material';
 import { FomularioProducto } from './fomulario-producto/fomulario-producto';
-import { logisticaService } from '../../services/logistica.routes';
+import { logisticaService } from '../../services/logistica.service';
 import { JsonPipe } from '@angular/common';
 export interface UserData {
   id: string;

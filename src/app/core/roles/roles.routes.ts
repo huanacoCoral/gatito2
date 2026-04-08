@@ -21,13 +21,11 @@ export const routesRoles: Routes = [
   },
   
 
-  
-
   {
     path: 'jefe-guardia',
     canActivate: [],
     loadChildren: () =>
-      import('../roles/operaciones/operaciones.routes').then(m => m.routesOperaciones)
+      import('../roles/jefe-guardia/jefe-guardia.routes').then(m => m.jefeGuardia)
   },
 
   { path: '**', redirectTo: 'dashboard' }
