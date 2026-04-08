@@ -1,4 +1,4 @@
-import { Component, inject, ViewChild } from '@angular/core';
+import { Component, inject, Input, ViewChild } from '@angular/core';
 import { FormBuilder, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
@@ -30,6 +30,7 @@ import { VisualizarInf } from './visualizar-inf/visualizar-inf';
   styleUrl: './personal.css',
 })
 export class Personal {
+  @Input() tipo:string='Logistica'
   displayedColumns: string[] = [
     'position',
     'nombre',

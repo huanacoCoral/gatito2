@@ -1,4 +1,4 @@
-import { Component, inject, ViewChild } from '@angular/core';
+import { Component, inject, Input, ViewChild } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatDialog } from '@angular/material/dialog';
@@ -52,6 +52,8 @@ productoColumns: string[] = ['id', 'id_loteProducto', 'estado', 'marca','opcione
 
   mostrarProductos:boolean =false;
   protected http=inject(logisticaService);
+
+ @Input() tipo: string = 'Logistica';
   constructor() {
     // Create 100 users
     //const users = Array.from({length: 100}, (_, k) => createNewUser(k + 1));

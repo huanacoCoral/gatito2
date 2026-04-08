@@ -1,11 +1,11 @@
-<p>material works!</p>
+
 <mat-card class="example-card" appearance="outlined">
     {{mostrarMaterial}}--{{mostrarProductos}}
     @if(!mostrarMaterial &&!mostrarProductos){
     <div>
         <mat-card-header>
 
-            <mat-card-title>Pagina Principal de Logistica</mat-card-title>
+            <mat-card-title>Pagina Principal de {{tipo}}</mat-card-title>
             <mat-card-subtitle>Bienvenido</mat-card-subtitle>
         </mat-card-header>
 
@@ -16,11 +16,11 @@
         </mat-card-content>
         <mat-card-actions>
             <button matFab extended (click)="mostrarMaterial=true;">
-                <mat-icon>favorite</mat-icon>
+                <mat-icon>inventory_2</mat-icon>
                 material
             </button>
             <button matFab extended (click)="mostrarProductos=true;">
-                <mat-icon>favorite</mat-icon>
+                <mat-icon>shopping_cart</mat-icon>
                 producto
             </button>
 

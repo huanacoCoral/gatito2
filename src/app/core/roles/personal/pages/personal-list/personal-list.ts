@@ -43,6 +43,7 @@ export interface PeriodicElement {
 })
 export default class PersonalList implements OnInit,AfterViewInit {
   readonly http = inject(PersonalService)
+  tipo:string='';
   displayedColumns: string[] = [
     'position',
     'nombre',
@@ -65,6 +66,7 @@ export default class PersonalList implements OnInit,AfterViewInit {
   dataSource = new MatTableDataSource<any>([]);;
   readonly _http = inject(PersonalService);
   ngOnInit() {
+    this.tipo='personal'
     this._http.listarTodoPersonal().subscribe({
       next: (res: any) => {
         // Asignamos el array a la propiedad .data del MatTableDataSource
