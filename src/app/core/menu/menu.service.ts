@@ -20,7 +20,7 @@ export class MenuService {
       { label: 'Verificar material / producto', route: '/rol/operaciones/material' },
       { label: 'Verificar estado de vehículo', route: '/rol/operaciones/vehiculo' },
       { label: 'Registrar emergencias', route: '/rol/operaciones/emergencia' },
-      { label: 'Consultar reportes', route: '/rol/operaciones/emergencia' }
+      { label: 'Consultar reportes', route: '/rol/operaciones/reporte-emergencia' }
     ],
     
     JEFE_GUARDIA: [

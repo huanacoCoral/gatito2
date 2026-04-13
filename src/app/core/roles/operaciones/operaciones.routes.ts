@@ -24,6 +24,11 @@ export const routesOperaciones: Routes = [
     {
      path: 'emergencia',                                
     loadComponent: () =>
+      import('../operaciones/pages/registro-emergencia/registro-emergencia').then(m=>m.RegistroEmergencia)
+    },
+    {
+     path: 'reporte-emergencia',                                
+    loadComponent: () =>
       import('../operaciones/pages/reportes/reportes').then(m=>m.Reportes)
     },
 

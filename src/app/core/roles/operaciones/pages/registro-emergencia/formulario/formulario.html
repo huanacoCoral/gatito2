@@ -1,0 +1,96 @@
+<h2 mat-dialog-title>Hi {{data.name}}</h2>
+<mat-dialog-content>
+    <p>Recepcion de Emergencia</p>
+    <mat-stepper [linear]="true" #stepper>
+        <mat-step [stepControl]="recepcion">
+            <form [formGroup]="recepcion">
+                <ng-template matStepLabel>Recepcion</ng-template>
+                <div>
+                    <mat-form-field>
+                        <mat-label>Fecha de Emergencia</mat-label>
+                        <input matInput [matDatepicker]="picker" [max]="hoy" formControlName="fecha">
+                        <mat-hint>MM/DD/YYYY</mat-hint>
+                        <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+                        <mat-datepicker #picker></mat-datepicker>
+                    </mat-form-field>
+                    <mat-form-field>
+                        <mat-label>Dirección</mat-label>
+                        <input matInput formControlName="direccion" />
+                    </mat-form-field>
+                    <mat-form-field>
+                        <mat-label>Cel de referencia</mat-label>
+                        <input matInput formControlName="cel" />
+                    </mat-form-field>
+                    <mat-form-field>
+                        <mat-label>Nombre Informante</mat-label>
+                        <input matInput formControlName="informante" />
+                    </mat-form-field>
+                    <mat-form-field>
+                        <mat-label>tipo de Recepcion</mat-label>
+                        <input matInput formControlName="recepcion" />
+                    </mat-form-field>
+                </div>
+                <div>
+                    <button matButton matStepperNext>Next</button>
+                </div>
+            </form>
+        </mat-step>
+        <mat-step [stepControl]="gravedad" label="Gravedad">
+            <form [formGroup]="gravedad">
+                <mat-form-field>
+                    <mat-label>Nombre de gravedad </mat-label>
+                    <mat-select formControlName="nombre">
+                        @for (tipog of tipoGravedad; track tipog.id_gravedad) {
+                        <mat-option [value]="tipog.id_gravedad">{{ tipog.nombre }}</mat-option>
+                        }
+                    </mat-select>
+                </mat-form-field>
+                <div>
+                    <button matButton matStepperPrevious>Back</button>
+                    <button matButton matStepperNext>Next</button>
+                </div>
+            </form>
+        </mat-step>
+        <mat-step [stepControl]="tipoEmergencia" label="Fill out your address">
+            <form [formGroup]="tipoEmergencia">
+            <mat-form-field class="example-full-width">
+                <mat-label>Number</mat-label>
+                <input type="text"
+                    placeholder="tipo de emergencia"
+                    matInput
+                    formControlName="codigo"
+                    [matAutocomplete]="auto"
+                    (input)="filtrandoCodigo($event)">
+                <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete"
+                [displayWith]="mostrarCodigo"
+                (optionSelected)="seleccionTipoEmergencia($event)">
+                @for (tipo of tipoEmerFiltrado; track tipo) {
+                    <mat-option [value]="tipo.id_tipoEmergencia">{{tipo.codigo}}</mat-option>
+                }
+                </mat-autocomplete>
+            </mat-form-field>
+
+                <mat-form-field>
+                    <mat-label>Nombre de Emergencia </mat-label>
+                    <input matInput formControlName="nombre" />
+                </mat-form-field>
+               
+                <div>
+                    <button matButton matStepperPrevious>Back</button>
+                    <button matButton matStepperNext>Next</button>
+                </div>
+            </form>
+        </mat-step>
+        <mat-step>
+            <ng-template matStepLabel>Done</ng-template>
+            <p>Esta seguro de guardar la emergencia.?</p>
+            <div>
+                <button matButton matStepperPrevious>volver</button>
+                <button matButton (click)="stepper.reset();onNoClick()">Cancelar</button>
+                <button matButton (click)="onNoClick()" cdkFocusInitial>Guardar</button>
+            </div>
+        </mat-step>
+    </mat-stepper>
+
+
+</mat-dialog-content>
