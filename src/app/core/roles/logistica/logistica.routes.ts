@@ -19,7 +19,7 @@ export const routesLogistica: Routes = [
     {
     path: 'vehiculos',                                // ruta vacía
     loadComponent: () =>
-      import('../logistica/pages/vehiculo/vehiculo').then(m=>m.Vehiculo)
+      import('../logistica/pages/vehiculo/vehiculo').then(m=>m.VehiculoComponent)
     },
     
 
