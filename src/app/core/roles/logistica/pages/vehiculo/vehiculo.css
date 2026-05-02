@@ -1,0 +1,331 @@
+/* ═══════════════════════════════════════════
+   vehiculo.css  –  Angular Material v18
+   ═══════════════════════════════════════════ */
+
+/* ── Contenedor principal ── */
+.vehiculo-container {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  padding: 24px;
+  max-width: 100%;
+}
+
+/* ── Header de sección ── */
+.section-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.section-title {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.section-title mat-icon {
+  font-size: 28px;
+  width: 28px;
+  height: 28px;
+  color: #1565c0;
+}
+
+.section-title h2 {
+  margin: 0;
+  font-size: 20px;
+  font-weight: 500;
+  color: rgba(0, 0, 0, .87);
+}
+
+.section-title p {
+  margin: 0;
+  font-size: 13px;
+  color: rgba(0, 0, 0, .54);
+}
+
+/* ── Formulario card ── */
+.form-card {
+  margin-top: 4px;
+}
+
+.vehicle-form {
+  padding-top: 12px;
+}
+
+.form-row {
+  display: flex;
+  gap: 14px;
+  flex-wrap: wrap;
+  margin-bottom: 4px;
+}
+
+.field-grow {
+  flex: 1;
+  min-width: 200px;
+}
+
+.field-sm {
+  flex: 0 0 160px;
+}
+
+/* ── Tabla card ── */
+.table-card {
+  overflow: hidden;
+}
+
+.table-wrapper {
+  overflow-x: auto;
+  margin-top: 8px;
+}
+
+.vehiculo-table {
+  width: 100%;
+  min-width: 900px;
+}
+
+/* Cabecera pegajosa */
+.vehiculo-table th.mat-mdc-header-cell {
+  background: #f5f5f5;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: .8px;
+  text-transform: uppercase;
+  color: rgba(0, 0, 0, .54);
+  white-space: nowrap;
+}
+
+/* Filas por estado */
+.row-maint {
+  background-color: #f9f4ff !important;
+}
+
+.row-emerg {
+  background-color: #fff5f5 !important;
+}
+
+/* Celdas */
+.cell-bold {
+  font-weight: 500;
+  color: rgba(0, 0, 0, .87);
+}
+
+.cell-muted {
+  color: rgba(0, 0, 0, .45);
+  font-size: 12px;
+  max-width: 160px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.id-badge {
+  font-family: monospace;
+  font-size: 11px;
+  background: #eeeeee;
+  color: rgba(0, 0, 0, .54);
+  padding: 2px 7px;
+  border-radius: 3px;
+}
+
+.km-text {
+  font-family: monospace;
+  font-size: 12px;
+  color: #0277bd;
+  font-weight: 500;
+}
+
+/* ── Chips de estado ── */
+.chip-ok {
+  --mdc-chip-label-text-color: #1b5e20;
+  background-color: #e8f5e9 !important;
+  border: 1px solid #a5d6a7 !important;
+}
+
+.chip-maint {
+  --mdc-chip-label-text-color: #4a148c;
+  background-color: #f3e5f5 !important;
+  border: 1px solid #ce93d8 !important;
+}
+
+.chip-emerg {
+  --mdc-chip-label-text-color: #b71c1c;
+  background-color: #ffebee !important;
+  border: 1px solid #ef9a9a !important;
+}
+
+@keyframes chip-pulse {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: .5; }
+}
+
+.chip-pulse {
+  animation: chip-pulse 1s infinite;
+}
+
+/* ── Botones de acción en la fila ── */
+.action-row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: nowrap;
+}
+
+/* Vehículo creado (pasivo) */
+.btn-created {
+  font-size: 11px !important;
+  height: 30px !important;
+  line-height: 30px !important;
+  padding: 0 10px !important;
+  color: rgba(0, 0, 0, .38) !important;
+  border-color: rgba(0, 0, 0, .12) !important;
+  cursor: default !important;
+}
+
+.btn-created mat-icon {
+  font-size: 14px !important;
+  width: 14px !important;
+  height: 14px !important;
+  margin-right: 4px;
+}
+
+/* Mantenimiento inactivo */
+.btn-maint-off {
+  font-size: 11px !important;
+  height: 30px !important;
+  line-height: 30px !important;
+  padding: 0 10px !important;
+  color: #6a1b9a !important;
+  border-color: #ce93d8 !important;
+}
+
+.btn-maint-off mat-icon {
+  font-size: 14px !important;
+  width: 14px !important;
+  height: 14px !important;
+  margin-right: 4px;
+}
+
+/* Mantenimiento activo */
+.btn-maint-on {
+  font-size: 11px !important;
+  height: 30px !important;
+  line-height: 30px !important;
+  padding: 0 10px !important;
+  background-color: #6a1b9a !important;
+  color: #fff !important;
+  border-color: #6a1b9a !important;
+}
+
+.btn-maint-on mat-icon {
+  font-size: 14px !important;
+  width: 14px !important;
+  height: 14px !important;
+  margin-right: 4px;
+}
+
+/* Emergencia inactiva */
+.btn-emerg-off {
+  font-size: 11px !important;
+  height: 30px !important;
+  line-height: 30px !important;
+  padding: 0 10px !important;
+  color: #c62828 !important;
+  border-color: #ef9a9a !important;
+}
+
+.btn-emerg-off mat-icon {
+  font-size: 14px !important;
+  width: 14px !important;
+  height: 14px !important;
+  margin-right: 4px;
+}
+
+/* Emergencia activa con pulso */
+@keyframes glow-emerg {
+  0%, 100% { box-shadow: 0 0 4px rgba(198, 40, 40, .5); }
+  50%       { box-shadow: 0 0 12px rgba(198, 40, 40, .9); }
+}
+
+.btn-emerg-on {
+  font-size: 11px !important;
+  height: 30px !important;
+  line-height: 30px !important;
+  padding: 0 10px !important;
+  background-color: #c62828 !important;
+  color: #fff !important;
+  border-color: #c62828 !important;
+  animation: glow-emerg 1.2s infinite;
+}
+
+.btn-emerg-on mat-icon {
+  font-size: 14px !important;
+  width: 14px !important;
+  height: 14px !important;
+  margin-right: 4px;
+}
+
+/* Botón eliminar */
+.btn-delete {
+  color: rgba(0, 0, 0, .38);
+}
+
+.btn-delete:hover {
+  color: #c62828;
+}
+
+/* ── Empty state ── */
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 48px 24px;
+  gap: 8px;
+  color: rgba(0, 0, 0, .38);
+}
+
+.empty-state mat-icon {
+  font-size: 52px;
+  width: 52px;
+  height: 52px;
+  opacity: .3;
+}
+
+.empty-state p {
+  font-size: 15px;
+  font-weight: 500;
+  margin: 0;
+}
+
+.empty-state span {
+  font-size: 13px;
+}
+
+/* ── Responsive ── */
+@media (max-width: 768px) {
+  .vehiculo-container {
+    padding: 16px;
+  }
+
+  .form-row {
+    flex-direction: column;
+  }
+
+  .field-sm {
+    flex: 1;
+  }
+
+  .action-row {
+    flex-wrap: wrap;
+  }
+
+  .btn-created span,
+  .btn-maint-off span,
+  .btn-maint-on span,
+  .btn-emerg-off span,
+  .btn-emerg-on span {
+    display: none;
+  }
+}
