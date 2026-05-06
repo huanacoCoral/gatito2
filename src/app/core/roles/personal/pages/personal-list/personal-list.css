@@ -19,3 +19,23 @@
   overflow: hidden;
   text-overflow: ellipsis;
 }
+.badge {
+  padding: 5px 12px;
+  border-radius: 15px;
+  font-size: 12px;
+  font-weight: bold;
+  color: white;
+  display: inline-block;
+  text-align: center;
+  min-width: 70px;
+}
+
+.activo {
+  background-color: #28a745; /* Verde bonito */
+  box-shadow: 0 2px 4px rgba(40, 167, 69, 0.2);
+}
+
+.baja {
+  background-color: #dc3545; /* Rojo bonito */
+  box-shadow: 0 2px 4px rgba(220, 53, 69, 0.2);
+}

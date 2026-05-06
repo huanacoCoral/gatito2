@@ -55,6 +55,12 @@ export class PersonalService {
       
     }))
    }
+   activar(data:any):Observable<any>{
+    return this._http.post(this.API_URL+'/personal/activar ',data).pipe(tap((res:any)=>{
+      console.log("respuesta de creacio nde personal",res);
+      
+    }))
+   }
    //listar de baja 
    listarDeBaja():Observable<any>{
     return this._http.get(this.API_URL+'/personal/listar_de_baja ').pipe(tap((res:any)=>{
@@ -144,6 +150,15 @@ export class PersonalService {
       
     }))
     }
+    
+     maquinistaVolverActivar(id: number, datos: any) {
+      //return this._http.patch(`${this.url}editar/${id}`, dto);
+      return this._http.patch(`${this.API_URL}/maquinista/volver-A/${id}`, datos).pipe(tap((res:any)=>{
+      console.log("maquinista",res);
+      
+    }))
+    }
+
 
     bajaMaquinista(id: number,dato:any) {
 

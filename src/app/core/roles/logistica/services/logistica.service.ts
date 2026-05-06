@@ -169,6 +169,6 @@ eliminarInformeVehiculos(id:number,data:any): Observable<any> {
     })
   );
 }
-
+ 
 
 }

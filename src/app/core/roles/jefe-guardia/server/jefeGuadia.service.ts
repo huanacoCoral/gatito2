@@ -44,5 +44,18 @@ export class jefeGuardiaService {
       
     }))
    }
-
+   // LISTAR TURNOS 
+   listarTurnosTrayectos():Observable<any>{
+    return this._http.get(this.API_URL+'/turno/listar-Turnos-Trayecto').pipe(tap((res:any)=>{
+      //console.log("respuesta de creacio nde personal",res);
+      
+    }))
+   }
+   listarTurnoTrayecto(dto:any):Observable<any>{
+    return this._http.post(this.API_URL+'/turno/rango-turno-trayecto',dto).pipe(tap((res:any)=>{
+      //console.log("respuesta de creacio nde personal",res);
+      
+    }))
+   }
+   
 }

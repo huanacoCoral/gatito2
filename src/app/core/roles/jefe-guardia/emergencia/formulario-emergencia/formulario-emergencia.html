@@ -92,7 +92,7 @@
       <mat-label>Maquinista Asignados</mat-label>
       <mat-select formControlName="maquinistasAsignados">
         @for (item of gravedadListaOriginalt; track item.id) {
-          <mat-option [value]="item.id" >{{ item.nombre }}</mat-option>
+          <mat-option [value]="item.id" >{{ item.voluntario.nombre }} {{item.voluntario.apellido_paterno}} {{item.voluntario.apellido_materno}}</mat-option>
         }
       </mat-select>
     </mat-form-field>

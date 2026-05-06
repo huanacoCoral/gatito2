@@ -67,7 +67,7 @@ export default class PersonalForm implements OnInit {
 
   
   readonly formularioEstadoRol = this.fb.group({
-    estado: [''],
+    estado: ['A'],
     rol: [''],
     cargo: [''],
     usuario: [''],
@@ -80,27 +80,12 @@ export default class PersonalForm implements OnInit {
       const fechaValor = this.form.get('fecha_nacimiento')?.value;
       const fecha = fechaValor ? new Date(fechaValor).toISOString() : null;
       this.form.get('fecha_nacimiento')?.setValue(fecha);
-     /*const data = {
-  nombre:              'Juan',
-  apellido_paterno:    'Pérez',
-  apellido_materno:    'García',
-  ci:                  '1234567',
-  telefono:            '77123456',
-  telefono_emergencia: '77987654',
-  
-  // Desde el front, envíalo como String (ISO) o Date
-  fecha_nacimiento:    '1995-05-20', 
-  
-  sexo:                'MASCULINO',
-  direccion:           'Av. Siempre Viva 123',
-  correo_personal:     'juan.perez@email.com',
-  observaciones:       'Sin observaciones'
-};*/
-      // Aquí iría tu servicio para guardar
+    
       if (this.data.tipo==="editar") {
         const datos={
           'datos':this.form.value,
-          'idUsuario':this.data.datos.id_voluntario
+          'idUsuario':this.data.datos.id_voluntario,
+          'id_modificacion':Number(localStorage.getItem('usuario'))
         }
         console.log("vamos a editar ",datos);
         
@@ -114,8 +99,13 @@ export default class PersonalForm implements OnInit {
           
         }
       })
+///actualizar aunqu no tenga srol u otra relacion
+
       const idRol=this.formularioEstadoRol.get('rol')?.value;
       console.log('idRol : ',idRol);
+      if(idRol){
+console.log("hay rol");
+
       
       const data={
       "fecha": new Date,
@@ -132,6 +122,10 @@ export default class PersonalForm implements OnInit {
         },error:(error:any)=>console.error("error al guardar rol",error)
         
       })
+      }
+      if(this.formularioEstadoRol.get('cargo')?.value){
+        console.log("hay cargo");
+        
       const dataCargo={
       "fecha": new Date,
       "id_cargo": this.formularioEstadoRol.get('cargo')?.value,
@@ -148,9 +142,15 @@ export default class PersonalForm implements OnInit {
         },error:(error:any)=>console.error("error al guardar rol",error)
         
       })
+    }
 
       }else{//guarda nuevo
-        this.http.crearPersonal(this.form.value).subscribe({
+        const dataEnvio = {
+          ...this.form.value,
+          id_modificacion:Number( localStorage.getItem('usuario'))
+        };
+
+      this.http.crearPersonal(dataEnvio).subscribe({
         next:(res:any)=>{
           console.log('respuestaaaa ',res);
           

@@ -13,7 +13,8 @@ export class MenuService {
     LOGISTICA: [
       { label: 'Personal', route: '/rol/logistica/personal' },
       { label: 'Material', route: '/rol/logistica/material' },
-      { label: 'Vehículos', route: '/rol/logistica/vehiculos' }
+      { label: 'Vehículos', route: '/rol/logistica/vehiculos' },
+      { label: 'Asignar material', route: '/rol/logistica/asignar-material' }
     ],
     OPERACIONES: [
       { label: 'Verificar personal', route: '/rol/operaciones/personal' },

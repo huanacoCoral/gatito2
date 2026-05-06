@@ -21,6 +21,12 @@ export const routesLogistica: Routes = [
     loadComponent: () =>
       import('../logistica/pages/vehiculo/vehiculo').then(m=>m.VehiculoComponent)
     },
+    {
+    path: 'asignar-material',                                // ruta vacía
+    loadComponent: () =>
+      import('../logistica/pages/asignar-material/asignar-material').then(m=>m.AsignarMaterial)
+    },
+    
     
 
 

@@ -1,0 +1,43 @@
+/* Estilo para los datos del voluntario */
+.user-info {
+  display: flex;
+  flex-direction: column;
+}
+.user-ci {
+  color: #64748b;
+  font-size: 0.75rem;
+}
+
+/* Rango de fechas con iconos */
+.date-range {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-family: 'monospace'; /* Da un look más de sistema */
+}
+
+/* Etiquetas de estado (Badges) */
+.status-active {
+  background-color: #dcfce7;
+  color: #15803d;
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-size: 0.75rem;
+  font-weight: bold;
+}
+
+.status-expired {
+  background-color: #fee2e2;
+  color: #b91c1c;
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-size: 0.75rem;
+  font-weight: bold;
+}
+
+/* Badge para el turno */
+.badge-turno {
+  border-left: 4px solid #f97316; /* El naranja que querías */
+  padding-left: 8px;
+  font-style: italic;
+}

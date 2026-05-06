@@ -15,6 +15,7 @@ import { FormBuilder, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatStepperModule } from '@angular/material/stepper';
 import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 import { MatSort, MatSortModule } from '@angular/material/sort';
+import { CommonModule } from '@angular/common';
 export interface PeriodicElement {
   name: string;
   position: number;
@@ -32,7 +33,7 @@ export interface PeriodicElement {
     MatButtonModule,
     MatIconModule,
     MatCardModule,
-  
+    CommonModule,
     MatStepperModule,
     FormsModule,
     ReactiveFormsModule,
@@ -69,13 +70,21 @@ export default class PersonalList implements OnInit,AfterViewInit {
   readonly _http = inject(PersonalService);
   ngOnInit() {
     console.log('Tipo recibido:', this.tipoRol);
-    this.tipo='personal'
-    this._http.listarTodoPersonal().subscribe({
+    if(this.tipoRol){
+      this.tipo=this.tipoRol
+    }else{
+
+      this.tipo='personal'
+    }
+    
+   this.listar();
+    this.listarDeBaja();
+  }
+
+  listar(){
+     this._http.listarTodoPersonal().subscribe({
       next: (res: any) => {
-        // Asignamos el array a la propiedad .data del MatTableDataSource
-        //this.dataSource = new MatTableDataSource(res);
         this.dataSource.data=res;
-        
         this.todoPersonal=res;
         console.log(res, "ooooo");
 
@@ -83,19 +92,20 @@ export default class PersonalList implements OnInit,AfterViewInit {
       error: (err) => console.error(err)
     }
     )
+  }
+  listarDeBaja(){
     this.http.listarDeBaja().subscribe({
       next: (res: any) => {
         // prueba
         this.dataSourceDeBaja.data = res;
         this.dataSourceDeBaja.paginator = this.paginatorDeBaja;
         this.dataSourceDeBaja.sort = this.sortDeBaja;
-        console.log(res, "ooo.o...........o");
+        console.log(res, "ooo.o..........de baja.o");
 
       },
       error: (err) => console.error(err)
     })
   }
-
   private _formBuilder = inject(FormBuilder);
   firstFormGroup = this._formBuilder.group({
    
@@ -103,17 +113,7 @@ export default class PersonalList implements OnInit,AfterViewInit {
   secondFormGroup = this._formBuilder.group({
   
   });
-  actualizar(){
-    this._http.listarTodoPersonal().subscribe({
-      next: (res: any) => {
-        this.dataSource.data = res;
-        console.log(res, "ooooo");
-
-      },
-      error: (err) => console.error(err)
-    }
-    )
-  }
+  
   //solo ver de baja
     displayedColumnsDeBaja: string[] = ['id', 'name', 'progress', 'fruit'];
     dataSourceDeBaja = new MatTableDataSource<any>([]);
@@ -183,17 +183,23 @@ export default class PersonalList implements OnInit,AfterViewInit {
 
     dialogRef.afterClosed().subscribe(result => {
       console.log('The dialog was closed');
+      this.listar();
       /*if (result !== undefined) {
         this.animal.set(result);
       }*/
     });
   }
   eliminar(row: any) {
-    console.log("----row", row);
-    this.http.eliminar(row).subscribe({
+    const envioDato={
+      ...row,
+      id_modificacion:Number( localStorage.getItem('usuario'))
+    }
+    console.log("eliminar---row", envioDato);
+    this.http.eliminar(envioDato).subscribe({
       next: (res: any) => {
         console.log('respuestaaaa ', res);
-
+        this.listar();
+        this.listarDeBaja();
       },
       error: (err: any) => {
         console.error("error", err);
@@ -208,10 +214,41 @@ export default class PersonalList implements OnInit,AfterViewInit {
       }
     })
     Swal.fire({
-      title: '¡Buen trabajo!',
-      text: 'SweetAlert2 ya está funcionando',
+      title: 'Actualizacion correcta',
+      text: 'Se dio de baja al voluntario'+row.nombre+ row.apellido_paterno,
       icon: 'success',
-      confirmButtonText: 'Genial'
+      confirmButtonText: 'Aceptar'
+    });
+  }
+  activar(row:any){
+    const envioDato={
+      ...row,
+      id_modificacion:Number( localStorage.getItem('usuario'))
+    }
+    console.log("eliminar---row", envioDato);
+    this.http.activar(envioDato).subscribe({
+      next: (res: any) => {
+        console.log('respuestaaaa ', res);
+        this.listar();
+        this.listarDeBaja();
+      },
+      error: (err: any) => {
+        console.error("error", err);
+        const mensajeError = err.error?.message || 'Error desconocido';
+        const detalleTecnico = err.error?.detail || '';
+        Swal.fire({
+          icon: 'error',
+          title: 'Hubo un problema',
+          text: mensajeError,
+          footer: `<span>${detalleTecnico}</span>` // Para ver el error técnico en pequeñito
+        })
+      }
+    })
+    Swal.fire({
+      title: 'Actualizacion correcta',
+      text: 'Se activo al voluntario'+row.nombre+ row.apellido_paterno,
+      icon: 'success',
+      confirmButtonText: 'Aceptar'
     });
   }
 maquinista(row:any){
@@ -235,7 +272,9 @@ maquinista(row:any){
         }
         console.log(datos,"-----");
         this._http.crearMaquinista(datos).subscribe({
-
+          next:(value)=> {
+            this.listar();
+          },
         })
       if (!licencia || !fecha) {
         Swal.showValidationMessage('Por favor llena ambos campos');
@@ -245,14 +284,9 @@ maquinista(row:any){
   }).then((result) => {
     if (result.isConfirmed) {
       console.log('Datos capturados:', result.value);
-      // Aquí llamas a tu servicio para guardar en la base de datos
     }
   });
-  console.log(row,"---------");
   
-
-        /*this.todoPersonal=res;
-        */
 
 }
 editarMaquinista(row:any) {
@@ -278,8 +312,11 @@ editarMaquinista(row:any) {
           };
         
         console.log(datos,"-----");
+        
         this._http.editarMaquinista(row.id_voluntario,datos).subscribe({
-
+          next:(value)=> {
+            this.listar();
+          },
         })
       if (!licencia || !fecha) {
         Swal.showValidationMessage('Por favor llena ambos campos');
@@ -298,14 +335,56 @@ editarMaquinista(row:any) {
     bajaMaquinista(row:any){
       
        this.http.bajaMaquinista( row.id_voluntario,{id_modificacion:  Number(localStorage.getItem('usuario')) }).subscribe({
-        next(value) {
+        next:(value)=> {
           console.log(value);
-
+          this.listar();
         },
         error(err) {
           console.error("error al dar de baja",err);
           
         },
        })
+    }
+    maquinistaVolverActivar(row:any){
+      
+   Swal.fire({
+    title: 'Datos del Maquinista',
+    html: `
+      <input id="licencia" class="swal2-input" placeholder="Tipo de Licencia">
+      <input id="fecha" type="date" class="swal2-input" placeholder="Fecha de asignación">
+    `,
+    focusConfirm: false,
+    showCancelButton: true,
+    confirmButtonText: 'Guardar',
+    preConfirm: () => {
+      const licencia = (document.getElementById('licencia') as HTMLInputElement).value;
+      const fecha = (document.getElementById('fecha') as HTMLInputElement).value;
+     const datos = {
+       // id_voluntario: row.id_voluntario,
+        tipoLicencia: licencia,
+        fecha: fecha, // '2023-10-25'
+        id_modificacion: Number(localStorage.getItem('usuario')) 
+          };
+        
+        console.log(datos,"-----");
+        
+        this._http.maquinistaVolverActivar(row.id_voluntario,datos).subscribe({
+          next:(value)=> {
+            this.listar();
+          },
+        })
+      if (!licencia || !fecha) {
+        Swal.showValidationMessage('Por favor llena ambos campos');
+      }
+      return { licencia, fecha };
+    }
+  }).then((result) => {
+    if (result.isConfirmed) {
+      console.log('Datos capturados:', result.value);
+      // Aquí llamas a tu servicio para guardar en la base de datos
+    }
+  });
+  console.log(row,"---------");
+  
     }
 }

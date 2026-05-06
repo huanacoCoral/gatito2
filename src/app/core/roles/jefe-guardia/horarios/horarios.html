@@ -1,1 +1,75 @@
 <p>horarios works!</p>
+<mat-card class="mat-elevation-z8">
+  <mat-card-header>
+    <mat-card-title>Disponibilidad de Turnos</mat-card-title>
+    <mat-card-subtitle>Gestión de fechas y vigencias</mat-card-subtitle>
+    <mat-form-field appearance="outline">
+    <mat-label>Fecha Inicio</mat-label>
+    <input matInput [matDatepicker]="pickerInicio" 
+           [(ngModel)]="semanaInicio" 
+           (dateChange)="cargarDatos()">
+    <mat-hint>DD/MM/YYYY</mat-hint>
+    <mat-datepicker-toggle matIconSuffix [for]="pickerInicio"></mat-datepicker-toggle>
+    <mat-datepicker #pickerInicio></mat-datepicker>
+  </mat-form-field>
+
+  <!-- Input Fecha Fin -->
+  <mat-form-field appearance="outline">
+    <mat-label>Fecha Fin</mat-label>
+    <input matInput [matDatepicker]="pickerFin" 
+           [(ngModel)]="semanaFin" 
+           (dateChange)="cargarDatos()">
+    <mat-hint>DD/MM/YYYY</mat-hint>
+    <mat-datepicker-toggle matIconSuffix [for]="pickerFin"></mat-datepicker-toggle>
+    <mat-datepicker #pickerFin></mat-datepicker>
+  </mat-form-field>
+  </mat-card-header>
+
+  <table mat-table [dataSource]="dataSource" class="full-width-table">
+
+    <!-- Columna Voluntario -->
+    <ng-container matColumnDef="voluntario">
+      <th mat-header-cell *matHeaderCellDef> Personal </th>
+      <td mat-cell *matCellDef="let element">
+        <div class="user-info">
+          <span class="user-name"><b>{{element.voluntario.nombre}} {{element.voluntario.apellido_paterno}}</b></span>
+          <small class="user-ci">CI: {{element.voluntario.ci}}</small>
+        </div>
+      </td>
+    </ng-container>
+
+    <!-- Columna Turno -->
+    <ng-container matColumnDef="turno">
+      <th mat-header-cell *matHeaderCellDef> Turno Asignado </th>
+      <td mat-cell *matCellDef="let element">
+        <span class="badge-turno">{{element.turno.nombre}}</span>
+      </td>
+    </ng-container>
+
+    <!-- Columna Rango de Fechas (Lo que pedías) -->
+    <ng-container matColumnDef="vigencia">
+      <th mat-header-cell *matHeaderCellDef> Vigencia (Desde - Hasta) </th>
+      <td mat-cell *matCellDef="let element">
+        <div class="date-range">
+          <mat-icon inline>calendar_today</mat-icon>
+          <span>{{element.fechaInicio }}</span>
+          <mat-icon inline>arrow_forward</mat-icon>
+          <span>{{element.fechaFin }}</span>
+        </div>
+      </td>
+    </ng-container>
+
+    <!-- Columna Estado (Badge dinámico) -->
+    <ng-container matColumnDef="disponibilidad">
+      <th mat-header-cell *matHeaderCellDef> Disponibilidad </th>
+      <td mat-cell *matCellDef="let element">
+        <span [class]="esVigente(element.fechaFin) ? 'status-active' : 'status-expired'">
+          {{ esVigente(element.fechaFin) ? 'En Vigencia' : 'Finalizado' }}
+        </span>
+      </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+  </table>
+</mat-card>

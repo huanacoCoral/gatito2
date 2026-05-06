@@ -76,19 +76,19 @@
     </form>
     @if (this.data.tipo==="editar") {
     <form [formGroup]="formularioEstadoRol">
-      <mat-form-field>
+      <mat-form-field appearance="outline">
         <mat-label>Estado</mat-label>
-        <input matInput formControlName="estado">
+        <input matInput formControlName="estado" readonly>
       </mat-form-field>
-      <mat-form-field>
+      <mat-form-field appearance="outline">
         <mat-label>Agregar Rol</mat-label>
         <mat-select formControlName="rol">
           @for (valor of rol; track valor.id_rol) {
           <mat-option [value]="valor.id_rol">{{ valor.nombre }}</mat-option>
           }
         </mat-select>
-      </mat-form-field>
-      <mat-form-field>
+      </mat-form-field >
+      <mat-form-field appearance="outline">
         <mat-label>Agregar Cargo</mat-label>
         <mat-select formControlName="cargo">
           @for (valor of cargo; track valor.id_rol) {
@@ -96,11 +96,11 @@
           }
         </mat-select>
       </mat-form-field>
-      <mat-form-field>
+      <mat-form-field appearance="outline">
         <mat-label>Agregar Usuario</mat-label>
         <input matInput formControlName="usuario">
       </mat-form-field>
-      <mat-form-field>
+      <mat-form-field appearance="outline">
         <mat-label>Agregar Constrasena</mat-label>
         <input matInput formControlName="contrasena">
       </mat-form-field>

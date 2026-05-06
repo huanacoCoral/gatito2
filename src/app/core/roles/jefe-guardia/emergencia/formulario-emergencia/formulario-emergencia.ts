@@ -25,12 +25,7 @@ export class FormularioEmergencia implements OnInit{
   listarGravedadOriginal:any
   
   // Lista de ejemplo para tus selectores (asumiendo una interfaz con id y nombre)
-  gravedadListaOriginalt = [
-    { id: 1, nombre: 'Baja' },
-    { id: 2, nombre: 'Media' },
-    { id: 3, nombre: 'Alta' },
-    { id: 4, nombre: 'Crítica' }
-  ];
+  gravedadListaOriginalt : any;
   listarVoluntariosDisponibles:any;
   filtrarVoluntariosDisponibles:any;
   constructor(private fb: FormBuilder) { }
@@ -40,6 +35,7 @@ export class FormularioEmergencia implements OnInit{
     this.listarGravedad();
     this.listarTipoEmergencia();
     this.listarPersonalDisponible();
+    this.listarMaquinista();
   }
 
   initForm(): void {
@@ -71,7 +67,7 @@ export class FormularioEmergencia implements OnInit{
         this.listarGravedadOriginal=value;
       },
       error(err) {
-        console.error("erro en gravedad");
+        console.error("erroR en gravedad");
         
       },
     })
@@ -160,9 +156,9 @@ limpiarSiNoEsValido() {
 }
 listarMaquinista(){
 this.http.listarMaquinista().subscribe({
-  next(value) {
+  next:(value)=> {
     console.log(value);
-    
+    this.gravedadListaOriginalt=value;
   },
   error(err) {
     console.error("error en maquinista listado ",err);
