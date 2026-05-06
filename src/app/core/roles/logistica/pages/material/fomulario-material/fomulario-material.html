@@ -104,7 +104,7 @@
   </mat-step>
   <mat-step [stepControl]="secondFormGroup">
     <form [formGroup]="secondFormGroup">
-      <ng-template matStepLabel>Fill out your address</ng-template>
+      <ng-template matStepLabel>SELECCIONA TIPO</ng-template>
       <mat-form-field class="example-full-width">
         <mat-label>tipo</mat-label>
         <input type="text" 
@@ -130,17 +130,18 @@
   </mat-step>
   
 </mat-vertical-stepper>
-@if(editar){
+@if(!editar){
 <mat-card-actions align="end">
   <button mat-button type="button" (click)="cerrarDialog.close()">Cancelar</button>
-  <button mat-raised-button color="primary" type="button" [disabled]="materialForm.invalid" (click)="guardar()">
+  <button mat-raised-button color="primary" type="button" [disabled]="materialForm.invalid || secondFormGroup.invalid" (click)="guardar()">
     <mat-icon>save</mat-icon> Guardar Ingreso
   </button>
 </mat-card-actions>
 }@else{
+  {{data.data.id_informeIngresoMaterial}}-----
 <mat-card-actions align="end">
   <button mat-button type="button" (click)="cerrarDialog.close()">cancelar</button>
-  <button mat-raised-button color="primary" type="button" [disabled]="materialForm.invalid" (click)="guardar()">
+  <button mat-raised-button color="primary" type="button" [disabled]="materialForm.invalid || secondFormGroup.invalid" (click)="guardar(data.data.id_informeIngresoMaterial)">
     <mat-icon>save</mat-icon> Actualizar
   </button>
 </mat-card-actions>

@@ -1,1 +1,511 @@
+/* ============================================================
+   SISTEMA DE ESTILOS GLOBAL - EMERGENCIAS
+   Colores: Azul (#1e3a8a), Naranja (#f97316), Rojo (#dc2626)
+   ============================================================ */
+
 @import 'sweetalert2/dist/sweetalert2.min.css';
+
+/* ========== VARIABLES DE COLOR ========== */
+:root {
+  --primary-blue: #1e3a8a;
+  --primary-blue-light: #3b82f6;
+  --primary-blue-lighter: #dbeafe;
+  --primary-orange: #f97316;
+  --primary-orange-light: #fb923c;
+  --primary-orange-lighter: #fed7aa;
+  --primary-red: #dc2626;
+  --primary-red-light: #ef4444;
+  --primary-red-lighter: #fecaca;
+  --text-dark: #1f2937;
+  --text-light: #6b7280;
+  --bg-light: #f9fafb;
+  --bg-lighter: #f3f4f6;
+  --border-color: #e5e7eb;
+  --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.1);
+  --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.08);
+  --shadow-lg: 0 10px 24px rgba(0, 0, 0, 0.12);
+}
+
+/* ========== ESTILOS GLOBALES ========== */
+* {
+  box-sizing: border-box;
+}
+
+html, body {
+  margin: 0;
+  padding: 0;
+  font-family: 'Roboto', sans-serif;
+  background-color: #ffffff;
+  color: var(--text-dark);
+}
+
+/* ========== CONTENEDORES PRINCIPALES ========== */
+.container {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 16px;
+}
+
+.form-container {
+  max-width: 600px;
+  padding: 24px;
+  background: linear-gradient(135deg, #f9fafb 0%, #ffffff 100%);
+  border-radius: 12px;
+  box-shadow: var(--shadow-md);
+  margin: 20px auto;
+}
+
+/* ========== TARJETAS (MAT-CARD) ========== */
+html body mat-card,
+html body mat-card.mat-mdc-card {
+  border-radius: 12px !important;
+  border: 1px solid var(--border-color) !important;
+  box-shadow: var(--shadow-md) !important;
+  overflow: hidden;
+  margin-bottom: 24px;
+  background: #ffffff !important;
+  transition: all 0.3s ease;
+}
+
+html body mat-card:hover,
+html body mat-card.mat-mdc-card:hover {
+  box-shadow: var(--shadow-lg) !important;
+  transform: translateY(-2px);
+}
+
+/* Cabecera de Tarjeta */
+html body mat-card-header,
+html body mat-card-header.mat-mdc-card-header {
+  background: linear-gradient(135deg, var(--primary-blue) 0%, var(--primary-blue-light) 100%) !important;
+  padding: 20px !important;
+  border-bottom: 3px solid var(--primary-orange) !important;
+}
+
+html body .mat-mdc-card-title,
+html body mat-card-title {
+  color: #ffffff !important;
+  font-weight: 700 !important;
+  font-size: 1.3rem !important;
+  letter-spacing: 0.5px;
+  margin: 0 !important;
+}
+
+html body .mat-mdc-card-subtitle,
+html body mat-card-subtitle {
+  color: var(--primary-blue-lighter) !important;
+  font-weight: 500 !important;
+  font-size: 0.95rem !important;
+  margin-top: 4px !important;
+}
+
+/* Contenido de Tarjeta */
+html body mat-card-content,
+html body .mat-mdc-card-content {
+  padding: 20px !important;
+}
+
+/* Acciones en Tarjeta */
+html body mat-card-actions,
+html body .mat-mdc-card-actions {
+  padding: 16px 20px !important;
+  background-color: var(--bg-lighter) !important;
+  border-top: 1px solid var(--border-color) !important;
+  display: flex;
+  gap: 8px;
+  justify-content: flex-end;
+}
+
+/* ========== TABLAS (MAT-TABLE) ========== */
+html body .mat-mdc-header-row,
+html body table thead {
+  background: linear-gradient(135deg, var(--primary-orange) 0%, var(--primary-orange-light) 100%) !important;
+}
+
+html body .mat-mdc-header-cell,
+html body table thead th {
+  color: #ffffff !important;
+  font-weight: 700 !important;
+  text-transform: uppercase;
+  font-size: 0.75rem !important;
+  letter-spacing: 1px;
+  padding: 14px 12px !important;
+  background: inherit !important;
+}
+
+/* Filas de Tabla - Efecto Cebra */
+html body .mat-mdc-row {
+  border-bottom: 1px solid var(--border-color) !important;
+  transition: all 0.2s ease;
+}
+
+html body .mat-mdc-row:nth-child(even) {
+  background-color: var(--bg-lighter) !important;
+}
+
+html body .mat-mdc-row:nth-child(odd) {
+  background-color: #ffffff !important;
+}
+
+html body .mat-mdc-row:hover {
+  background-color: var(--primary-blue-lighter) !important;
+  box-shadow: inset 3px 0 0 var(--primary-orange);
+}
+
+/* Celdas de Tabla */
+html body .mat-mdc-cell {
+  padding: 14px 12px !important;
+  color: var(--text-dark);
+  font-size: 0.9rem;
+}
+
+html body .mat-mdc-cell:first-child {
+  font-weight: 600;
+}
+
+/* No hay datos */
+html body .mat-mdc-no-data-row {
+  height: 60px !important;
+}
+
+html body .mat-mdc-no-data-row .mat-mdc-cell {
+  text-align: center;
+  color: var(--text-light);
+}
+
+/* ========== FORMULARIOS ========== */
+html body mat-form-field,
+html body .mat-mdc-form-field {
+  width: 100%;
+  margin-bottom: 16px;
+}
+
+html body .mat-mdc-form-field-infix {
+  border-bottom: 2px solid var(--border-color) !important;
+  padding: 10px 0 !important;
+}
+
+/* Focus - Azul */
+html body .mat-mdc-form-field.mat-focused .mat-mdc-form-field-infix {
+  border-bottom-color: var(--primary-blue) !important;
+}
+
+html body .mat-mdc-form-field .mdc-floating-label {
+  color: var(--text-light) !important;
+}
+
+html body .mat-mdc-form-field.mat-focused .mdc-floating-label {
+  color: var(--primary-blue) !important;
+  font-weight: 600;
+}
+
+html body .mat-mdc-input-element {
+  color: var(--text-dark) !important;
+  font-size: 0.95rem;
+}
+
+html body .mat-mdc-input-element::placeholder {
+  color: var(--text-light) !important;
+}
+
+/* Labels */
+html body mat-label {
+  color: var(--text-dark) !important;
+  font-weight: 600;
+  font-size: 0.9rem;
+}
+
+/* ========== BOTONES ========== */
+html body button,
+html body .mat-mdc-button-base {
+  border-radius: 6px;
+  text-transform: uppercase;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  transition: all 0.3s ease;
+  font-size: 0.85rem;
+  padding: 8px 16px;
+}
+
+/* Botón Primario - Azul */
+html body button[mat-raised-button].mat-primary,
+html body button[mat-stroked-button].mat-primary,
+html body .mat-mdc-raised-button.mat-primary {
+  background-color: var(--primary-blue) !important;
+  color: #ffffff !important;
+}
+
+html body button[mat-raised-button].mat-primary:hover,
+html body .mat-mdc-raised-button.mat-primary:hover {
+  background-color: var(--primary-blue-light) !important;
+  box-shadow: 0 4px 12px rgba(30, 58, 138, 0.3);
+  transform: translateY(-2px);
+}
+
+/* Botón Accent - Naranja */
+html body button[mat-raised-button].mat-accent,
+html body .mat-mdc-raised-button.mat-accent {
+  background-color: var(--primary-orange) !important;
+  color: #ffffff !important;
+}
+
+html body button[mat-raised-button].mat-accent:hover,
+html body .mat-mdc-raised-button.mat-accent:hover {
+  background-color: var(--primary-orange-light) !important;
+  box-shadow: 0 4px 12px rgba(249, 115, 22, 0.3);
+  transform: translateY(-2px);
+}
+
+/* Botón Warn - Rojo */
+html body button[mat-raised-button].mat-warn,
+html body .mat-mdc-raised-button.mat-warn {
+  background-color: var(--primary-red) !important;
+  color: #ffffff !important;
+}
+
+html body button[mat-raised-button].mat-warn:hover,
+html body .mat-mdc-raised-button.mat-warn:hover {
+  background-color: var(--primary-red-light) !important;
+  box-shadow: 0 4px 12px rgba(220, 38, 38, 0.3);
+  transform: translateY(-2px);
+}
+
+/* Botón Simple */
+html body button[mat-button]:not([color]),
+html body .mat-mdc-button:not([color]) {
+  color: var(--primary-blue) !important;
+}
+
+html body button[mat-button]:not([color]):hover,
+html body .mat-mdc-button:not([color]):hover {
+  background-color: var(--primary-blue-lighter);
+}
+
+/* Botón FAB - Flotante */
+html body button[mat-fab],
+html body .mat-mdc-fab {
+  background-color: var(--primary-orange) !important;
+  color: #ffffff !important;
+  box-shadow: var(--shadow-lg) !important;
+}
+
+html body button[mat-fab]:hover,
+html body .mat-mdc-fab:hover {
+  background-color: var(--primary-orange-light) !important;
+  box-shadow: 0 6px 20px rgba(249, 115, 22, 0.4) !important;
+}
+
+/* Botón Icon */
+html body button[mat-icon-button] {
+  color: var(--primary-blue) !important;
+}
+
+html body button[mat-icon-button]:hover {
+  background-color: var(--primary-blue-lighter);
+}
+
+/* ========== AUTOCOMPLETADO ========== */
+html body .mat-mdc-autocomplete-panel {
+  border: 1px solid var(--border-color) !important;
+  border-radius: 6px !important;
+  box-shadow: var(--shadow-lg) !important;
+}
+
+html body .mdc-list__item.mat-mdc-option {
+  color: var(--text-dark);
+}
+
+html body .mdc-list__item.mat-mdc-option:hover,
+html body .mdc-list__item.mat-mdc-option.mat-selected {
+  background-color: var(--primary-blue-lighter) !important;
+  color: var(--primary-blue) !important;
+}
+
+html body .mat-mdc-option.mat-selected {
+  background-color: var(--primary-orange-lighter) !important;
+  color: var(--primary-orange) !important;
+}
+
+/* ========== SELECTORES ========== */
+html body .mat-mdc-select {
+  color: var(--text-dark) !important;
+}
+
+html body .mat-mdc-select-value {
+  color: var(--text-dark) !important;
+}
+
+html body .mat-mdc-select-arrow {
+  color: var(--primary-blue) !important;
+}
+
+html body .mat-mdc-select-focused .mat-mdc-select-arrow {
+  color: var(--primary-orange) !important;
+}
+
+/* ========== DATE PICKER ========== */
+html body .mat-calendar-body-selected {
+  background-color: var(--primary-blue) !important;
+  color: #ffffff !important;
+}
+
+html body .mat-calendar-body-today {
+  border-color: var(--primary-orange) !important;
+}
+
+html body .mat-datepicker-toggle-default .mat-icon {
+  color: var(--primary-blue) !important;
+}
+
+/* ========== DIÁLOGOS (MAT-DIALOG) ========== */
+html body .mat-mdc-dialog-container {
+  background: #ffffff !important;
+  border-radius: 12px !important;
+  box-shadow: var(--shadow-lg) !important;
+}
+
+html body .mat-mdc-dialog-title {
+  color: var(--primary-blue) !important;
+  font-weight: 700;
+  font-size: 1.25rem;
+}
+
+/* ========== BREADCRUMB Y NAVEGACIÓN ========== */
+nav, .breadcrumb {
+  background: linear-gradient(135deg, var(--primary-blue) 0%, var(--primary-blue-light) 100%);
+  padding: 12px 20px;
+  border-radius: 6px;
+  margin-bottom: 20px;
+  box-shadow: var(--shadow-sm);
+}
+
+nav a, .breadcrumb a {
+  color: #ffffff !important;
+  text-decoration: none;
+  font-weight: 600;
+  transition: all 0.2s ease;
+}
+
+nav a:hover, .breadcrumb a:hover {
+  color: var(--primary-orange-lighter);
+  text-decoration: underline;
+}
+
+/* ========== ALERTS Y MENSAJES ========== */
+.alert, .mat-mdc-snack-bar-label {
+  border-radius: 6px;
+  font-weight: 600;
+}
+
+.alert-success, .alert-info {
+  background-color: var(--primary-blue-lighter) !important;
+  border-left: 4px solid var(--primary-blue) !important;
+  color: var(--primary-blue) !important;
+}
+
+.alert-warning {
+  background-color: var(--primary-orange-lighter) !important;
+  border-left: 4px solid var(--primary-orange) !important;
+  color: var(--text-dark) !important;
+}
+
+.alert-danger, .alert-error {
+  background-color: var(--primary-red-lighter) !important;
+  border-left: 4px solid var(--primary-red) !important;
+  color: var(--primary-red) !important;
+}
+
+/* ========== BADGES Y TAGS ========== */
+.badge, .tag {
+  border-radius: 20px;
+  padding: 4px 12px;
+  font-weight: 600;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.badge-primary {
+  background-color: var(--primary-blue-lighter);
+  color: var(--primary-blue);
+}
+
+.badge-warning {
+  background-color: var(--primary-orange-lighter);
+  color: var(--primary-orange);
+}
+
+.badge-danger {
+  background-color: var(--primary-red-lighter);
+  color: var(--primary-red);
+}
+
+/* ========== HEADING Y TIPOGRAFÍA ========== */
+h1, h2, h3, h4, h5, h6 {
+  color: var(--text-dark);
+  font-weight: 700;
+  margin: 16px 0 8px 0;
+}
+
+h1 {
+  font-size: 2rem;
+  color: var(--primary-blue);
+  border-bottom: 3px solid var(--primary-orange);
+  padding-bottom: 12px;
+}
+
+h2 {
+  font-size: 1.6rem;
+  color: var(--primary-blue);
+}
+
+h3 {
+  font-size: 1.3rem;
+}
+
+p {
+  line-height: 1.6;
+  color: var(--text-light);
+}
+
+/* ========== LINKS ========== */
+a {
+  color: var(--primary-blue);
+  text-decoration: none;
+  transition: all 0.2s ease;
+  font-weight: 600;
+}
+
+a:hover {
+  color: var(--primary-orange);
+  text-decoration: underline;
+}
+
+/* ========== RESPONSIVE ========== */
+@media (max-width: 768px) {
+  .form-container {
+    padding: 16px;
+  }
+
+  html body .mat-mdc-header-cell {
+    font-size: 0.7rem !important;
+    padding: 10px 8px !important;
+  }
+
+  html body .mat-mdc-cell {
+    padding: 10px 8px !important;
+    font-size: 0.85rem;
+  }
+
+  button {
+    padding: 6px 12px;
+    font-size: 0.8rem;
+  }
+
+  h1 {
+    font-size: 1.5rem;
+  }
+
+  h2 {
+    font-size: 1.25rem;
+  }
+}

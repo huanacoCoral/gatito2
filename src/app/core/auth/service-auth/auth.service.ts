@@ -19,9 +19,12 @@ export class AuthService {
         .post(this.API_URL+'/auth/log-in',data)
         .pipe(tap((res:any)=>
            {
+            
             const body = typeof res === 'string' ? JSON.parse(res) : res;
             this._storage.set('session',  { access_token: body.access_token })
             this._storage.set('rol',res.rol)
+            this._storage.set('usuario',res.id_voluntario)
+            
             }
             
         ))

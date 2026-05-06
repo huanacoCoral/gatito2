@@ -13,11 +13,11 @@ import { AuthStateService } from '../data-access/auth-state.service';
     next:HttpHandlerFn
   ) => {
     
-    console.log("🔍 INTERCEPTOR - URL:", req.url);
+    //console.log("🔍 INTERCEPTOR - URL:", req.url);
     //const authService = inject(AuthStateService);
     //const token =authService.getSession;
   const token = localStorage.getItem('session');
-  console.log("🔐 Token encontrado:", !!token);
+  //console.log("🔐 Token encontrado:", !!token);
 
   if (token) {
     req = req.clone({

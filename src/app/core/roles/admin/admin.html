@@ -1,0 +1,253 @@
+<p>Administracion, pdras agregar nuevo valores crear nuevas requerimients</p>
+<mat-card appearance="outlined">
+
+    <mat-card-header>
+        <mat-card-title> Administrador</mat-card-title>
+        <mat-card-subtitle>creaciones</mat-card-subtitle>
+    </mat-card-header>
+    <mat-stepper orientation="vertical" [linear]="false" #creacion>
+        <mat-step #eleccion>
+            <ng-template matStepLabel>Elija una opcion</ng-template>
+            <div style="flex-direction: column">
+                <mat-card class="contenedor">
+                    <mat-dialog-content
+                        style="width: 100px; height: 100px; margin: 0; padding: 8px; display: flex; flex-direction: column; align-items: center; justify-content: center;">
+                        <mat-card-subtitle> Turno </mat-card-subtitle>
+                        <p>Listar turnos</p>
+
+                        <button (click)="listarTurno(creacion)">
+                            <img src="/assets/imagenes/iconos/images.png"
+                                style="width: 50px; height: 50px; border-radius:50%; object-fit:cover; border:2px solid #ccc">
+                        </button>
+                    </mat-dialog-content>
+                </mat-card>
+                <mat-card class="contenedor">
+                    <mat-dialog-content
+                        style="width: 100px; height: 100px; margin: 0; padding: 8px; display: flex; flex-direction: column; align-items: center; justify-content: center;">
+                        <mat-card-subtitle> Roles </mat-card-subtitle>
+                        <p>LISTAR ROL </p>
+                        <button (click)="listarRol(creacion)">
+                            <img mat-card-image src="/assets/imagenes/iconos/images.png"
+                                style="width: 50px; height: 50px; border-radius:50%; object-fit:cover; border:2px solid #ccc">
+                        </button>
+                    </mat-dialog-content>
+                </mat-card>
+
+                <mat-card class="contenedor">
+                    <mat-dialog-content
+                        style="width: 100px; height: 100px; margin: 0; padding: 8px; display: flex; flex-direction: column; align-items: center; justify-content: center;">
+                        <mat-card-subtitle>tipo de  Gravedad </mat-card-subtitle>
+                        <p>Listar Gravedad</p>
+                        <button (click)="listarGravedad(creacion)">
+                            <img mat-card-image src="/assets/imagenes/iconos/images.png"
+                                style="width: 50px; height: 50px; border-radius:50%; object-fit:cover; border:2px solid #ccc">
+                        </button>
+                    </mat-dialog-content>
+                </mat-card>
+
+                <mat-card class="contenedor">
+                    <mat-dialog-content style="padding: 16px 50px 5px 1px;">
+                        <mat-card-subtitle> Tipo Emergencia </mat-card-subtitle>
+                        <p>tipo de Emergencia </p>
+                        <button (click)="listarEmergencia(creacion)">
+                            <img mat-card-image src="/assets/imagenes/iconos/images.png"
+                                style="width: 50px; height: 50px; border-radius:50%; object-fit:cover; border:2px solid #ccc">
+                        </button>
+                    </mat-dialog-content>
+                </mat-card>
+
+                <mat-card class="contenedor">
+                    <mat-dialog-content style="padding: 16px 50px 5px 1px;">
+                        <mat-card-subtitle> Tipo Cargo </mat-card-subtitle>
+                        <p>tipo de Cargo </p>
+                        <button (click)="listarCargo(creacion)">
+                            <img mat-card-image src="/assets/imagenes/iconos/images.png"
+                                style="width: 50px; height: 50px; border-radius:50%; object-fit:cover; border:2px solid #ccc">
+                        </button>
+                    </mat-dialog-content>
+                </mat-card>
+
+
+               
+            </div>
+        </mat-step>
+        <mat-step #turno>
+            
+            @if(opcion=="crearTurno"){
+                 <ng-template matStepLabel>turno</ng-template>
+            <div>
+               
+                <form class="example-form">
+                    <mat-form-field class="example-full-width">
+                        <mat-label>Turno</mat-label>
+                        <input type="text" matInput [(ngModel)]="data.turno" name="nombreTurno" placeholder="Turno">
+
+                    </mat-form-field>
+
+                    <mat-form-field class="example-full-width">
+                    <mat-label>Horario inicio</mat-label>
+                    <input matInput 
+                            [matTimepicker]="pickerInicio" 
+                            [(ngModel)]="data.horaInicio" 
+                            name="horainicio" 
+                            placeholder="HH:MM">
+                    <mat-timepicker-toggle matIconSuffix [for]="pickerInicio"></mat-timepicker-toggle>
+                    <mat-timepicker #pickerInicio></mat-timepicker>
+                    </mat-form-field>
+
+                    <mat-form-field class="example-full-width">
+                    <mat-label>Horario fin</mat-label>
+                    <input matInput 
+                            [matTimepicker]="pickerFin" 
+                            [(ngModel)]="data.horaFin" 
+                               [min]="data.horaInicio" 
+                            name="horafin" 
+                            placeholder="HH:MM">
+                    <mat-timepicker-toggle matIconSuffix [for]="pickerFin"></mat-timepicker-toggle>
+                    <mat-timepicker #pickerFin></mat-timepicker>
+                    </mat-form-field>
+                </form>
+                <ul>
+                    <li>
+                        <strong>ID - Nombre - ID Usuario - Editar - Eliminar</strong>
+                    </li>
+
+                    
+                    @for(turno of listaTurno; track turno.id_turno) {
+                    <li>
+                        <span>{{turno.id_turno}}</span> -
+                        <span>{{turno.nombre}}</span> -
+                        <span>{{turno.id_modificacion}}</span>
+                        <span><button>ff</button></span>
+                        <span><button>e</button></span>
+                    </li>
+                    }
+                </ul>
+                <button (click)="crearTurno()">
+                    crear
+                </button>
+                
+            </div>
+            }
+            @if(opcion=="crearRol"){
+                 <ng-template matStepLabel>Rol</ng-template>
+            <div>
+                
+                <p>Rol</p>
+                <ul>
+                <li>
+                    <strong>ID - Nombre - ID Usuario</strong>
+                </li>
+                @for(rol of listaRol; track rol.id_rol) {
+                <li>
+                    <span>{{rol.id_rol}}</span> -
+                    <span>{{rol.nombre}}</span> -
+                    <span>{{rol.id_modificacion}}</span>
+                </li>
+                }
+                </ul>
+                <mat-form-field class="example-full-width">
+                        <mat-label>Rol</mat-label>
+                        <input type="text" matInput [(ngModel)]="data.Rol" name="nombreRol" placeholder="Turno">
+
+                    </mat-form-field>
+                <button (click)="crearRol()">
+                    crear
+                </button>
+            
+            </div>
+            }
+            @if(opcion=="crearGravedad"){
+                 <ng-template matStepLabel>Gravedad</ng-template>
+            <div>
+                <p>Gravedad</p>
+                <ul>
+                <li>
+                    <strong>ID - Nombre - ID Usuario</strong>
+                </li>
+
+                @for(turno of listaGravedad; track turno.id_turno) {
+                <li>
+                    <span>{{turno.id_turno}}</span> -
+                    <span>{{turno.nombre}}</span> -
+                    <span>{{turno.id_modificacion}}</span>
+                </li>
+                }
+                </ul>
+                <mat-form-field class="example-full-width">
+                        <mat-label>Gravedad</mat-label>
+                        <input type="text" matInput [(ngModel)]="data.Gravedad" name="nombreGravedad" placeholder="Turno">
+
+                    </mat-form-field>
+                <button (click)="crearGravedad()">
+                    crear gravedad
+                </button>
+
+            </div>
+            }
+
+            @if(opcion=="crearTipoEmergencia"){
+                 <ng-template matStepLabel>Tipo de Emergencia</ng-template>
+            <div>
+                <p>Tipo de Gravedad</p>
+                <ul>
+                <li>
+                    <strong>ID - Nombre - ID Usuario</strong>
+                </li>
+
+                @for(emergencia of listacrearEmergencia; track emergencia.codigo) {
+                <li>
+                    
+                    <span>{{emergencia.nombre}}</span> -
+                    <span>{{emergencia.codigo}}</span>
+                </li>
+                }
+                </ul>
+                <mat-form-field class="example-full-width">
+                        <mat-label>Nombre</mat-label>
+                        <input type="text" matInput [(ngModel)]="data.nombreEmergencia" name="nombreEmergencia" placeholder="Nombre">
+
+                    </mat-form-field>
+                     <mat-form-field class="example-full-width">
+                        <mat-label>codigo</mat-label>
+                        <input type="text" matInput [(ngModel)]="data.codigoEmergencia" name="codigoEmergencia" placeholder="Codigo">
+                        </mat-form-field>
+                    
+                <button (click)="crearEmergencia()">
+                    crear gravedad
+                </button>
+            </div>
+            }
+            
+            @if(opcion=="crearCargo"){
+                 <ng-template matStepLabel>Cargo</ng-template>
+            <div>
+                <p>Cargo</p>
+                <ul>
+                <li>
+                    <strong>ID - Nombre </strong>
+                </li>
+
+                @for(cargo of listarCargoArray; track cargo.codigo) {
+                <li>
+                    
+                    <span>{{cargo.nombre}}</span> 
+                </li>
+                }
+                </ul>
+                <mat-form-field class="example-full-width">
+                        <mat-label>Nombre</mat-label>
+                        <input type="text" matInput [(ngModel)]="data.nombreCargo" name="nombreCargo" placeholder="Nombre">
+
+                    </mat-form-field>
+                    
+                <button (click)="crearCargo()">
+                    crear CArgo
+                </button>
+            </div>
+            }
+
+
+        </mat-step>
+    </mat-stepper>
+</mat-card>

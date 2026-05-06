@@ -1,0 +1,76 @@
+<mat-card appearance="outlined">
+@if(data.data=='material'){
+   
+<div>
+     <p>Vamos a crear un nuveo Lote Material </p>
+    <div>
+        <ul>
+            <li>
+                <strong>id - nombre - cantidad - eliminar</strong>
+            </li>
+            @for(loteM of loteMaterial; track loteM.id_loteMaterial){
+                <li>
+                    <span>{{loteM.id_loteMaterial}}</span>-
+                    <span>{{loteM.tipo}}</span>-
+                    <span>{{loteM.stock}}</span>-
+                </li>
+            }
+        </ul>
+    </div>
+    <form class="example-form">
+    <mat-form-field class="example-full-width">
+        <mat-label>tipo</mat-label>
+        <input matInput #message maxlength="256" placeholder="Tipo" [(ngModel)]="dataL.tipoMaterial" name="tipoMaterial" >
+        
+    </mat-form-field>
+     <mat-form-field class="example-full-width">
+        <mat-label>Stock</mat-label>
+        <input matInput #message maxlength="256"  readonly [(ngModel)]="dataL.stockMaterial" name="stockMaterial">
+        
+    </mat-form-field>
+    </form>
+    <button (click)="guardarLoteMaterial()">
+        guardar lote material
+    </button>
+    <button (click)="cerrarDialog.close()">
+        cancelar
+    </button>
+</div>
+}@else{
+<div>
+    <p>Vamos a crear un nuveo Lote Producto </p>
+    <div>
+        <ul>
+            <li>
+                <strong>id - nombre - cantidad - eliminar</strong>
+            </li>
+            @for(loteP of loteProdcuto; track loteP.id){
+                <li>
+                     <span>{{loteP.id_lotePaterial}}</span>-
+                    <span>{{loteP.tipo}}</span>-
+                    <span>{{loteP.stock}}</span>-
+                </li>
+            }
+        </ul>
+    </div>
+    <form class="example-form">
+    <mat-form-field class="example-full-width">
+        <mat-label>tipo</mat-label>
+        <input matInput #message maxlength="256" placeholder="Ex. I need help with..." [(ngModel)]="dataL.tipoProducto" name="tipoProducto">
+        
+    </mat-form-field>
+     <mat-form-field class="example-full-width">
+        <mat-label>Stock</mat-label>
+        <input matInput #message maxlength="256" [value]="1" readonly [(ngModel)]="dataL.stockProducto" name="stockProducto">
+        
+    </mat-form-field>
+    </form>
+    <button (click)="guardarLoteProducto()" >
+        guardar lote Producto
+    </button>
+    <button (click)="cerrarDialog.close()">
+        cancelar
+    </button>
+</div>
+}
+</mat-card>

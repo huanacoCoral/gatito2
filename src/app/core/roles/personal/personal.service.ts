@@ -97,6 +97,12 @@ export class PersonalService {
       
     }))
    }
+   listarTodoTurnosTrayecto():Observable<any>{
+    return this._http.get(this.API_URL+'/turno/listar-Turnos-Trayecto').pipe(tap((res:any)=>{
+      console.log("turno",res);
+      
+    }))
+   }
    
    asignarTurno(data:any):Observable<any>{
     return this._http.post(this.API_URL+'/turno/asignar-turno',data).pipe(tap((res:any)=>{
@@ -111,6 +117,12 @@ export class PersonalService {
       
     }))
    }
+   editarTrayectoroariTurno(id:number,data:any):Observable<any>{
+    return this._http.put(this.API_URL+'/turno/editar-asignar-turno/'+id,data).pipe(tap((res:any)=>{
+      console.log("turno deditado ",res);
+      
+    }))
+   }
   //completar
    editarTurno(data:any):Observable<any>{
     return this._http.post(this.API_URL+'/turno/asignar-turno',data).pipe(tap((res:any)=>{
@@ -118,6 +130,27 @@ export class PersonalService {
       
     }))
    }
-   
+   crearMaquinista(data:any):Observable<any>{
+    return this._http.post(this.API_URL+'/maquinista',data).pipe(tap((res:any)=>{
+      console.log("maquinista",res);
+      
+    }))
+   }
+   //
+   editarMaquinista(id: number, datos: any) {
+      //return this._http.patch(`${this.url}editar/${id}`, dto);
+      return this._http.patch(`${this.API_URL}/maquinista/editar/${id}`, datos).pipe(tap((res:any)=>{
+      console.log("maquinista",res);
+      
+    }))
+    }
 
+    bajaMaquinista(id: number,dato:any) {
+
+     // return this._http.patch(`${this.url}/eliminar/${id}`, dto);
+      return this._http.patch(`${this.API_URL}/maquinista/eliminar/${id}`,dato).pipe(tap((res:any)=>{
+      console.log("maquinista",res);
+      
+    }))
+    }
 }

@@ -1,7 +1,7 @@
 import { Component, inject, Input, ViewChild } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
-import { MatDialog } from '@angular/material/dialog';
+import { MatDialog, MatDialogContent } from '@angular/material/dialog';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
@@ -13,6 +13,9 @@ import { FomularioMaterial } from './fomulario-material/fomulario-material';
 import { FomularioProducto } from './fomulario-producto/fomulario-producto';
 import { logisticaService } from '../../services/logistica.service';
 import { JsonPipe } from '@angular/common';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { MatStepperModule } from '@angular/material/stepper';
+import { FormularioLote } from './formulario-lote/formulario-lote';
 export interface UserData {
   id: string;
   name: string;
@@ -27,7 +30,14 @@ export interface UserData {
   imports: [MatButtonModule, MatDividerModule, MatIconModule,
     MatCardModule,
     //JsonPipe,
-    MatFormFieldModule, MatInputModule, MatTableModule, MatSortModule, MatPaginatorModule
+    MatFormFieldModule, MatInputModule, MatTableModule, MatSortModule, MatPaginatorModule,
+
+    MatDialogContent,
+
+    
+    MatStepperModule,
+    FormsModule,
+    ReactiveFormsModule,
     
   ],
   templateUrl: './material.html',
@@ -95,10 +105,25 @@ productoColumns: string[] = ['id', 'id_loteProducto', 'estado', 'marca','opcione
       this.productoSource.paginator.firstPage();
     }
   }
+  crearLote(tipo:string){
+    //data:{}
+      if(tipo){
+        const nuevoMaterial=this.dialogMaterial.open(FormularioLote,{
+        data:{data:tipo},
+        width: '700px',      // Ancho fijo
+      height: '90vh',     // Se ajusta al contenido 
+      autoFocus: false
+      });
+      nuevoMaterial.afterClosed().subscribe(respuesta=>{
+        console.log('cerrado dialog');
+        
+      })
+      }
+  }
   dialogMaterial=inject(MatDialog);
   materialNuevoEdit(datos?:any){
     //data:{}
-      if(datos){
+      if(datos){ // para editar
         const nuevoMaterial=this.dialogMaterial.open(FomularioMaterial,{
         data:{data:datos},
         width: '700px',      // Ancho fijo
@@ -109,7 +134,7 @@ productoColumns: string[] = ['id', 'id_loteProducto', 'estado', 'marca','opcione
         console.log('cerrado dialog');
         this.listar();
       })
-      }else{
+      }else{// nuevo
       const nuevoMaterial=this.dialogMaterial.open(FomularioMaterial,{
       //data:{}
        width: '700px',      // Ancho fijo
@@ -125,12 +150,43 @@ productoColumns: string[] = ['id', 'id_loteProducto', 'estado', 'marca','opcione
     
     
   }
+eliminar(row: any) {
+  const data = { 
+    estado: "B" 
+  };
+
+  this.http.editarIngresarMaterial(row.id_informeIngresoMaterial, data).subscribe({
+    next: (informeEditado: any) => {
+      console.log('Informe marcado como B', informeEditado);
+
+      this.http.listarLoteMaterial().subscribe({
+        next: (lotes: any[]) => {
+          const loteEncontrado = lotes.find(l => l.id_loteMaterial === row.id_loteMaterial);
+
+          if (loteEncontrado) {
+            
+            const nuevaCantidad = loteEncontrado.stock - row.cantidad;
+
+            this.http.actualizarLote(row.id_loteMaterial, { stock: nuevaCantidad }).subscribe({
+              next: (res) => {
+                console.log('Stock restado con éxito', res);
+                this.listar(); 
+              },
+              error: (err) => console.error('Error al actualizar stock', err)
+            });
+          }
+        },
+        error: (err) => console.error("Error al listar lotes", err)
+      });
+    }
+  });
+}
 
   //-------------------------------------------producto
   listarProducto(){
-    this.http.listarProductos().subscribe({
+    this.http.listarInformeProductos().subscribe({
       next:(value:any)=>{
-        console.log('respuestaaa ',value);
+        console.log('respuestaaa PRODUDTOTOTOTOOO',value);
         this.productoSource.data=value
         
       },
@@ -165,13 +221,50 @@ productoColumns: string[] = ['id', 'id_loteProducto', 'estado', 'marca','opcione
         });
         nuevoMaterial.afterClosed().subscribe(respuesta=>{
           console.log('cerrado');
-          
+          this.listarProducto();
         })
     }
     
    
   }
-  verInfo(){
+  eliminarProducto(row:any){
+    console.log("@loososs",row);
+    
+    const data = { 
+      estado: "B" ,
+      id_modificacion:Number(localStorage.getItem('usuario'))
+    };
 
+  this.http.eliminarIngresarProducto(row.id_informeIngresoProducto, data).subscribe({
+    next: (informeEditado: any) => {
+      console.log('Informe marcado como B', informeEditado);
+
+      this.http.listarProductos().subscribe({
+        next: (lotes: any[]) => {
+          console.log("lotes",lotes);
+          console.log("row.id_loteProductorow.id_loteProducto",row.id_loteProducto);
+          
+          const loteEncontrado = lotes.find(l => l.id_loteProducto === row.id_loteProducto);
+          console.log(loteEncontrado,"loteEncontrado");
+
+          if (loteEncontrado) {
+            
+            const nuevaCantidad = loteEncontrado.stock - row.cantidad;
+
+            this.http.actualizarLoteProducto(row.id_loteProducto, { stock: nuevaCantidad,tipo:loteEncontrado.tipo}).subscribe({
+              next: (res) => {
+                console.log('Stock restado con éxito', res);
+                this.listarProducto();
+              },
+              error: (err) => console.error('Error al actualizar stock', err)
+            });
+          }
+        },
+        error: (err) => console.error("Error al listar lotes", err)
+      });
+    }
+  });
   }
+  
+ 
 }

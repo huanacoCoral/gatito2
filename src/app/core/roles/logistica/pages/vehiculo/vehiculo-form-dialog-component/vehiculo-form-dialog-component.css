@@ -1,0 +1,32 @@
+ h2[mat-dialog-title] {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 18px;
+      font-weight: 500;
+    }
+
+    h2[mat-dialog-title] mat-icon {
+      color: #1565c0;
+    }
+
+    .dialog-form {
+      padding-top: 8px;
+      min-width: 560px;
+    }
+
+    .form-row {
+      display: flex;
+      gap: 14px;
+      flex-wrap: wrap;
+      margin-bottom: 4px;
+    }
+
+    .field-grow { flex: 1; min-width: 200px; }
+    .field-sm   { flex: 0 0 180px; }
+
+    @media (max-width: 640px) {
+      .dialog-form  { min-width: unset; width: 100%; }
+      .form-row     { flex-direction: column; }
+      .field-sm     { flex: 1; }
+    }

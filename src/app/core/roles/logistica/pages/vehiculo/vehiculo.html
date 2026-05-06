@@ -41,12 +41,10 @@
         </div>
       }
 
-      <!-- Tabla -->
       @if (vehiculos.length > 0) {
         <div class="table-wrapper">
           <table mat-table [dataSource]="vehiculos" class="vehiculo-table">
 
-            <!-- # -->
             <ng-container matColumnDef="id">
               <th mat-header-cell *matHeaderCellDef>#</th>
               <td mat-cell *matCellDef="let v">
@@ -54,19 +52,17 @@
               </td>
             </ng-container>
 
-            <!-- Conductor -->
+            
             <ng-container matColumnDef="conductor">
               <th mat-header-cell *matHeaderCellDef>Conductor</th>
               <td mat-cell *matCellDef="let v" class="cell-bold">{{ v.conductor }}</td>
             </ng-container>
 
-            <!-- Vehículo -->
             <ng-container matColumnDef="vehiculo">
               <th mat-header-cell *matHeaderCellDef>Vehículo</th>
               <td mat-cell *matCellDef="let v">{{ v.vehiculo }}</td>
             </ng-container>
 
-            <!-- Kilometraje -->
             <ng-container matColumnDef="kilometraje">
               <th mat-header-cell *matHeaderCellDef>KM</th>
               <td mat-cell *matCellDef="let v">
@@ -74,25 +70,21 @@
               </td>
             </ng-container>
 
-            <!-- Fecha -->
             <ng-container matColumnDef="fecha">
               <th mat-header-cell *matHeaderCellDef>Fecha</th>
               <td mat-cell *matCellDef="let v">{{ v.fecha | date:'dd/MM/yyyy' }}</td>
             </ng-container>
 
-            <!-- Descripción -->
             <ng-container matColumnDef="descripcion">
               <th mat-header-cell *matHeaderCellDef>Descripción</th>
               <td mat-cell *matCellDef="let v">{{ v.descripcion || '—' }}</td>
             </ng-container>
 
-            <!-- Observaciones -->
             <ng-container matColumnDef="observaciones">
               <th mat-header-cell *matHeaderCellDef>Observaciones</th>
               <td mat-cell *matCellDef="let v" class="cell-muted">{{ v.observaciones || '—' }}</td>
             </ng-container>
 
-            <!-- Estado -->
             <ng-container matColumnDef="estado">
               <th mat-header-cell *matHeaderCellDef>Estado</th>
               <td mat-cell *matCellDef="let v">
@@ -155,11 +147,22 @@
                     Emergencia
                   </button>
 
-                  <!-- Eliminar -->
                   <button mat-icon-button class="btn-delete"
-                    (click)="eliminar(v.id)"
+                    (click)="editar(v)"
+                    matTooltip="Editar">
+                    <mat-icon>edit</mat-icon>
+                  </button>
+
+                  <button mat-icon-button class="btn-delete"
+                    (click)="eliminar(v)"
                     matTooltip="Eliminar">
                     <mat-icon>delete_outline</mat-icon>
+                  </button>
+
+                  <button mat-icon-button class="btn-delete"
+                    (click)="vehiculoUtilizado(v)"
+                    matTooltip="Vehiculo Utiizado">
+                    <mat-icon>history_edu</mat-icon>
                   </button>
 
                 </div>

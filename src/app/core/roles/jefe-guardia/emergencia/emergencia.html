@@ -1,1 +1,54 @@
 <p>emergencia works!</p>
+<div>
+    <div>
+
+        <mat-form-field>
+            <mat-label>Buscar</mat-label>
+            <input matInput (keyup)="applyFilter($event)" placeholder="Buscar...." #input>
+        </mat-form-field>
+        <mat-card-actions align="end" (click)="agregarNuevo()">
+            <button matFab extended>
+                <mat-icon>add</mat-icon>
+                Recepcion de Emergencia
+            </button>
+        </mat-card-actions>
+
+    </div>
+    <div class="mat-elevation-z8">
+    <table mat-table [dataSource]="dataSource" matSort >
+        <!-- ID Column -->
+        <ng-container matColumnDef="id">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> ID </th>
+        <td mat-cell *matCellDef="let row">{{row.apellido_paterno }} {{row.apellido_materno}}{{row.nombre}}</td>
+        </ng-container>
+
+        <!-- Progress Column -->
+        <ng-container matColumnDef="progress">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Progress </th>
+        <td mat-cell *matCellDef="let row"> {{row.estado}}</td>
+        </ng-container>
+
+        <!-- Name Column -->
+        <ng-container matColumnDef="name">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Name </th>
+        <td mat-cell *matCellDef="let row"> {{row.observaciones}} </td>
+        </ng-container>
+
+        <!-- Fruit Column -->
+        <ng-container matColumnDef="fruit">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Fruit </th>
+        <td mat-cell *matCellDef="let row"> p </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumnsDeBaja"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumnsDeBaja;"></tr>
+
+        <!-- Row shown when there is no matching data. -->
+        <tr class="mat-row" *matNoDataRow>
+        <td class="mat-cell" colspan="4">No data matching the filter "ptd>
+        </tr>
+    </table>
+
+    <mat-paginator  [pageSizeOptions]="[2,5, 10, 25, 100]" aria-label="Select page of users"></mat-paginator>
+    </div>
+</div>

@@ -1,0 +1,73 @@
+
+<div>
+    <div class="card-vehiculo">
+    <div class="header">
+        <h2>Detalle de Ingreso #6</h2>
+        <span class="status-badge">Activo</span>
+    </div>
+{{mostrar}}--------------
+    <div class="grid-container">
+        <!-- Información del Vehículo -->
+        <div class="section">
+            <h3>Vehículo</h3>
+            <p><strong>Marca/Modelo:</strong> {{mostrar.marca}} / {{mostrar.modelo}}</p>
+            <p><strong>Año:</strong> {{mostrar.anioFabricacion}}</p>
+            <p><strong>Placa:</strong> {{mostrar.numeroPlaca}}</p>
+            <p><strong>Serie:</strong> {{mostrar.numeroSerie}}</p>
+            <p><strong>KM Ingreso:</strong> {{mostrar.kilometrajeIngreso}} km</p>
+        </div>
+
+        <!-- Información Técnica -->
+        <div class="section">
+            <h3>Técnico</h3>
+            <p><strong>Tipo:</strong> {{mostrar.tipo}}</p>
+            <p><strong>Revisión:</strong> {{mostrar.intervaloTiempoRevision}}</p>
+            <p><strong>Descripción:</strong> {{mostrar.descripcion}}</p>
+            <p><strong>Documentación:</strong> qwe</p>
+        </div>
+
+        <!-- Información del Voluntario -->
+        <div class="section full-width">
+            <h3>Responsable</h3>
+            <p><strong>Nombre:</strong> {{mostrar.voluntario.nombre}} {{mostrar.voluntario.apellido_paterno}} {{mostrar.voluntario.apellido_materno}}</p>
+            <p><strong>CI:</strong> {{mostrar.voluntario.ci}}</p>
+        </div>
+    </div>
+
+    <div class="footer">
+        <small>Creado: {{mostrar.fecha_creacion}}</small>
+    </div>
+    <form  class="dialog-form">
+  
+  <div class="form-row">
+
+    <mat-form-field appearance="outline" class="field-grow">
+      <mat-label>kilometraje</mat-label>
+      <input matInput [(ngModel)]="kilometraje" name="kilometraje"placeholder="Ej: Camioneta, Cisterna" />
+      <mat-icon matSuffix>category</mat-icon>
+    </mat-form-field>
+  </div>
+
+
+</form>
+</div>
+
+<style>
+    .card-vehiculo {
+        font-family: sans-serif;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        max-width: 500px;
+        padding: 20px;
+        box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    }
+    .header { display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid #f0f0f0; margin-bottom: 15px; }
+    .status-badge { background: #e6fffa; color: #2c7a7b; padding: 4px 8px; border-radius: 4px; font-weight: bold; font-size: 0.8em; }
+    .grid-container { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
+    .section h3 { font-size: 0.9em; color: #666; text-transform: uppercase; margin-bottom: 8px; border-bottom: 1px solid #eee; }
+    .section p { margin: 4px 0; font-size: 0.95em; }
+    .full-width { grid-column: span 2; background: #f9f9f9; padding: 10px; border-radius: 4px; }
+    .footer { margin-top: 15px; text-align: right; color: #999; border-top: 1px solid #eee; padding-top: 10px; }
+</style>
+    
+</div>

@@ -1,0 +1,107 @@
+<form [formGroup]="form" class="flex-column" (ngSubmit)="guardarEmergencia()">
+  <h3>Registro de Emergencia</h3>
+
+  <!-- Nombre Completo -->
+  <mat-form-field appearance="outline" class="full-width">
+    <mat-label>Nombre de la Persona</mat-label>
+    <input matInput formControlName="nombrePersona" placeholder="Ej. Juan Pérez">
+  </mat-form-field>
+
+  <!-- Dirección y Celular -->
+  <div class="row">
+    <mat-form-field appearance="outline" class="flex-1">
+      <mat-label>Dirección</mat-label>
+      <input matInput formControlName="direccion" placeholder="Calle, Av, Nro">
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="flex-1">
+      <mat-label>Celular Ref.</mat-label>
+      <input matInput formControlName="cel_ref" placeholder="70000000">
+    </mat-form-field>
+  </div>
+
+  <!-- Fecha -->
+  <div>
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Fecha</mat-label>
+      <input matInput type="date" formControlName="fecha">
+    </mat-form-field>
+  </div>
+
+  <!-- Selectores de Clasificación -->
+  <div class="row wrap">
+    <mat-form-field appearance="outline">
+      <mat-label>Tipo de Recepción</mat-label>
+      <mat-select formControlName="tipoRecepcion">
+        <mat-option value="Telefonica">Telefónica</mat-option>
+        <mat-option value="Presencial">Presencial</mat-option>
+        <mat-option value="Radial">Radial</mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Gravedad</mat-label>
+      <mat-select formControlName="id_gravedad">
+        @for (item of listarGravedadOriginal; track item.id_gravedad) {
+          <mat-option [value]="item.id_gravedad">{{ item.nombre }}</mat-option>
+        }
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Tipo de emergencia</mat-label>
+      <mat-select formControlName="nivelEmergencia">
+        @for (item of listarTipoEmergenciaGravedadOriginal; track item.id_tipoEmergencia) {
+          <mat-option [value]="item.id_tipoEmergencia">{{ item.nombre }}</mat-option>
+        }
+      </mat-select>
+    </mat-form-field>
+  </div>
+
+  <!-- Asignación de Personal -->
+  <div class="row">
+    <mat-form-field appearance="outline">
+  <mat-label>Voluntarios Asignados</mat-label>
+  <!-- Cambiamos change por selectionChange -->
+  <input  type="text"
+      matInput
+      (input)="filtrando($event)"
+      [matAutocomplete]="auto"
+      placeholder="Escriba CI o nombre..."
+      (blur)="limpiarSiNoEsValido()"
+      formControlName="voluntario"
+      >
+   
+    <mat-autocomplete #auto="matAutocomplete" (optionSelected)="seleccionado($event)"[displayWith]="mostrarNombre">
+      @for (item of filtrarVoluntariosDisponibles; track item.id_voluntario) {
+        <mat-option [value]="item">
+          {{ item.ci }} - {{ item.nombre }} {{ item.apellido_paterno }}
+        </mat-option>
+      }
+    </mat-autocomplete>
+</mat-form-field>
+
+<div>
+  <h3>Seleccionados:</h3>
+  @for(seleccion of voluntariosSeleccionados; track seleccion.id_voluntario) {
+    <p>{{ seleccion.nombre }} {{ seleccion.apellido_paterno }} {{ seleccion.apellido_materno }} ({{ seleccion.ci }})</p>
+  }
+</div>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Maquinista Asignados</mat-label>
+      <mat-select formControlName="maquinistasAsignados">
+        @for (item of gravedadListaOriginalt; track item.id) {
+          <mat-option [value]="item.id" >{{ item.nombre }}</mat-option>
+        }
+      </mat-select>
+    </mat-form-field>
+  </div>
+
+  <!-- Botón de Acción dentro del formulario -->
+  <div class="actions">
+    <button mat-flat-button color="primary" type="submit" [disabled]="form.invalid">
+      Guardar Emergencia
+    </button>
+  </div>
+</form>

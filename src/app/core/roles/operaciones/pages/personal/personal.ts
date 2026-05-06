@@ -1,9 +1,9 @@
 import { Component } from '@angular/core';
-import { Personal as PersonalComponent } from '../../../logistica/pages/personal/personal';
+import PersonalList from '../../../personal/pages/personal-list/personal-list';
 
 @Component({
   selector: 'app-personal-operaciones',
-  imports: [PersonalComponent],
+  imports: [PersonalList],
   templateUrl: './personal.html',
   styleUrl: './personal.css',
 })

@@ -1,54 +1,99 @@
 
-<div class="form-container">
+  <div class="form-container">
+    <h2>Formulario de Producto</h2>
 
-  <h2>Formulario de Producto</h2>
+    <form [formGroup]="productoForm">
+      <mat-form-field>
+        <mat-label>Nombre</mat-label>
+        <input matInput formControlName="nombre">
+      </mat-form-field>
 
-  <input type="text" placeholder="Nombre"
-    [(ngModel)]="producto.nombre">
+      <mat-form-field>
+        <mat-label>Cantidad</mat-label>
+        <input matInput type="number" formControlName="cantidad">
+      </mat-form-field>
 
-  <input type="number" placeholder="Cantidad"
-    [(ngModel)]="producto.cantidad">
+      <mat-form-field>
+        <mat-label>Cantidad por unidad</mat-label>
+        <input matInput type="number" formControlName="cantidadUnidad">
+      </mat-form-field>
 
-  <input type="number" placeholder="Cantidad por unidad"
-    [(ngModel)]="producto.cantidadUnidad">
+      <mat-form-field>
+        <mat-label>Unidad de medida</mat-label>
+        <input matInput formControlName="unidadMedida">
+      </mat-form-field>
 
-  <input type="text" placeholder="Unidad de medida (Ej: litros, cajas)"
-    [(ngModel)]="producto.unidadMedida">
+      <mat-form-field>
+        <mat-label>Marca</mat-label>
+        <input matInput formControlName="marca">
+      </mat-form-field>
 
-  <input type="text" placeholder="Marca"
-    [(ngModel)]="producto.marca">
+      <mat-form-field>
+        <mat-label>Estado</mat-label>
+        <mat-select formControlName="estado">
+          <mat-option value="BUENO">Bueno</mat-option>
+          <mat-option value="REGULAR">Regular</mat-option>
+          <mat-option value="MALO">Malo</mat-option>
+        </mat-select>
+      </mat-form-field>
 
-  <select [(ngModel)]="producto.estado">
-    <option value="">Seleccione estado</option>
-    <option value="BUENO">Bueno</option>
-    <option value="REGULAR">Regular</option>
-    <option value="MALO">Malo</option>
-  </select>
+      <mat-form-field>
+        <mat-label>Fecha creación</mat-label>
+        <input matInput [matDatepicker]="picker1" formControlName="fechaCreacion">
+        <mat-datepicker-toggle matIconSuffix [for]="picker1"></mat-datepicker-toggle>
+        <mat-datepicker #picker1></mat-datepicker>
+      </mat-form-field>
 
-  <label>Fecha creación</label>
-  <input type="date" [(ngModel)]="producto.fechaCreacion">
+      <mat-form-field>
+        <mat-label>Fecha caducidad</mat-label>
+        <input matInput [matDatepicker]="picker2" formControlName="fechaCaducidad">
+        <mat-datepicker-toggle matIconSuffix [for]="picker2"></mat-datepicker-toggle>
+        <mat-datepicker #picker2></mat-datepicker>
+      </mat-form-field>
 
-  <label>Fecha caducidad</label>
-  <input type="date" [(ngModel)]="producto.fechaCaducidad">
+      <mat-form-field>
+        <mat-label>Registro de mantenimiento</mat-label>
+        <input matInput formControlName="registroMantenimiento">
+      </mat-form-field>
 
-  <input type="text" placeholder="Registro de mantenimiento"
-    [(ngModel)]="producto.registroMantenimiento">
+      <mat-form-field>
+        <mat-label>Fecha adquisición</mat-label>
+        <input matInput [matDatepicker]="picker3" formControlName="fechaAdquisicion">
+        <mat-datepicker-toggle matIconSuffix [for]="picker3"></mat-datepicker-toggle>
+        <mat-datepicker #picker3></mat-datepicker>
+      </mat-form-field>
 
-  <label>Fecha adquisición</label>
-  <input type="date" [(ngModel)]="producto.fechaAdquisicion">
+      <mat-form-field>
+        <mat-label>Responsable</mat-label>
+        <input matInput formControlName="id_voluntario" readonly>
+      </mat-form-field>
+    </form>
 
-  <!-- SELECT VOLUNTARIO -->
-  <select [(ngModel)]="producto.id_voluntario">
-    <option value="">Seleccione responsable</option>
-    <option *ngFor="let v of voluntarios" [value]="v.id_voluntario">
-      {{ v.nombre }} {{ v.apellido_paterno }}
-    </option>
-  </select>
-  @if(botonActualizar){
-    <button (click)="guardar()">actualizar</button>
-  }@else{
-    <button (click)="guardar()">Guardar</button>
-  }
-  <button (click)="cancelar()">Cancelar</button>
+    <form [formGroup]="secondFormGroup">
+     <mat-form-field>
+  <mat-label>Lote</mat-label>
+  <input type="text"
+         placeholder="Busca un lote..."
+         matInput
+         formControlName="tipo"
+         [matAutocomplete]="auto"
+         (input)="verificarLote($event)">
   
-</div>
+  <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete" 
+                  [displayWith]="mostrarTipoStock" 
+                  (optionSelected)="onLoteChange($event)">
+    <!-- CAMBIO AQUÍ: [value]="option" en lugar de option.id_loteProducto -->
+    @for (option of filtradorLote; track option.id_loteProducto) {
+      <mat-option [value]="option">{{option.tipo}}</mat-option>
+    }
+  </mat-autocomplete>
+</mat-form-field>
+    </form>
+
+    @if(botonActualizar){
+      <button mat-raised-button color="primary" (click)="guardar(data.data.id_informeIngresoProducto)">Actualizar</button>
+    }@else{
+      <button mat-raised-button color="primary" (click)="guardar()">Guardar</button>
+    }
+    <button mat-raised-button (click)="cancelar()">Cancelar</button>
+  </div>

@@ -1,5 +1,5 @@
 
-import { AfterViewInit, Component, inject, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, inject, Input, OnInit, ViewChild } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatDialog } from '@angular/material/dialog';
@@ -42,6 +42,7 @@ export interface PeriodicElement {
   styleUrl: './personal-list.css',
 })
 export default class PersonalList implements OnInit,AfterViewInit {
+   @Input() tipoRol: string = ''; 
   readonly http = inject(PersonalService)
   tipo:string='';
   displayedColumns: string[] = [
@@ -63,15 +64,19 @@ export default class PersonalList implements OnInit,AfterViewInit {
     //'telefono_emergencia'
     'opciones'
   ];
+  todoPersonal:any;
   dataSource = new MatTableDataSource<any>([]);;
   readonly _http = inject(PersonalService);
   ngOnInit() {
+    console.log('Tipo recibido:', this.tipoRol);
     this.tipo='personal'
     this._http.listarTodoPersonal().subscribe({
       next: (res: any) => {
         // Asignamos el array a la propiedad .data del MatTableDataSource
         //this.dataSource = new MatTableDataSource(res);
-        this.dataSource.data=res
+        this.dataSource.data=res;
+        
+        this.todoPersonal=res;
         console.log(res, "ooooo");
 
       },
@@ -209,6 +214,98 @@ export default class PersonalList implements OnInit,AfterViewInit {
       confirmButtonText: 'Genial'
     });
   }
+maquinista(row:any){
+  Swal.fire({
+    title: 'Datos del Maquinista',
+    html: `
+      <input id="licencia" class="swal2-input" placeholder="Tipo de Licencia">
+      <input id="fecha" type="date" class="swal2-input" placeholder="Fecha de asignación">
+    `,
+    focusConfirm: false,
+    showCancelButton: true,
+    confirmButtonText: 'Guardar',
+    preConfirm: () => {
+      const licencia = (document.getElementById('licencia') as HTMLInputElement).value;
+      const fecha = (document.getElementById('fecha') as HTMLInputElement).value;
+      const datos={
+          "id_voluntario": row.id_voluntario,
+        "tipoLicencia": licencia,
+        "fecha": fecha,
+        "id_modificacion":Number(localStorage.getItem('usuario'))
+        }
+        console.log(datos,"-----");
+        this._http.crearMaquinista(datos).subscribe({
+
+        })
+      if (!licencia || !fecha) {
+        Swal.showValidationMessage('Por favor llena ambos campos');
+      }
+      return { licencia, fecha };
+    }
+  }).then((result) => {
+    if (result.isConfirmed) {
+      console.log('Datos capturados:', result.value);
+      // Aquí llamas a tu servicio para guardar en la base de datos
+    }
+  });
+  console.log(row,"---------");
+  
+
+        /*this.todoPersonal=res;
+        */
+
+}
+editarMaquinista(row:any) {
 
 
+   Swal.fire({
+    title: 'Datos del Maquinista',
+    html: `
+      <input id="licencia" class="swal2-input" placeholder="Tipo de Licencia">
+      <input id="fecha" type="date" class="swal2-input" placeholder="Fecha de asignación">
+    `,
+    focusConfirm: false,
+    showCancelButton: true,
+    confirmButtonText: 'Guardar',
+    preConfirm: () => {
+      const licencia = (document.getElementById('licencia') as HTMLInputElement).value;
+      const fecha = (document.getElementById('fecha') as HTMLInputElement).value;
+     const datos = {
+       // id_voluntario: row.id_voluntario,
+        tipoLicencia: licencia,
+        fecha: fecha, // '2023-10-25'
+        id_modificacion: Number(localStorage.getItem('usuario')) 
+          };
+        
+        console.log(datos,"-----");
+        this._http.editarMaquinista(row.id_voluntario,datos).subscribe({
+
+        })
+      if (!licencia || !fecha) {
+        Swal.showValidationMessage('Por favor llena ambos campos');
+      }
+      return { licencia, fecha };
+    }
+  }).then((result) => {
+    if (result.isConfirmed) {
+      console.log('Datos capturados:', result.value);
+      // Aquí llamas a tu servicio para guardar en la base de datos
+    }
+  });
+  console.log(row,"---------");
+  
+    }
+    bajaMaquinista(row:any){
+      
+       this.http.bajaMaquinista( row.id_voluntario,{id_modificacion:  Number(localStorage.getItem('usuario')) }).subscribe({
+        next(value) {
+          console.log(value);
+
+        },
+        error(err) {
+          console.error("error al dar de baja",err);
+          
+        },
+       })
+    }
 }

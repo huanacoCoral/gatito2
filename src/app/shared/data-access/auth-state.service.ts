@@ -18,10 +18,10 @@ export class AuthStateService {
     //entrar
     getSession(): Session | null {  // es un metodo que va a devolver Session o null
         let currentSession: Session | null = null;  
-        console.log("estamos aqui");
+        //console.log("estamos aqui");
         
         const maybeSession = this._storageService.get<Session>('session');
-        console.log("verificaremos si es valido el tockens",maybeSession);
+       // console.log("verificaremos si es valido el tockens",maybeSession);
         
         if (maybeSession !== null) {
             

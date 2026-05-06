@@ -107,6 +107,33 @@
                             <button mat-icon-button color="primary" (click)="verDatos(element)">
                                 <mat-icon>visibility</mat-icon>
                             </button>
+                            @if(tipoRol === 'Operaciones') {
+                            <div class="action-container">
+                                @if(element.maquinista == null) {
+                                <!-- Botón para Asignar/Crear -->
+                                <button mat-flat-button color="primary" 
+                                        (click)="maquinista(element)" 
+                                        matTooltip="Asignar como maquinista">
+                                    <mat-icon>person_add</mat-icon>
+                                    <span>Asignar Maquinista</span>
+                                </button>
+                                } @else {
+                                <!-- Botón para Quitar/Baja -->
+                                 <button mat-stroked-button color="warn" 
+                                        (click)="editarMaquinista(element)" 
+                                        matTooltip="Editar rango de maquinista">
+                                    <mat-icon>person_remove</mat-icon>
+                                    <span>Editar Maquinista</span>
+                                </button>
+                                <button mat-stroked-button color="warn" 
+                                        (click)="bajaMaquinista(element)" 
+                                        matTooltip="Quitar rango de maquinista">
+                                    <mat-icon>person_remove</mat-icon>
+                                    <span>Quitar Maquinista</span>
+                                </button>
+                                }
+                            </div>
+                            }@else{
                             <button mat-icon-button (click)="editar(element)">
                                 <mat-icon>edit</mat-icon>
                             </button>
@@ -114,6 +141,7 @@
                                 <mat-icon>delete</mat-icon>
 
                             </button>
+                        }
                         </div>
 
                     </td>

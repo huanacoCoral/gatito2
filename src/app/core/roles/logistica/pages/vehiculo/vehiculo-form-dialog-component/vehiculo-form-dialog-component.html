@@ -1,0 +1,110 @@
+<h2 mat-dialog-title>
+      <mat-icon>directions_car</mat-icon>
+      Nuevo Vehículo
+    </h2>
+
+    <mat-dialog-content>
+      <form [formGroup]="form" class="dialog-form">
+  
+  <!-- Fila 1: Datos Principales -->
+  <div class="form-row">
+    <mat-form-field appearance="outline" class="field-grow">
+      <mat-label>Nombre del Vehículo</mat-label>
+      <input matInput formControlName="nombre" placeholder="Ej: Ambulancia Alfa 1" />
+      <mat-icon matSuffix>badge</mat-icon>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="field-grow">
+      <mat-label>Tipo</mat-label>
+      <input matInput formControlName="tipo" placeholder="Ej: Camioneta, Cisterna" />
+      <mat-icon matSuffix>category</mat-icon>
+    </mat-form-field>
+  </div>
+
+  <!-- Fila 2: Marca y Modelo -->
+  <div class="form-row">
+    <mat-form-field appearance="outline" class="field-grow">
+      <mat-label>Marca</mat-label>
+      <input matInput formControlName="marca" placeholder="Ej: Toyota" />
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="field-grow">
+      <mat-label>Modelo</mat-label>
+      <input matInput formControlName="modelo" placeholder="Ej: Land Cruiser" />
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="field-sm">
+      <mat-label>Año Fab.</mat-label>
+      <input matInput type="number" formControlName="anioFabricacion" />
+    </mat-form-field>
+  </div>
+
+  <!-- Fila 3: Identificación Técnica -->
+  <div class="form-row">
+    <mat-form-field appearance="outline" class="field-grow">
+      <mat-label>Número de Placa</mat-label>
+      <input matInput formControlName="numeroPlaca" placeholder="123-ABC" />
+      <mat-icon matSuffix>confirmation_number</mat-icon>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="field-grow">
+      <mat-label>Número de Serie / VIN</mat-label>
+      <input matInput formControlName="numeroSerie" />
+      <mat-icon matSuffix>fingerprint</mat-icon>
+    </mat-form-field>
+  </div>
+
+  <!-- Fila 4: Estado Inicial -->
+  <div class="form-row">
+    <mat-form-field appearance="outline" class="field-grow">
+      <mat-label>Kilometraje de Ingreso</mat-label>
+      <input matInput type="number" formControlName="kilometrajeIngreso" />
+      <span matSuffix>km</span>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="field-grow">
+      <mat-label>Intervalo Revisión</mat-label>
+      <input matInput formControlName="intervaloTiempoRevision" placeholder="Ej: Cada 6 meses" />
+      <mat-icon matSuffix>history</mat-icon>
+    </mat-form-field>
+  </div>
+
+  <!-- Fila 5: Documentación y Descripción -->
+  <div class="form-row">
+    <mat-form-field appearance="outline" class="field-grow">
+      <mat-label>Registro Documentación</mat-label>
+      <input matInput formControlName="registroDocumentacion" placeholder="SOAT, B-SISA, etc." />
+      <mat-icon matSuffix>article</mat-icon>
+    </mat-form-field>
+  </div>
+
+  <div class="form-row">
+    <mat-form-field appearance="outline" class="field-grow">
+      <mat-label>Descripción del Vehículo</mat-label>
+      <textarea matInput formControlName="descripcion" rows="2"></textarea>
+    </mat-form-field>
+  </div>
+
+  <!-- Campo oculto o readonly para Voluntario -->
+  <input type="hidden" formControlName="id_voluntario">
+</form>
+    </mat-dialog-content>
+
+    <mat-dialog-actions align="end">
+      <button mat-stroked-button (click)="limpiar()">
+        <mat-icon>clear_all</mat-icon> Limpiar
+      </button>
+      <button mat-stroked-button mat-dialog-close>
+        <mat-icon>close</mat-icon> Cancelar
+      </button>
+      @if(!data){
+      <button mat-flat-button color="primary" (click)="guardar()">
+        <mat-icon>save</mat-icon> Guardar
+      </button>
+    }
+    @else{
+       <button mat-flat-button color="primary" (click)="actualizar()">
+        <mat-icon>save</mat-icon> Actualizar
+      </button>
+    }
+    </mat-dialog-actions>
