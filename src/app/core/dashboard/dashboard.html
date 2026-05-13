@@ -1,2 +1,38 @@
-<p>Bievenido</p>
-<p></p>
+<div class="dashboard-container">
+  <!-- Contenedor Superior (Dos columnas en pantallas grandes, una en móviles) -->
+  <div class="top-row">
+    
+    <mat-card class="small-card">
+      <mat-card-header>
+        <mat-card-title>Tipos de Emergencia</mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <div id="tiposEmergencia" class="chart-container"></div>
+      </mat-card-content>
+    </mat-card>
+
+    <mat-card class="small-card">
+      <mat-card-header>
+        <mat-card-title>Vehículos Más Utilizados</mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <div id="vehiculosUsados" class="chart-container"></div>
+      </mat-card-content>
+    </mat-card>
+
+  </div>
+
+  <!-- Contenedor Inferior (Tarjeta Grande Completa) -->
+  <div class="bottom-row">
+    
+    <mat-card class="large-card">
+      <mat-card-header>
+        <mat-card-title>Emergencias por Mes</mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <div id="emergenciasMes" class="chart-container large-chart"></div>
+      </mat-card-content>
+    </mat-card>
+
+  </div>
+</div>

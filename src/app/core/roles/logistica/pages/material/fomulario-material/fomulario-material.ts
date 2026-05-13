@@ -118,10 +118,15 @@ export class FomularioMaterial implements OnInit {
 
     this.http.listarLoteMaterial().subscribe({
       next: (res: any) => {
+
         if (valor) {
           
           
           this.secondFormGroup.get('tipo')?.setValue(res.find((x: any) => {
+            console.log("x.id_loteMaterial",x.id_loteMaterial);
+            console.log("valorvalor",valor);
+            
+            
             return x.id_loteMaterial == valor
           }))
 
@@ -401,7 +406,7 @@ private actualizarLoteYEditar(idLote: number, stockFinal: number) {
       console.log("Valor guardado correctamente:", this.valorLote);
     }*/
     console.log("cambiando valorLote", this.valorLote);
-    return lote && lote.tipo ? lote.tipo : '';
+    return lote && lote.tipo ? lote.tipo+" "+lote.nombre : '';
   }
   seleccionarLote(event: any) {
     this.valorLote = event.option.value;
@@ -446,5 +451,23 @@ private actualizarLoteYEditar(idLote: number, stockFinal: number) {
       }
     })
   }
+  validarSeleccion() {
+  const control = this.materialForm.get('tipo')?.value; // Ajusta al nombre de tu FormGroup
+  //console.log("2222",control);
+  
+  // Si el valor es un string, significa que NO se seleccionó una opción del autocomplete
+  // (porque al seleccionar, el valor suele ser el objeto 'option')
+  //this.listaLote.find(x.)
+  if (typeof control?.value === 'string') {
+    //control.setValue(null); // Borra el contenido
+    //this.materialForm.get('tipo')?.patchValue('');
+    //console.log('asss');
+    
+  }
+  else{
+   // console.log('000');
+    
+  }
+}
 
 }

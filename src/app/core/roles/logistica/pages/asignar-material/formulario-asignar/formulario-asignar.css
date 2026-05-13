@@ -1,0 +1,106 @@
+/* ========== FORMULARIO ========== */
+.formulario-container {
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+  padding: 20px;
+}
+
+.seccion {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  padding: 20px;
+  background: #f9f9f9;
+  border-left: 4px solid var(--primary-orange);
+  border-radius: 4px;
+}
+
+.seccion h3 {
+  margin: 0;
+  color: var(--primary-blue);
+  font-size: 16px;
+  font-weight: 600;
+}
+
+/* ========== FORM FIELDS ========== */
+.full-width {
+  width: 100%;
+}
+
+/* ========== LOTE INFO ========== */
+.lote-info {
+  background: var(--primary-blue);
+  color: white;
+  padding: 15px;
+  border-radius: 8px;
+  margin-top: 10px;
+}
+
+.lote-info p {
+  margin: 5px 0;
+  font-size: 14px;
+}
+
+.lote-info strong {
+  display: inline-block;
+  min-width: 150px;
+}
+
+/* ========== BOTONES DE ACCIÓN ========== */
+.botones-accion {
+  display: flex;
+  gap: 12px;
+  justify-content: flex-end;
+  padding: 20px;
+  border-top: 1px solid #e0e0e0;
+  margin-top: 20px;
+}
+
+.botones-accion button {
+  min-width: 150px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* ========== RESPONSIVE ========== */
+@media (max-width: 768px) {
+  .formulario-container {
+    padding: 15px;
+  }
+
+  .seccion {
+    padding: 15px;
+  }
+
+  .botones-accion {
+    flex-direction: column-reverse;
+  }
+
+  .botones-accion button {
+    width: 100%;
+    justify-content: center;
+  }
+}
+
+/* ========== LOADING STATE ========== */
+button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* ========== AUTOCOMPLETE ========== */
+::ng-deep .mat-mdc-autocomplete-panel {
+  max-height: 400px;
+}
+
+::ng-deep .mat-mdc-option {
+  padding: 8px 16px;
+  font-size: 14px;
+}
+
+::ng-deep .mat-mdc-option:hover {
+  background-color: var(--primary-orange) !important;
+  color: white;
+}

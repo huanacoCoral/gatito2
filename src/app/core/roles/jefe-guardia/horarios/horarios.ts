@@ -29,12 +29,12 @@ import { FormsModule } from '@angular/forms';
 })
 export class Horarios implements OnInit {
   private readonly http = inject(jefeGuardiaService);
-
+diasSemana: string[] = ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'];
   // Fuente de datos para la tabla
   dataSource = new MatTableDataSource<any>([]);
   
   // Columnas que definimos en el HTML
-  displayedColumns: string[] = ['voluntario', 'turno', 'vigencia', 'disponibilidad'];
+  displayedColumns: string[] = ['voluntario','dia', 'turno', 'vigencia', 'disponibilidad'];
    hoy = new Date();
  anio = this.hoy.getFullYear();
  mes = this.hoy.getMonth();

@@ -1,0 +1,268 @@
+/* ========== CONTAINER ========== */
+.asignar-material-container {
+  padding: 20px;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+/* ========== VISTA PRINCIPAL ========== */
+.content-container {
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+}
+
+.descripcion {
+  background: var(--primary-blue);
+  color: white;
+  padding: 15px 20px;
+  border-radius: 8px;
+  line-height: 1.6;
+  margin-bottom: 20px;
+}
+
+.descripcion p {
+  margin: 0;
+}
+
+/* ========== TABLA ========== */
+.tabla-asignaciones {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.tabla-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 15px;
+}
+
+.tabla-search {
+  width: 320px;
+  margin-right: 20px;
+}
+
+.tabla-header h3 {
+  margin: 0;
+  color: var(--primary-blue);
+  font-size: 18px;
+  font-weight: 600;
+}
+
+.tabla-header button {
+  margin-left: 20px;
+}
+
+/* ========== TABLA MATERIAL ========== */
+table {
+  width: 100%;
+}
+
+.mat-mdc-header-row {
+  background: linear-gradient(135deg, var(--primary-orange) 0%, var(--primary-blue) 100%);
+  color: white;
+  font-weight: 600;
+}
+
+.mat-mdc-row:nth-child(even) {
+  background-color: #f5f5f5;
+}
+
+.mat-mdc-row:hover {
+  background-color: #e3f2fd;
+  cursor: pointer;
+}
+
+.mat-mdc-cell {
+  padding: 12px 16px;
+  font-size: 14px;
+}
+
+/* ========== ESTADO BADGES ========== */
+.estado-activo {
+  display: inline-block;
+  padding: 4px 12px;
+  background-color: var(--primary-blue);
+  color: white;
+  border-radius: 12px;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.estado-inactivo {
+  display: inline-block;
+  padding: 4px 12px;
+  background-color: var(--primary-red);
+  color: white;
+  border-radius: 12px;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+/* ========== ACTION BUTTONS ========== */
+.action-buttons {
+  display: flex;
+  gap: 8px;
+}
+
+.action-buttons button {
+  transition: all 0.3s ease;
+}
+
+.action-buttons button:hover {
+  transform: scale(1.1);
+}
+
+/* ========== FORMULARIO ========== */
+.formulario-container {
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+  padding: 20px;
+}
+
+.seccion {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  padding: 20px;
+  background: #f9f9f9;
+  border-left: 4px solid var(--primary-orange);
+  border-radius: 4px;
+}
+
+.seccion h3 {
+  margin: 0;
+  color: var(--primary-blue);
+  font-size: 16px;
+  font-weight: 600;
+}
+
+/* ========== FORM FIELDS ========== */
+.full-width {
+  width: 100%;
+}
+
+/* ========== LOTE INFO ========== */
+.lote-info {
+  background: var(--primary-blue);
+  color: white;
+  padding: 15px;
+  border-radius: 8px;
+  margin-top: 10px;
+}
+
+.lote-info p {
+  margin: 5px 0;
+  font-size: 14px;
+}
+
+.lote-info strong {
+  display: inline-block;
+  min-width: 150px;
+}
+
+/* ========== BOTONES DE ACCIÓN ========== */
+.botones-accion {
+  display: flex;
+  gap: 12px;
+  justify-content: flex-end;
+  padding: 20px;
+  border-top: 1px solid #e0e0e0;
+  margin-top: 20px;
+}
+
+.botones-accion button {
+  min-width: 150px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* ========== RESPONSIVE ========== */
+@media (max-width: 768px) {
+  .tabla-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .tabla-header button {
+    margin-left: 0;
+    margin-top: 10px;
+    width: 100%;
+  }
+
+  .formulario-container {
+    padding: 15px;
+  }
+
+  .seccion {
+    padding: 15px;
+  }
+
+  .botones-accion {
+    flex-direction: column-reverse;
+  }
+
+  .botones-accion button {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .mat-mdc-cell {
+    padding: 8px;
+    font-size: 12px;
+  }
+
+  .action-buttons {
+    flex-wrap: wrap;
+  }
+}
+
+/* ========== ANIMACIONES ========== */
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+mat-card {
+  animation: slideIn 0.3s ease-out;
+}
+
+/* ========== ELEVATION SHADOW ========== */
+.mat-elevation-z8 {
+  box-shadow: 0 5px 5px -3px rgba(0, 0, 0, 0.2),
+              0 8px 10px 1px rgba(0, 0, 0, 0.14),
+              0 3px 14px 2px rgba(0, 0, 0, 0.12);
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+/* ========== LOADING STATE ========== */
+button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* ========== AUTOCOMPLETE ========== */
+::ng-deep .mat-mdc-autocomplete-panel {
+  max-height: 400px;
+}
+
+::ng-deep .mat-mdc-option {
+  padding: 8px 16px;
+  font-size: 14px;
+}
+
+::ng-deep .mat-mdc-option:hover {
+  background-color: var(--primary-orange) !important;
+  color: white;
+}

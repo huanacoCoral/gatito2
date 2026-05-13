@@ -1,4 +1,5 @@
-<form [formGroup]="form" class="flex-column" (ngSubmit)="guardarEmergencia()">
+
+<form [formGroup]="form" class="flex-column" >
   <h3>Registro de Emergencia</h3>
 
   <!-- Nombre Completo -->
@@ -24,7 +25,13 @@
   <div>
     <mat-form-field appearance="outline" class="full-width">
       <mat-label>Fecha</mat-label>
-      <input matInput type="date" formControlName="fecha">
+      <input matInput type="text" formControlName="fecha">
+    </mat-form-field>
+  </div>
+   <div>
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>hora </mat-label>
+      <input matInput type="time" formControlName="horaActual">
     </mat-form-field>
   </div>
 
@@ -43,7 +50,7 @@
       <mat-label>Gravedad</mat-label>
       <mat-select formControlName="id_gravedad">
         @for (item of listarGravedadOriginal; track item.id_gravedad) {
-          <mat-option [value]="item.id_gravedad">{{ item.nombre }}</mat-option>
+        <mat-option [value]="item.id_gravedad">{{ item.nombre }}</mat-option>
         }
       </mat-select>
     </mat-form-field>
@@ -52,56 +59,122 @@
       <mat-label>Tipo de emergencia</mat-label>
       <mat-select formControlName="nivelEmergencia">
         @for (item of listarTipoEmergenciaGravedadOriginal; track item.id_tipoEmergencia) {
-          <mat-option [value]="item.id_tipoEmergencia">{{ item.nombre }}</mat-option>
+        <mat-option [value]="item.id_tipoEmergencia">{{ item.nombre }}</mat-option>
         }
       </mat-select>
     </mat-form-field>
   </div>
 
-  <!-- Asignación de Personal -->
+
   <div class="row">
     <mat-form-field appearance="outline">
-  <mat-label>Voluntarios Asignados</mat-label>
-  <!-- Cambiamos change por selectionChange -->
-  <input  type="text"
-      matInput
-      (input)="filtrando($event)"
-      [matAutocomplete]="auto"
-      placeholder="Escriba CI o nombre..."
-      (blur)="limpiarSiNoEsValido()"
-      formControlName="voluntario"
-      >
-   
-    <mat-autocomplete #auto="matAutocomplete" (optionSelected)="seleccionado($event)"[displayWith]="mostrarNombre">
-      @for (item of filtrarVoluntariosDisponibles; track item.id_voluntario) {
+      <mat-label>Voluntarios Asignados</mat-label>
+      
+      <input type="text" matInput (input)="filtrando($event)" [matAutocomplete]="auto"
+        placeholder="Escriba CI o nombre..." (blur)="limpiarSiNoEsValido()" formControlName="voluntario">
+
+      <mat-autocomplete #auto="matAutocomplete" (optionSelected)="seleccionado($event)" [displayWith]="mostrarNombre" multiple>
+        @for (item of filtrarVoluntariosDisponibles; track item.id_voluntario) {
         <mat-option [value]="item">
           {{ item.ci }} - {{ item.nombre }} {{ item.apellido_paterno }}
         </mat-option>
-      }
-    </mat-autocomplete>
-</mat-form-field>
-
-<div>
-  <h3>Seleccionados:</h3>
-  @for(seleccion of voluntariosSeleccionados; track seleccion.id_voluntario) {
-    <p>{{ seleccion.nombre }} {{ seleccion.apellido_paterno }} {{ seleccion.apellido_materno }} ({{ seleccion.ci }})</p>
-  }
-</div>
-
-    <mat-form-field appearance="outline">
-      <mat-label>Maquinista Asignados</mat-label>
-      <mat-select formControlName="maquinistasAsignados">
-        @for (item of gravedadListaOriginalt; track item.id) {
-          <mat-option [value]="item.id" >{{ item.voluntario.nombre }} {{item.voluntario.apellido_paterno}} {{item.voluntario.apellido_materno}}</mat-option>
         }
-      </mat-select>
+      </mat-autocomplete>
     </mat-form-field>
+
+    <div>
+      <h3>Seleccionados:</h3>
+      @for(seleccion of voluntariosSeleccionados; track $index) {
+      <p>{{ seleccion.nombre }} {{ seleccion.apellido_paterno }} {{ seleccion.apellido_materno }} ({{ seleccion.ci }})
+        <button matFab title="quitar de la lista" (click)="quitar(seleccion)">
+          <mat-icon>delete</mat-icon>
+        </button>
+      </p>
+
+      }
+    </div>
+    <P>UTILIZAR VEHICULO </P>
+     <p><mat-checkbox formControlName="opcioneleccionarVehiculo"  (change)="seleccionarVehiculoTrue()">seleccionarVehiculo</mat-checkbox></p>
+    @if(form.value.opcioneleccionarVehiculo){
+
+  <mat-form-field appearance="outline">
+    <mat-label>Lista de vehículos</mat-label>
+
+    <mat-select formControlName="vehiculoAsignado">
+
+      @for (item of listarVehiculos; track item.id_vehiculo) {
+
+        <mat-option [value]="item">
+          {{ item.ingreso.nombre }}
+        </mat-option>
+
+      }
+
+    </mat-select>
+  </mat-form-field>
+
+  <!-- MAQUINISTA -->
+  <mat-form-field appearance="outline">
+    <mat-label>Maquinista asignado</mat-label>
+
+    <mat-select formControlName="maquinistasAsignados">
+
+      @for (item of litarMaquinista; track item.id_voluntario) {
+
+        <mat-option [value]="item">
+          {{ item.voluntario.nombre }}
+          {{ item.voluntario.apellido_paterno }}
+          {{ item.voluntario.apellido_materno }}
+        </mat-option>
+
+      }
+
+    </mat-select>
+  </mat-form-field>
+
+  <button
+    mat-raised-button
+    color="primary"
+    [disabled]="!form.value.vehiculoAsignado || !form.value.maquinistasAsignados"
+    (click)="agregarVehiculo()"
+  >
+    Agregar vehículo
+  </button>
+  <table>
+
+  <thead>
+    <tr>
+      <th>Vehículo</th>
+      <th>Maquinista</th>
+      <th> Eliminar</th>
+    </tr>
+  </thead>
+
+  <tbody>
+
+    @for (item of agregarVehiculos; track $index) {
+
+      <tr>
+        <td>{{ item.nombreVehiculo }}</td>
+        <td>{{ item.nombreMaquinista }}</td>
+        <td><button matFab title="quitar de la lista" (click)="quitarMaquinista(item)">
+          <mat-icon>delete</mat-icon>
+        </button></td>
+      </tr>
+
+    }
+
+  </tbody>
+
+</table>
+}
   </div>
 
-  <!-- Botón de Acción dentro del formulario -->
-  <div class="actions">
-    <button mat-flat-button color="primary" type="submit" [disabled]="form.invalid">
+  
+</form>
+
+<div class="actions">
+    <button mat-flat-button color="primary" type="button" [disabled]="form.invalid || (form.value.opcioneleccionarVehiculo && (this.agregarVehiculos.length===0) )"(click)="guardarEmergencia()">
       Guardar Emergencia
     </button>
   </div>
-</form>

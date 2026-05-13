@@ -18,6 +18,8 @@ import { HttpClient } from '@angular/common/http';
 import { logisticaService } from '../../services/logistica.service';
 import { VehiculoFormDialogComponent } from './vehiculo-form-dialog-component/vehiculo-form-dialog-component';
 import { VehiculoUtilizado } from './vehiculo-utilizado/vehiculo-utilizado';
+import { MantenimientoVehiculo } from './mantenimiento-vehiculo/mantenimiento-vehiculo';
+import { ListaMantenimiento } from './lista-mantenimiento/lista-mantenimiento';
 
 export type EstadoVehiculo = 'operativo' | 'mantenimiento' | 'emergencia';
 
@@ -59,8 +61,8 @@ export class VehiculoComponent implements OnInit{
 
   
   columnas: string[] = [
-    'id', 'conductor', 'vehiculo', 'kilometraje',
-    'fecha', 'descripcion', 'observaciones', 'estado', 'acciones',
+    'id', 'nombre', 'marca', 'kilometraje',
+    'numeroPlaca', 'tipo', 'observaciones', 'estado', 'acciones',
   ];
 
   constructor(private dialog: MatDialog, private snack: MatSnackBar) {}
@@ -132,8 +134,21 @@ export class VehiculoComponent implements OnInit{
   }
 
   // ── Toggle mantenimiento ────────────────────
-  toggleMantenimiento(v: Vehiculo): void {
-    if (v.estado === 'emergencia') {
+  mantenimiento(v: Vehiculo): void {
+    console.log("------",v);
+    
+    const dialogRef = this.dialog.open(MantenimientoVehiculo, {
+      width: '680px',
+      maxWidth: '95vw',
+      disableClose: false,   // permite cerrar con Escape o click fuera
+       data: v
+    });
+
+    dialogRef.afterClosed().subscribe((datos) => {
+      this.listar();
+      
+    });
+    /*if (v.estado === 'emergencia') {
       this.notify('Desactiva la emergencia antes de cambiar a mantenimiento.', 'warn');
       return;
     }
@@ -145,7 +160,7 @@ export class VehiculoComponent implements OnInit{
         ? `${v.vehiculo} → En mantenimiento.`
         : `${v.vehiculo} → Operativo.`,
       nuevo === 'mantenimiento' ? 'warn' : 'ok',
-    );
+    );*/
   }
 
   // ── Toggle emergencia ───────────────────────
@@ -198,6 +213,19 @@ export class VehiculoComponent implements OnInit{
     console.log("datosss",row);
     
     const dialogRef = this.dialog.open(VehiculoUtilizado, {
+      width: '680px',
+      maxWidth: '95vw',
+      disableClose: false,   // permite cerrar con Escape o click fuera
+       data: row
+    });
+
+    dialogRef.afterClosed().subscribe((datos) => {
+      this.listar();
+      
+    });
+  }
+  listarMatenimiento(row:any){
+    const dialogRef = this.dialog.open(ListaMantenimiento, {
       width: '680px',
       maxWidth: '95vw',
       disableClose: false,   // permite cerrar con Escape o click fuera

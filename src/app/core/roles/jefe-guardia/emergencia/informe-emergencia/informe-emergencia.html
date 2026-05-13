@@ -1,0 +1,40 @@
+ <mat-card class="mat-elevation-z8">
+<form [formGroup]="form" class="flex-column">
+
+    <mat-card-header>
+        <mat-card-title> Rol: ----</mat-card-title>
+        <mat-card-subtitle>Listado de EMERGENCIAS</mat-card-subtitle>
+    </mat-card-header>
+  <h3>Registro de Informe de Emergencia</h3>
+<mat-dialog-content>
+  <pre>{{ informe }}</pre>
+  <!-- Descripción -->
+  <mat-form-field appearance="outline" class="full-width">
+    <mat-label>Descripción del informe</mat-label>
+    <textarea
+      matInput
+      formControlName="descripcion"
+      placeholder="Describe lo ocurrido en la emergencia">
+    </textarea>
+  </mat-form-field>
+
+ 
+  <!-- Botones -->
+  <div class="row">
+    @if(!editar){
+    <button mat-raised-button color="primary" (click)="guardar()" [disabled]="form.invalid">
+      Guardar
+    </button>
+}@else{
+    <button mat-raised-button color="primary" (click)="actualiza()" [disabled]="form.invalid">
+      actualizar
+    </button>
+}
+
+    <button mat-stroked-button color="warn" (click)="cancelar()">
+      Cancelar
+    </button>
+  </div>
+</mat-dialog-content>
+</form>
+</mat-card>

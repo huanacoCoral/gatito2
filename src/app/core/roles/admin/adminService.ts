@@ -114,4 +114,40 @@ listarEmergencia():Observable<any>{
       
     }))
    }*/
+  emergenciasPorMes(anio:number){
+
+    return this._http.get(`${this.API_URL}/logistica/emergencias-por-mes/${anio}`
+    );
+  }
+  tiposEmergencia(){
+
+  return this._http.get(
+    `${this.API_URL}/logistica/tipos-emergencia`
+  );
+}
+vehiculosMasUsados(){
+
+  return this._http.get(
+    `${this.API_URL}/logistica/vehiculos-mas-usados`
+  );
+}
+editarTurnoAdmin(data:any){
+
+  return this._http.post(
+
+    `${this.API_URL}/turno/editar-turno`,
+    data
+
+  );
+}
+
+editarRol(data:any){
+
+  return this._http.post(
+
+    `${this.API_URL}/rol/editar-rol`,
+    data
+
+  );
+}
 }

@@ -1,0 +1,133 @@
+<form [formGroup]="asignacionForm" (ngSubmit)="onGuardar()">
+  <div class="formulario-container">
+    <!-- SECCIÓN 1: SELECCIONAR LOTE -->
+    <div class="seccion">
+      <h3>1. Seleccione el Material</h3>
+      
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Lote de Material</mat-label>
+        <input 
+          matInput 
+          formControlName="loteMaterial"
+          [matAutocomplete]="auto"
+          placeholder="Buscar por tipo de material...">
+        <mat-autocomplete 
+          #auto="matAutocomplete"
+          (optionSelected)="onLoteSeleccionado($event)">
+          @for(lote of lotesMaterialFiltrados; track lote.id_loteMaterial) {
+            <mat-option [value]="lote">
+              {{ mostrarTipoStock(lote) }}
+            </mat-option>
+          }
+        </mat-autocomplete>
+      </mat-form-field>
+
+      @if(loteMaterialSeleccionado) {
+        <div class="lote-info">
+          <p><strong>Tipo:</strong> {{ loteMaterialSeleccionado.tipo }}</p>
+          <p><strong>Stock Disponible:</strong> {{ loteMaterialSeleccionado.stock }} unidades</p>
+        </div>
+      }
+    </div>
+
+    <!-- SECCIÓN 2: CANTIDAD -->
+    <div class="seccion">
+      <h3>2. Cantidad a Asignar</h3>
+      
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Cantidad</mat-label>
+        <input 
+          matInput 
+          type="number" 
+          formControlName="cantidad"
+          min="1"
+          [max]="loteMaterialSeleccionado?.stock"
+          placeholder="Ingrese la cantidad">
+        <mat-hint>Máximo disponible: {{ loteMaterialSeleccionado?.stock || 0 }} unidades</mat-hint>
+      </mat-form-field>
+    </div>
+
+    <!-- SECCIÓN 3: DESTINO -->
+    <div class="seccion">
+      <h3>3. Destino de la Asignación</h3>
+      
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Tipo de Destino</mat-label>
+        <mat-select formControlName="tipoDestino">
+          <mat-option value="emergencia">Emergencia</mat-option>
+          <mat-option value="voluntario">Voluntario</mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      @if(asignacionForm.get('tipoDestino')?.value === 'emergencia') {
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Seleccione Emergencia</mat-label>
+          <mat-select formControlName="destino">
+            @for(emergencia of emergencias; track emergencia.id) {
+              <mat-option [value]="emergencia.id">
+                {{ emergencia.direccion }}
+              </mat-option>
+            }
+          </mat-select>
+        </mat-form-field>
+      }
+
+      @if(asignacionForm.get('tipoDestino')?.value === 'voluntario') {
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Seleccione Voluntario</mat-label>
+          <mat-select formControlName="destino">
+            @for(voluntario of voluntarios; track voluntario.id_voluntario) {
+              <mat-option [value]="voluntario.id_voluntario">
+                {{ voluntario.nombre }}
+              </mat-option>
+            }
+          </mat-select>
+        </mat-form-field>
+      }
+    </div>
+
+    <!-- SECCIÓN 4: INFORMACIÓN ADICIONAL -->
+    <div class="seccion">
+      <h3>4. Información Adicional</h3>
+      
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Fecha de Asignación</mat-label>
+        <input 
+          matInput 
+          [matDatepicker]="picker"
+          formControlName="fechaAsignacion">
+        <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+        <mat-datepicker #picker></mat-datepicker>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Descripción</mat-label>
+        <textarea 
+          matInput 
+          formControlName="descripcion"
+          rows="3"
+          placeholder="Describa el motivo o detalles de la asignación..."></textarea>
+      </mat-form-field>
+    </div>
+
+    <!-- BOTONES DE ACCIÓN -->
+    <div class="botones-accion">
+      <button 
+        type="button"
+        mat-stroked-button 
+        (click)="onCancelar()">
+        <mat-icon>close</mat-icon>
+        Cancelar
+      </button>
+      
+      <button 
+        type="submit"
+        mat-raised-button 
+        color="primary"
+        [disabled]="asignacionForm.invalid || cargando">
+        <mat-icon>{{ cargando ? 'pending' : 'save' }}</mat-icon>
+        {{ cargando ? 'Guardando...' : 'Guardar Asignación' }}
+      </button>
+    </div>
+  </div>
+</form>

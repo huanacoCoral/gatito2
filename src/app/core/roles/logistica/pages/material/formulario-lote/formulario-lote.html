@@ -1,76 +1,155 @@
+<mat-dialog-content>
 <mat-card appearance="outlined">
+    
+
 @if(data.data=='material'){
    
 <div>
-     <p>Vamos a crear un nuveo Lote Material </p>
-    <div>
-        <ul>
-            <li>
-                <strong>id - nombre - cantidad - eliminar</strong>
-            </li>
-            @for(loteM of loteMaterial; track loteM.id_loteMaterial){
-                <li>
-                    <span>{{loteM.id_loteMaterial}}</span>-
-                    <span>{{loteM.tipo}}</span>-
-                    <span>{{loteM.stock}}</span>-
-                </li>
-            }
-        </ul>
-    </div>
+     <p>Vamos a crear un nuevo Lote Material </p>
+    <mat-dialog-content style="max-height: 70vh; overflow: auto; padding: 0;">
+  <table style="width: 100%; border-collapse: collapse;">
+    <thead>
+      <tr style="position: sticky; top: 0; background-color: rgb(37, 5, 216); z-index: 1; border-bottom: 2px solid #ccc;">
+        <th style="padding: 12px; text-align: left;">ID</th>
+        <th style="padding: 12px; text-align: left;">Tipo</th>
+        <th style="padding: 12px; text-align: left;">Nombre</th>
+        <th style="padding: 12px; text-align: left;">Stock</th>
+        <th style="padding: 12px; text-align: center;">Acciones</th>
+      </tr>
+    </thead>
+    <tbody>
+      @for(loteM of loteMaterial; track loteM.id_loteMaterial;let i = $index){
+        <tr style="border-bottom: 1px solid #eee;">
+          <td style="padding: 10px;">{{i+1}}</td>
+          <td style="padding: 10px;">{{loteM.tipo}}</td>
+          <td style="padding: 10px;">{{loteM.nombre}}</td>
+          <td style="padding: 10px;">{{loteM.stock}}</td>
+          <td style="padding: 10px; text-align: center;">
+              <button mat-icon-button color="primary" 
+          (click)="editarLoteMaterialPoblado(loteM)" 
+          title="Actualizar">
+    <mat-icon>edit</mat-icon>
+  </button>
+  
+  <button mat-icon-button color="warn" 
+          (click)="eliminarMaterial(loteM)" 
+          title="Eliminar">
+    <mat-icon>delete</mat-icon>
+  </button>
+          </td>
+        </tr>
+      }
+    </tbody>
+  </table>
+</mat-dialog-content>
     <form class="example-form">
-    <mat-form-field class="example-full-width">
+    <mat-form-field appearance="outline" class="example-full-width">
         <mat-label>tipo</mat-label>
         <input matInput #message maxlength="256" placeholder="Tipo" [(ngModel)]="dataL.tipoMaterial" name="tipoMaterial" >
         
     </mat-form-field>
-     <mat-form-field class="example-full-width">
+    <mat-form-field appearance="outline" class="example-full-width">
+        <mat-label>nombre</mat-label>
+        <input matInput #message maxlength="256" placeholder="Tipo" [(ngModel)]="dataL.nombre" name="tipoMaterial" >
+        
+    </mat-form-field>
+     <mat-form-field appearance="outline" class="example-full-width">
         <mat-label>Stock</mat-label>
         <input matInput #message maxlength="256"  readonly [(ngModel)]="dataL.stockMaterial" name="stockMaterial">
         
     </mat-form-field>
     </form>
-    <button (click)="guardarLoteMaterial()">
+    @if(!editraLoteMaterialOpcion){
+        <button mat-raised-button (click)="guardarLoteMaterial()">
         guardar lote material
     </button>
-    <button (click)="cerrarDialog.close()">
+    }@else{
+        <button mat-raised-button (click)="editarLoteMaterial()">Actualizar</button>
+    }
+    
+    <button mat-button (click)="cerrarDialog.close()">
         cancelar
     </button>
 </div>
 }@else{
 <div>
-    <p>Vamos a crear un nuveo Lote Producto </p>
-    <div>
-        <ul>
-            <li>
-                <strong>id - nombre - cantidad - eliminar</strong>
-            </li>
-            @for(loteP of loteProdcuto; track loteP.id){
-                <li>
-                     <span>{{loteP.id_lotePaterial}}</span>-
-                    <span>{{loteP.tipo}}</span>-
-                    <span>{{loteP.stock}}</span>-
-                </li>
-            }
-        </ul>
-    </div>
+    <p>Vamos a crear un nuveo Lote Producto ID modificador </p>
+   <mat-dialog-content style="max-height: 60vh; overflow: auto; padding: 0; border: 1px solid #e0e0e0; border-radius: 4px;">
+  <table style="width: 100%; border-collapse: collapse; font-family: Roboto, sans-serif;">
+    <thead>
+      <tr style="position: sticky; top: 0; background-color: #053566; z-index: 10; border-bottom: 2px solid #dee2e6;">
+        <th style="padding: 12px; text-align: left; color: #495057;">#</th>
+        <th style="padding: 12px; text-align: left; color: #495057;">Tipo</th>
+        <th style="padding: 12px; text-align: left; color: #495057;">Nombre</th>
+        <th style="padding: 12px; text-align: left; color: #495057;">Stock</th>
+        <th style="padding: 12px; text-align: center; color: #495057;">Acciones</th>
+      </tr>
+    </thead>
+    <tbody>
+      @for(loteP of loteProdcuto; track loteP.id; let i = $index){
+        <tr style="border-bottom: 1px solid #eee;" class="fila-tabla">
+          <td style="padding: 10px; font-weight: bold; color: #666;">{{ i + 1 }}</td>
+          <td style="padding: 10px;">{{ loteP.tipo }}</td>
+          <td style="padding: 10px;">{{ loteP.nombre }}</td>
+          <td style="padding: 10px;">
+            <span style="padding: 4px 8px; background: #e3f2fd; border-radius: 12px; font-size: 0.9em;">
+              {{ loteP.stock }}
+            </span>
+          </td>
+          <td style="padding: 10px; text-align: center; white-space: nowrap;">
+            <!-- Botón Editar -->
+            <button mat-icon-button color="primary" (click)="seleccionaProducEdit(loteP)" title="Editar Lote">
+              <mat-icon>edit_note</mat-icon>
+            </button>
+            
+            <!-- Botón Eliminar -->
+            <button mat-icon-button color="warn" (click)="eliminaProducEdit(loteP)" title="Eliminar">
+              <mat-icon>delete_outline</mat-icon>
+            </button>
+          </td>
+        </tr>
+      } @empty {
+        <tr>
+          <td colspan="5" style="padding: 20px; text-align: center; color: #999;">
+            No hay productos registrados en este lote.
+          </td>
+        </tr>
+      }
+    </tbody>
+  </table>
+</mat-dialog-content>
     <form class="example-form">
-    <mat-form-field class="example-full-width">
+    <mat-form-field appearance="outline" class="example-full-width">
         <mat-label>tipo</mat-label>
         <input matInput #message maxlength="256" placeholder="Ex. I need help with..." [(ngModel)]="dataL.tipoProducto" name="tipoProducto">
         
     </mat-form-field>
-     <mat-form-field class="example-full-width">
+    <mat-form-field appearance="outline" class="example-full-width">
+        <mat-label>nombre</mat-label>
+        <input matInput #message maxlength="256" placeholder="Tipo" [(ngModel)]="dataL.nombre" name="tipoMaterial" >
+        
+    </mat-form-field>
+     <mat-form-field appearance="outline" class="example-full-width">
         <mat-label>Stock</mat-label>
         <input matInput #message maxlength="256" [value]="1" readonly [(ngModel)]="dataL.stockProducto" name="stockProducto">
         
     </mat-form-field>
+    
     </form>
-    <button (click)="guardarLoteProducto()" >
+    @if(!editarLoteProductoOpcion){
+    <button mat-raised-button color="primary" (click)="guardarLoteProducto()" >
         guardar lote Producto
     </button>
-    <button (click)="cerrarDialog.close()">
+}
+@else{
+<button mat-raised-button color="primary" (click)="guardarLoteProducto()" >
+        actualizar
+    </button>
+}
+    <button mat-button type="button" (click)="cerrarDialog.close()">
         cancelar
     </button>
 </div>
 }
 </mat-card>
+</mat-dialog-content>

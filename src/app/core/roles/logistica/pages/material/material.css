@@ -1,0 +1,10 @@
+.contenedor-boton {
+  display: flex;
+  justify-content: flex-end; 
+  width: 100%; /* <--- ESTO ES CLAVE */
+  padding: 10px;
+}
+
+mat-icon {
+  margin-right: 8px; /* Espacio entre la flecha y el texto */
+}

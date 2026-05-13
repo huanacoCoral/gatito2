@@ -1,0 +1,166 @@
+<mat-card class="asignar-producto-card" appearance="outlined">
+	<mat-card-header>
+		<mat-card-title>Asignar Producto</mat-card-title>
+		<mat-card-subtitle>Asigna productos desde lotes disponibles a emergencias o voluntarios</mat-card-subtitle>
+	</mat-card-header>
+
+	<mat-card-content>
+		<div *ngIf="!mostrarFormulario" class="vista-principal">
+			<div class="header-actions">
+				<div class="header-text">
+					<p>Gestiona las asignaciones de productos y actualiza el stock automáticamente.</p>
+				</div>
+				<button mat-flat-button color="primary" (click)="toggleFormulario()">
+					<mat-icon>add</mat-icon>
+					Nueva Asignación
+				</button>
+			</div>
+			<div class="tabla-wrap">
+				<mat-form-field appearance="outline" class="filter-field">
+					<mat-label>Buscar asignación</mat-label>
+					<input matInput (keyup)="aplicarFiltro($event)" placeholder="Buscar...">
+				</mat-form-field>
+				<div class="mat-elevation-z8 tabla-producto">
+					<table mat-table [dataSource]="asignacionesSource" matSort>
+						<ng-container matColumnDef="id">
+							<th mat-header-cell *matHeaderCellDef mat-sort-header>ID</th>
+							<td mat-cell *matCellDef="let row ; let i = index">{{ i + 1}}</td>
+						</ng-container>
+						<ng-container matColumnDef="producto">
+							<th mat-header-cell *matHeaderCellDef mat-sort-header>Producto</th>
+							<td mat-cell *matCellDef="let row">{{ row.lotes[0]?.loteProducto.nombre??''   }}</td>
+						</ng-container>
+						<ng-container matColumnDef="lote">
+							<th mat-header-cell *matHeaderCellDef mat-sort-header>Lote</th>
+							<td mat-cell *matCellDef="let row">{{ row.lotes[0]?.loteProducto.tipo??''}}</td>
+						</ng-container>
+						<ng-container matColumnDef="cantidad">
+							<th mat-header-cell *matHeaderCellDef mat-sort-header>Cantidad</th>
+							<td mat-cell *matCellDef="let row">{{ row.cantidad??'' }}</td>
+						</ng-container>
+						<ng-container matColumnDef="destino">
+							<th mat-header-cell *matHeaderCellDef mat-sort-header>Destino</th>
+							<td mat-cell *matCellDef="let row">{{ row.emergencia.nombrePersona ??''}} {{row.emergencia.fecha??''}} {{row.emergencia.hora??''}} </td>
+						</ng-container>
+						<ng-container matColumnDef="fecha">
+							<th mat-header-cell *matHeaderCellDef mat-sort-header>Fecha</th>
+							<td mat-cell *matCellDef="let row">{{ row.fecha_modificacion | date:'short' }}</td>
+						</ng-container>
+						<ng-container matColumnDef="responsable">
+							<th mat-header-cell *matHeaderCellDef mat-sort-header>Jefe de guardia</th>
+							<td mat-cell *matCellDef="let row">{{row.emergencia.voluntario.nombre??''}} {{row.emergencia.voluntario.apellido_paterno??''}} {{row.emergencia.voluntario.apellido_materno??''}}</td>
+						</ng-container>
+						<ng-container matColumnDef="estado">
+							<th mat-header-cell *matHeaderCellDef mat-sort-header>Estado</th>
+							<td mat-cell *matCellDef="let row">
+								<span [class.estado-activo]="row.estado === 'A'" [class.estado-inactivo]="row.estado !== 'A'">
+									{{ row.estado === 'A' ? 'Activa' : 'Inactiva' }}
+								</span>
+							</td>
+						</ng-container>
+						<ng-container matColumnDef="acciones">
+							<th mat-header-cell *matHeaderCellDef>Acciones</th>
+							<td mat-cell *matCellDef="let row">
+								<div class="action-buttons">
+									<!--button mat-icon-button color="primary" (click)="editarAsignacion(row)">
+										<mat-icon>edit</mat-icon>
+									</button>
+									<button mat-icon-button color="accent" (click)="devolverProducto(row)">
+										<mat-icon>undo</mat-icon>
+									</button-->
+									<button mat-icon-button color="warn" (click)="eliminarAsignacion(row)">
+										<mat-icon>delete</mat-icon>
+									</button>
+								</div>
+							</td>
+						</ng-container>
+						<tr mat-header-row *matHeaderRowDef="columnasAsignacion"></tr>
+						<tr mat-row *matRowDef="let row; columns: columnasAsignacion"></tr>
+						<tr class="mat-row" *matNoDataRow>
+							<td class="mat-cell" [attr.colspan]="columnasAsignacion.length">No hay asignaciones registradas</td>
+						</tr>
+					</table>
+				</div>
+				<mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" showFirstLastButtons></mat-paginator>
+			</div>
+		</div>
+
+		<div *ngIf="mostrarFormulario" class="formulario-vista">
+			<div class="form-header">
+				<h3>Nueva asignación de producto</h3>
+				<button mat-icon-button color="warn" (click)="toggleFormulario()">
+					<mat-icon>close</mat-icon>
+				</button>
+			</div>
+			<form [formGroup]="asignacionForm" (ngSubmit)="guardarAsignacion()">
+				<div class="form-grid">
+					<mat-form-field appearance="outline" class="full-width">
+						<mat-label>Lote de producto</mat-label>
+						<input matInput formControlName="loteProducto" [matAutocomplete]="auto" placeholder="Buscar lote...">
+						<mat-autocomplete #auto="matAutocomplete"  [displayWith]="mostrarNombreLote" (optionSelected)="onLoteProductoSeleccionado($event)">
+							<mat-option *ngFor="let lote of lotesProductoFiltrados" [value]="lote">
+								{{ mostrarLoteStock(lote) }}
+							</mat-option>
+						</mat-autocomplete>
+					</mat-form-field>
+
+					<mat-form-field appearance="outline" class="full-width">
+						<mat-label>Cantidad</mat-label>
+						<input matInput type="number" formControlName="cantidad" min="1" [max]="loteProductoSeleccionado?.stock || 0" placeholder="Cantidad a asignar">
+						<mat-hint>Disponible: {{ loteProductoSeleccionado?.stock || 0 }}</mat-hint>
+					</mat-form-field>
+
+					
+
+					<mat-form-field appearance="outline" class="full-width">
+						<mat-label>Destino (Emergencia)</mat-label>
+						<mat-select formControlName="tipoDestino">
+							@for (emergencia of emergencias; track emergencia.id_emergencia) {
+							<mat-option [value]="emergencia.id_emergencia" style="height: auto; padding: 10px 16px;">
+								<!-- Fila Principal: Dirección -->
+								<div style="display: flex; justify-content: space-between; align-items: center; line-height: 1.2;">
+								<span style="font-weight: 500; color: #333;">
+									{{ emergencia.direccion || 'Sin dirección' }}
+								</span>
+								<!-- Badge de Fecha/Hora -->
+								<span style="font-size: 11px; background: #eee; padding: 2px 6px; border-radius: 4px; color: #666;">
+									{{ emergencia.fecha }} {{ emergencia.hora }}
+								</span>
+								</div>
+
+								<!-- Fila Secundaria: Voluntario -->
+								<div style="font-size: 12px; color: #777; margin-top: 4px;">
+								<mat-icon style="font-size: 14px; width: 14px; height: 14px; vertical-align: middle;">person</mat-icon>
+								{{ emergencia.voluntario?.nombre }} 
+								{{ emergencia.voluntario?.apellido_paterno }} 
+								{{ emergencia.voluntario?.apellido_materno }}
+								</div>
+							</mat-option>
+							}
+						</mat-select>
+						</mat-form-field>
+
+					<mat-form-field appearance="outline" class="full-width">
+						<mat-label>Fecha de asignación</mat-label>
+						<input matInput [matDatepicker]="picker" formControlName="fechaAsignacion">
+						<mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+						<mat-datepicker #picker></mat-datepicker>
+					</mat-form-field>
+
+					<mat-form-field appearance="outline" class="full-width">
+						<mat-label>Descripción</mat-label>
+						<textarea matInput formControlName="descripcion" rows="4" placeholder="Motivo de la asignación"></textarea>
+					</mat-form-field>
+				</div>
+
+				<div class="form-actions">
+					<button mat-stroked-button color="warn" type="button" (click)="toggleFormulario()">Cancelar</button>
+					<button mat-raised-button color="primary" type="submit" (click)="guardarInformaacion()">
+						<mat-icon>add</mat-icon>
+						Guardar Asignación
+					</button>
+				</div>
+			</form>
+		</div>
+	</mat-card-content>
+</mat-card>

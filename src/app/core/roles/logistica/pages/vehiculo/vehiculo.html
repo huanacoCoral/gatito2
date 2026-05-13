@@ -8,7 +8,7 @@
       <mat-icon>directions_car</mat-icon>
       <div>
         <h2>Vehículos</h2>
-        <p>Registro y control de flota</p>
+        <p>Registro y control de vehiculo</p>
       </div>
     </div>
 
@@ -53,31 +53,31 @@
             </ng-container>
 
             
-            <ng-container matColumnDef="conductor">
-              <th mat-header-cell *matHeaderCellDef>Conductor</th>
-              <td mat-cell *matCellDef="let v" class="cell-bold">{{ v.conductor }}</td>
+            <ng-container matColumnDef="nombre">
+              <th mat-header-cell *matHeaderCellDef>nombre</th>
+              <td mat-cell *matCellDef="let v" class="cell-bold">{{ v.nombre }}</td>
             </ng-container>
 
-            <ng-container matColumnDef="vehiculo">
-              <th mat-header-cell *matHeaderCellDef>Vehículo</th>
-              <td mat-cell *matCellDef="let v">{{ v.vehiculo }}</td>
+            <ng-container matColumnDef="marca">
+              <th mat-header-cell *matHeaderCellDef>marca</th>
+              <td mat-cell *matCellDef="let v">{{ v.marca }}</td>
             </ng-container>
 
             <ng-container matColumnDef="kilometraje">
               <th mat-header-cell *matHeaderCellDef>KM</th>
               <td mat-cell *matCellDef="let v">
-                <span class="km-text">{{ v.kilometraje | number }} km</span>
+                <span class="km-text">{{ v.vehiculo.kilometrajeUtilizado }}km</span>
               </td>
             </ng-container>
 
-            <ng-container matColumnDef="fecha">
-              <th mat-header-cell *matHeaderCellDef>Fecha</th>
-              <td mat-cell *matCellDef="let v">{{ v.fecha | date:'dd/MM/yyyy' }}</td>
+            <ng-container matColumnDef="numeroPlaca">
+              <th mat-header-cell *matHeaderCellDef>numero Placa</th>
+              <td mat-cell *matCellDef="let v">{{ v.numeroPlaca }}</td>
             </ng-container>
 
-            <ng-container matColumnDef="descripcion">
-              <th mat-header-cell *matHeaderCellDef>Descripción</th>
-              <td mat-cell *matCellDef="let v">{{ v.descripcion || '—' }}</td>
+            <ng-container matColumnDef="tipo">
+              <th mat-header-cell *matHeaderCellDef>tipo</th>
+              <td mat-cell *matCellDef="let v">{{ v.tipo || '—' }}</td>
             </ng-container>
 
             <ng-container matColumnDef="observaciones">
@@ -88,26 +88,10 @@
             <ng-container matColumnDef="estado">
               <th mat-header-cell *matHeaderCellDef>Estado</th>
               <td mat-cell *matCellDef="let v">
-                @switch (v.estado) {
-                  @case ('operativo') {
-                    <mat-chip class="chip-ok" highlighted>
-                      <mat-icon matChipAvatar>check_circle</mat-icon>
-                      Operativo
-                    </mat-chip>
-                  }
-                  @case ('mantenimiento') {
-                    <mat-chip class="chip-maint" highlighted>
+                <button class="chip-maint" highlighted (click)="listarMatenimiento(v)">
                       <mat-icon matChipAvatar>build</mat-icon>
                       Mantenimiento
-                    </mat-chip>
-                  }
-                  @case ('emergencia') {
-                    <mat-chip class="chip-emerg chip-pulse" highlighted>
-                      <mat-icon matChipAvatar>warning</mat-icon>
-                      Emergencia
-                    </mat-chip>
-                  }
-                }
+                    </button>
               </td>
             </ng-container>
 
@@ -117,35 +101,19 @@
               <td mat-cell *matCellDef="let v">
                 <div class="action-row">
 
-                  <!-- Vehículo creado (indicador pasivo) -->
-                  <button mat-stroked-button class="btn-created" disabled
-                    matTooltip="Vehículo registrado">
-                    <mat-icon>directions_car</mat-icon>
-                    Vehículo creado
-                  </button>
+                  
 
                   <!-- Mantenimiento -->
                   <button mat-stroked-button
                     [class.btn-maint-on]="v.estado === 'mantenimiento'"
                     [class.btn-maint-off]="v.estado !== 'mantenimiento'"
-                    (click)="toggleMantenimiento(v)"
+                    (click)="mantenimiento(v)"
                     [matTooltip]="v.estado === 'mantenimiento' ? 'Quitar mantenimiento' : 'Poner en mantenimiento'">
                     <mat-icon>build</mat-icon>
                     Mantenimiento
                   </button>
 
-                  <!-- Emergencia -->
-                  <button mat-stroked-button
-                    [class.btn-emerg-on]="v.estado === 'emergencia'"
-                    [class.btn-emerg-off]="v.estado !== 'emergencia'"
-                    [disabled]="v.estado === 'mantenimiento'"
-                    (click)="toggleEmergencia(v)"
-                    [matTooltip]="v.estado === 'mantenimiento'
-                      ? 'No disponible en mantenimiento'
-                      : v.estado === 'emergencia' ? 'Desactivar emergencia' : 'Activar emergencia'">
-                    <mat-icon>warning</mat-icon>
-                    Emergencia
-                  </button>
+                  
 
                   <button mat-icon-button class="btn-delete"
                     (click)="editar(v)"

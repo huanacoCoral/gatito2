@@ -40,12 +40,21 @@ export default class PersonalForm implements OnInit {
   readonly http=inject (PersonalService);
   private readonly fb = inject(FormBuilder);
   private id_voluntario:number| null = null;
+   fechaMaxima!: Date;
   ngOnInit(): void {
     console.log('Datos recibidos en el diálogo:', this.data);
     if (this.data.tipo==="editar") {
       this.editar();
       this.id_voluntario=this.data.datos.id_voluntario;
     }   
+    const hoy = new Date();
+    
+    // Restamos 18 años al año actual
+    this.fechaMaxima = new Date(
+      hoy.getFullYear() - 18, 
+      hoy.getMonth(), 
+      hoy.getDate()
+    );
   }
   onNoClick(): void {
     this.dialogRef.close();

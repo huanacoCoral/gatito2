@@ -1,15 +1,21 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { logisticaService } from '../../../services/logistica.service';
 import { Material } from '../material';
 import { MatCardModule } from '@angular/material/card';
+import { MatIconModule } from '@angular/material/icon';
+import { MatButtonModule } from '@angular/material/button';
 
 @Component({
   selector: 'app-formulario-lote',
-  imports: [FormsModule, MatFormFieldModule, MatInputModule, MatCardModule],
+  imports: [FormsModule,
+     MatFormFieldModule,
+     MatButtonModule,
+  MatIconModule,
+      MatInputModule, MatCardModule,MatDialogModule],
   templateUrl: './formulario-lote.html',
   styleUrl: './formulario-lote.css',
 })
@@ -59,6 +65,7 @@ dataL:any={};
   const data={
     "stock":this.dataL.stockMaterial,
     "tipo":this.dataL.tipoMaterial,
+    "nombre":this.dataL.nombre,
     "id_modificacion":Number(localStorage.getItem('usuario'))
   }
   console.log(
@@ -76,6 +83,50 @@ dataL:any={};
     },
   })
  }
+editraLoteMaterialOpcion=false;
+id:any
+editarLoteMaterialPoblado(row:any){
+  console.log("-----",row);
+   this.dataL = {
+    tipoMaterial: row.tipo,
+    nombre: row.nombre || '',
+    stockMaterial: row.stock
+  };
+this.dataL.tipoMaterial=row.tipo
+this.dataL.nombre=row.nombre
+this.dataL.stockMaterial=row.stock,
+this.id=row.id_loteMaterial
+this.editraLoteMaterialOpcion=true;
+}
+ editarLoteMaterial(){
+  
+  //console.log("-----",row);
+  const datos={
+    stock:this.dataL.stockMaterial,
+    tipo:this.dataL.tipoMaterial,
+    nombre:this.dataL.nombre,
+    id_modificacion:Number(localStorage.getItem('usuario'))
+  }
+  
+  this.http.actualizarLote(this.id, datos).subscribe({
+              next: (res) => {
+                console.log('Stock actualizado con éxito', res);
+                this.listarMaterial(); 
+              },
+              error: (err) => console.error('Error al actualizar stock', err)
+            });
+ }
+ eliminarMaterial(row:any){
+  this.id=row.id_loteMaterial;
+  
+this.http.actualizarLote(this.id, {estado:'B',id_modificacion:Number(localStorage.getItem('usuario'))}).subscribe({
+              next: (res) => {
+                console.log('Stock eliminar con éxito', res);
+                this.listarMaterial(); 
+              },
+              error: (err) => console.error('Error al actualizar stock', err)
+            });
+ }
 
 
  //--------lote formulario producto 
@@ -83,6 +134,7 @@ dataL:any={};
   const data={
     "stock":this.dataL.stockProducto,
     "tipo":this.dataL.tipoProducto,
+    "nombre":this.dataL.nombre,
     "id_modificacion":Number(localStorage.getItem('usuario'))
   }
   console.log("11111",data);
@@ -94,6 +146,47 @@ dataL:any={};
     },
     error:(err)=> {
       console.error("error ",err);
+      
+    },
+  })
+ }
+ editarLoteProductoOpcion=false;
+ seleccionaProducEdit(row:any){
+    console.log("-----",row);
+   this.dataL = {
+    tipoProducto: row.tipo,
+    nombre: row.nombre || '',
+    stockProducto: row.stock
+  };
+this.id=row.id_loteProducto//---------
+this.editarLoteProductoOpcion=true;
+ }
+ actualizarLote(){
+  const datos={
+    stock:this.dataL.stockMaterial,
+    tipo:this.dataL.tipoMaterial,
+    nombre:this.dataL.nombre,
+    id_modificacion:Number(localStorage.getItem('usuario'))
+  }
+  this.http.actualizarLoteProducto(this.id,datos).subscribe({
+    next:(value)=> {
+      console.log(value);
+      this.listarProducto();
+    },
+  })
+ }
+ eliminaProducEdit(row:any){
+  this.id=row.id_loteProducto
+  const datos={
+    id_modificacion:Number(localStorage.getItem('usuario'))
+  }
+  this.http.eliminarLoteProducto(this.id,datos).subscribe({
+    next:(value)=> {
+      console.log(value);
+      this.listarProducto();
+    },
+    error(err) {
+      console.error("error al eliminar",err);
       
     },
   })

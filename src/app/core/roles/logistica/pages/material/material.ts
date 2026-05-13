@@ -39,6 +39,7 @@ export interface UserData {
     FormsModule,
     ReactiveFormsModule,
     
+    
   ],
   templateUrl: './material.html',
   styleUrl: './material.css',
@@ -52,7 +53,7 @@ tablaMaterial: string[] = ['id', 'lote', 'responsable', 'tipo','estado','cantida
   mostrarMaterial:boolean =false;
   
 
-productoColumns: string[] = ['id', 'id_loteProducto', 'estado', 'marca','opciones'];
+productoColumns: string[] = ['id', 'id_loteProducto', 'estado', 'marca','nombre','opciones'];
   productoSource!: MatTableDataSource<UserData>;
 
   @ViewChild(MatPaginator) paginatorProducto!: MatPaginator;
@@ -111,7 +112,7 @@ productoColumns: string[] = ['id', 'id_loteProducto', 'estado', 'marca','opcione
         const nuevoMaterial=this.dialogMaterial.open(FormularioLote,{
         data:{data:tipo},
         width: '700px',      // Ancho fijo
-      height: '90vh',     // Se ajusta al contenido 
+      height: '80vh',     // Se ajusta al contenido 
       autoFocus: false
       });
       nuevoMaterial.afterClosed().subscribe(respuesta=>{

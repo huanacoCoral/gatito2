@@ -91,3 +91,89 @@
   padding: 4px 8px;
   border-radius: 6px;
 }
+/*---tablaturno*/
+.lista {
+  list-style: none;
+  padding: 0;
+  margin: 20px 0;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  font-family: 'Segoe UI', Roboto, sans-serif;
+}
+
+/* Estilo para el encabezado y las filas */
+.header, .fila {
+  display: flex;
+  align-items: center;
+  padding: 12px 16px;
+  gap: 10px;
+}
+
+.header {
+  background-color: #f8f9fa;
+  border-bottom: 2px solid #dee2e6;
+  color: #495057;
+  font-weight: 600;
+  text-transform: uppercase;
+  font-size: 0.85rem;
+  letter-spacing: 0.5px;
+}
+
+.fila {
+  background-color: white;
+  border-bottom: 1px solid #edf2f7;
+  transition: background-color 0.2s ease;
+}
+
+.fila:hover {
+  background-color: #f1f5f9;
+}
+
+.fila:last-child {
+  border-bottom: none;
+}
+
+/* Control de anchos de columna */
+.header strong, .fila span {
+  flex: 1; /* Distribuye espacio equitativo */
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Ajuste específico para IDs o Acciones (más angostos) */
+.header strong:first-child, .fila span:first-child {
+  max-width: 60px;
+  color: #6c757d;
+  font-weight: bold;
+}
+
+.acciones {
+  display: flex;
+  gap: 8px;
+  justify-content: flex-end;
+  min-width: 100px;
+}
+
+/* Estilo de los botones de acción */
+.btn-editar, .btn-eliminar {
+  border: none;
+  background: none;
+  cursor: pointer;
+  font-size: 1.2rem;
+  padding: 5px;
+  border-radius: 4px;
+  transition: transform 0.1s, background-color 0.2s;
+}
+
+.btn-editar:hover { background-color: #e3f2fd; transform: scale(1.1); }
+.btn-eliminar:hover { background-color: #ffebee; transform: scale(1.1); }
+
+/* Botón Crear (Angular Material) */
+[mat-raised-button] {
+  margin-top: 10px;
+  padding: 0 25px;
+  height: 45px;
+  font-weight: 500;
+}

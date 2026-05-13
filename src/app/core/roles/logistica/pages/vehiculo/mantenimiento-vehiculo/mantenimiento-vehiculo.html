@@ -1,0 +1,33 @@
+<h2>Registro de Mantenimiento</h2>
+
+<form [formGroup]="form" class="flex-column">
+
+  <!-- Descripción -->
+  <mat-form-field appearance="outline" class="full-width">
+    <mat-label>Descripción</mat-label>
+    <textarea matInput formControlName="descripcion"></textarea>
+  </mat-form-field>
+
+  <!-- Fecha -->
+  <mat-form-field appearance="outline" class="full-width">
+    <mat-label>Fecha</mat-label>
+    <input matInput type="date" formControlName="fecha">
+  </mat-form-field>
+
+  
+
+  <!-- Botones -->
+  <div class="row">
+    <button mat-raised-button color="primary" (click)="guardar()" [disabled]="form.invalid">
+      Guardar
+    </button>
+    <button mat-raised-button color="primary" (click)="actualizar()" [disabled]="form.invalid">
+      actualizar
+    </button>
+
+    <button mat-stroked-button color="warn" (click)="cerrar()">
+      Cancelar
+    </button>
+  </div>
+
+</form>

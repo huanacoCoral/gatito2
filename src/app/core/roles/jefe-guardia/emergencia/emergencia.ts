@@ -10,6 +10,7 @@ import { MatCardModule } from '@angular/material/card';
 import { jefeGuardiaService } from '../server/jefeGuadia.service';
 import { MatDialog } from '@angular/material/dialog';
 import { FormularioEmergencia } from './formulario-emergencia/formulario-emergencia';
+import { InformeEmergencia } from './informe-emergencia/informe-emergencia';
 
 @Component({
   selector: 'app-emergencia',
@@ -31,7 +32,7 @@ export class Emergencia implements OnInit {
   private readonly http = inject(jefeGuardiaService);
 
   // Estas columnas deben coincidir EXACTAMENTE con los matColumnDef de tu HTML
-  displayedColumnsDeBaja: string[] = ['id', 'progress', 'name', 'fruit'];
+  displayedColumnsDeBaja: string[] = ['id', 'direccion', 'nombrePersona', 'fecha','hora','opcion','informe'];
   
   dataSource = new MatTableDataSource<any>([]);
 
@@ -71,12 +72,36 @@ export class Emergencia implements OnInit {
             });
             nuevoMaterial.afterClosed().subscribe(respuesta=>{
               console.log('cerrado');
-              
+              this.listar();
             })
   }
   editar(datos:any) {
     const nuevoMaterial=this.dialog.open(FormularioEmergencia,{
           data:datos,
+            width: '700px',      // Ancho fijo
+            height: '90vh',     // Se ajusta al contenido 
+            autoFocus: false
+            });
+            nuevoMaterial.afterClosed().subscribe(respuesta=>{
+              console.log('cerrado');
+              
+            })
+  }
+  eliminar(datos:any){
+    const dato={
+      id_modificacion:Number(localStorage.getItem('usuario'))
+    }
+    this.http.eliminarEmergencia(datos.id_emergencia,dato).subscribe({
+      next:(value)=> {
+        console.log(value);
+        this.listar();
+      },
+    })
+    
+  }
+  informe(row:any){
+    const nuevoMaterial=this.dialog.open(InformeEmergencia,{
+          data:row,
             width: '700px',      // Ancho fijo
             height: '90vh',     // Se ajusta al contenido 
             autoFocus: false

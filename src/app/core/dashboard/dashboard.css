@@ -1,0 +1,47 @@
+.dashboard-container {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 16px;
+  width: 100%;
+  box-sizing: border-box;
+
+  .top-row {
+    display: flex;
+    flex-direction: row;
+    gap: 16px;
+    width: 100%;
+
+    
+    .small-card {
+      flex: 1; 
+      min-width: 280px; 
+    }
+  }
+
+  .bottom-row {
+    width: 100%;
+
+    
+    .large-card {
+      width: 100%;
+    }
+  }
+
+  
+  .chart-container {
+    min-height: 250px;
+    width: 100%;
+    
+    &.large-chart {
+      min-height: 350px; 
+    }
+  }
+}
+
+
+@media (max-width: 768px) {
+  .dashboard-container .top-row {
+    flex-direction: column;
+  }
+}

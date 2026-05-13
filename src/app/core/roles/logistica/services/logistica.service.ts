@@ -75,7 +75,7 @@ export class logisticaService {
       // Aquí puedes manejar la respuesta si lo necesitas
     })
   );
-
+  
   
 }
    ///------------------producto
@@ -119,6 +119,47 @@ actualizarLoteProducto(id: number, data: any): Observable<any> {
   return this._http.put(`${this.API_URL}/producto/actualizar-lote-producto/${id}`, data).pipe(
     tap((res: any) => {
       // Aquí puedes manejar la respuesta si lo necesitas
+    })
+  );
+}
+eliminarLoteProducto(id: number, data: any): Observable<any> {
+  console.log("id",id,"data",data);
+  
+  return this._http.put(`${this.API_URL}/producto/eliminar-lote-producto/${id}`, data).pipe(
+    tap((res: any) => {
+      // Aquí puedes manejar la respuesta si lo necesitas
+    })
+  );
+}
+
+crearAsignacionProducto(data:any): Observable<any> {
+  return this._http.post(`${this.API_URL}/producto/crear-asignacion-producto`, data).pipe(
+    tap((res: any) => {
+      // Aquí puedes manejar la respuesta si lo necesitas
+    })
+  );
+}
+
+listarAsignacionesProducto(): Observable<any> {
+  return this._http.get(`${this.API_URL}/producto/listar-asignaciones-producto`).pipe(
+    tap((res: any) => {
+      // Aquí puedes manejar la respuesta si lo necesites
+    })
+  );
+}
+
+eliminarAsignacionProducto(data: any): Observable<any> {
+  return this._http.post(`${this.API_URL}/producto/eliminar-asignacion-producto`, data).pipe(
+    tap((res: any) => {
+      // Aquí puedes manejar la respuesta si lo necesites
+    })
+  );
+}
+
+devolverAsignacionProducto(id: number, data: any): Observable<any> {
+  return this._http.put(`${this.API_URL}/producto/devolver-asignacion-producto/${id}`, data).pipe(
+    tap((res: any) => {
+      // Aquí puedes manejar la respuesta si lo necesites
     })
   );
 }
@@ -169,6 +210,85 @@ eliminarInformeVehiculos(id:number,data:any): Observable<any> {
     })
   );
 }
- 
+ //--mateniiento-
+ listarMatenimiento(data:any): Observable<any> {
+  return this._http.post(`${this.API_URL}/vehiculos/listar-mantenimiento`,data).pipe(
+    tap((res: any) => {
+      // Aquí puedes manejar la respuesta si lo necesitas
+    })
+  );
+}
+ crearMantenimiento(data:any): Observable<any> {
+  return this._http.post(`${this.API_URL}/vehiculos/crear-mantenimiento/`,data).pipe(
+    tap((res: any) => {
+      // Aquí puedes manejar la respuesta si lo necesitas
+    })
+  );
+}
+editarMantenimientoVehiculos(id:number,data:any): Observable<any> {
+  return this._http.put(`${this.API_URL}/vehiculos/editar-mantenimiento`,data).pipe(
+    tap((res: any) => {
+      // Aquí puedes manejar la respuesta si lo necesitas
+    })
+  );
+}
+eliminarMantenimientoVehiculos(id:number,data:any): Observable<any> {
+  return this._http.put(`${this.API_URL}/vehiculos/eliminar-mantenimiento/${id}`,data).pipe(
+    tap((res: any) => {
+      // Aquí puedes manejar la respuesta si lo necesitas
+    })
+  );
+}
+listarEmergencias():Observable<any>{
+    return this._http.get(this.API_URL+'/emergencias').pipe(tap((res:any)=>{
+      //console.log("respuesta de creacio nde personal",res);
+      
+    }))
+   }
+
+
+crearRegistroMaterial(data:any): Observable<any> {
+  return this._http.post(`${this.API_URL}/material/crear-registroMaterial/`,data).pipe(
+    tap((res: any) => {
+      // Aquí puedes manejar la respuesta si lo necesitas
+    })
+  );
+}
+
+
+
+   
+   relacionEmergenciaMaterial(data:any):Observable<any>{
+    return this._http.post(this.API_URL+'/material/relacion-emergencia-utilizo-material',data).pipe(tap((res:any)=>{
+      //console.log("respuesta de creacio nde personal",res);
+      
+    }))
+   }
+   listarRegistroMaterial():Observable<any>{
+    return this._http.get(this.API_URL+'/material/listar-registroMaterial').pipe(tap((res:any)=>{
+      //console.log("respuesta de creacio nde personal",res);
+      
+    }))
+   }
+
+    crearResitroMaterTieneLote(data:any):Observable<any>{
+    return this._http.post(this.API_URL+'/material/crear-reg-material-lote',data).pipe(tap((res:any)=>{
+      //console.log("respuesta de creacio nde personal",res);
+      
+    }))
+   }
+   eliminarAsignacionMaterial(data:any):Observable<any>{
+    return this._http.post(this.API_URL+'/material/eliminar-asignacion',data).pipe(tap((res:any)=>{
+      //console.log("respuesta de creacio nde personal",res);
+      
+    }))
+   }
+
+   crearRegistroProducto(data:any):Observable<any>{
+    return this._http.post(this.API_URL+'/producto/crear-registro-producto',data).pipe(tap((res:any)=>{
+      //console.log("respuesta de creacio nde personal",res);
+      
+    }))
+   }
 
 }

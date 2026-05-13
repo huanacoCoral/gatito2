@@ -3,32 +3,32 @@
     <h2>Formulario de Producto</h2>
 
     <form [formGroup]="productoForm">
-      <mat-form-field>
+      <mat-form-field appearance="outline">
         <mat-label>Nombre</mat-label>
         <input matInput formControlName="nombre">
       </mat-form-field>
 
-      <mat-form-field>
+      <mat-form-field appearance="outline">
         <mat-label>Cantidad</mat-label>
         <input matInput type="number" formControlName="cantidad">
       </mat-form-field>
 
-      <mat-form-field>
+      <mat-form-field appearance="outline">
         <mat-label>Cantidad por unidad</mat-label>
         <input matInput type="number" formControlName="cantidadUnidad">
       </mat-form-field>
 
-      <mat-form-field>
+      <mat-form-field appearance="outline">
         <mat-label>Unidad de medida</mat-label>
         <input matInput formControlName="unidadMedida">
       </mat-form-field>
 
-      <mat-form-field>
+      <mat-form-field appearance="outline">
         <mat-label>Marca</mat-label>
         <input matInput formControlName="marca">
       </mat-form-field>
 
-      <mat-form-field>
+      <mat-form-field appearance="outline">
         <mat-label>Estado</mat-label>
         <mat-select formControlName="estado">
           <mat-option value="BUENO">Bueno</mat-option>
@@ -37,40 +37,40 @@
         </mat-select>
       </mat-form-field>
 
-      <mat-form-field>
+      <mat-form-field appearance="outline">
         <mat-label>Fecha creación</mat-label>
         <input matInput [matDatepicker]="picker1" formControlName="fechaCreacion">
         <mat-datepicker-toggle matIconSuffix [for]="picker1"></mat-datepicker-toggle>
         <mat-datepicker #picker1></mat-datepicker>
       </mat-form-field>
 
-      <mat-form-field>
+      <mat-form-field appearance="outline">
         <mat-label>Fecha caducidad</mat-label>
         <input matInput [matDatepicker]="picker2" formControlName="fechaCaducidad">
         <mat-datepicker-toggle matIconSuffix [for]="picker2"></mat-datepicker-toggle>
         <mat-datepicker #picker2></mat-datepicker>
       </mat-form-field>
 
-      <mat-form-field>
+      <mat-form-field appearance="outline">
         <mat-label>Registro de mantenimiento</mat-label>
         <input matInput formControlName="registroMantenimiento">
       </mat-form-field>
 
-      <mat-form-field>
+      <mat-form-field appearance="outline">
         <mat-label>Fecha adquisición</mat-label>
         <input matInput [matDatepicker]="picker3" formControlName="fechaAdquisicion">
         <mat-datepicker-toggle matIconSuffix [for]="picker3"></mat-datepicker-toggle>
         <mat-datepicker #picker3></mat-datepicker>
       </mat-form-field>
 
-      <mat-form-field>
+      <mat-form-field appearance="outline">
         <mat-label>Responsable</mat-label>
         <input matInput formControlName="id_voluntario" readonly>
       </mat-form-field>
     </form>
 
     <form [formGroup]="secondFormGroup">
-     <mat-form-field>
+     <mat-form-field appearance="outline">
   <mat-label>Lote</mat-label>
   <input type="text"
          placeholder="Busca un lote..."
@@ -84,7 +84,7 @@
                   (optionSelected)="onLoteChange($event)">
     <!-- CAMBIO AQUÍ: [value]="option" en lugar de option.id_loteProducto -->
     @for (option of filtradorLote; track option.id_loteProducto) {
-      <mat-option [value]="option">{{option.tipo}}</mat-option>
+      <mat-option [value]="option">{{option.tipo}} {{option.nombre}}</mat-option>
     }
   </mat-autocomplete>
 </mat-form-field>

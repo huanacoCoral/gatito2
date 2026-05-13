@@ -281,7 +281,7 @@ listaLote:any
   mostrarTipoStock(lote: any): string {
 
     console.log("cambiando valorLote", this.valorLote);
-    return lote && lote.tipo ? lote.tipo : '';
+    return lote && lote.tipo ? lote.tipo +" "+lote.nombre : '';
   }
 
   cancelar() {

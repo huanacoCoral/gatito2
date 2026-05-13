@@ -14,27 +14,27 @@
             <!-- Datos Principales -->
             <mat-form-field appearance="outline">
               <mat-label>Tipo</mat-label>
-              <input matInput formControlName="tipo">
+              <input matInput formControlName="tipo" placeholder="Ej: Extintor, Botiquín, Manguera">
             </mat-form-field>
 
             <mat-form-field appearance="outline">
               <mat-label>Estado</mat-label>
-              <input matInput formControlName="estado">
+              <input matInput formControlName="estado"  placeholder="Ej: Nuevo, Usado, En mantenimiento">
             </mat-form-field>
 
             <mat-form-field appearance="outline">
               <mat-label>Marca</mat-label>
-              <input matInput formControlName="marca">
+              <input matInput formControlName="marca"placeholder="Ej: Toyota, Bosch, 3M">
             </mat-form-field>
 
             <mat-form-field appearance="outline">
               <mat-label>Modelo</mat-label>
-              <input matInput formControlName="modelo">
+              <input matInput formControlName="modelo" placeholder="Ej: X200, ProSafe 2024">
             </mat-form-field>
 
             <mat-form-field appearance="outline">
               <mat-label>Número de Serie</mat-label>
-              <input matInput formControlName="numSerie">
+              <input matInput formControlName="numSerie" placeholder="Ej: SN-12345-AB">
             </mat-form-field>
 
             <!-- Fecha con Datepicker -->
@@ -46,12 +46,12 @@
             </mat-form-field>
             <mat-form-field appearance="outline">
               <mat-label>capacidad</mat-label>
-              <input type="text" matInput formControlName="capacidad">
+              <input type="text" matInput formControlName="capacidad" placeholder="Ej: 10">
             </mat-form-field>
             <!-- Gestión de Stock -->
             <mat-form-field appearance="outline">
               <mat-label>Cantidad</mat-label>
-              <input type="number" matInput formControlName="cantidad">
+              <input type="number" matInput formControlName="cantidad" >
             </mat-form-field>
 
             <mat-form-field appearance="outline">
@@ -61,22 +61,22 @@
 
             <mat-form-field appearance="outline">
               <mat-label>Unidad de Medida</mat-label>
-              <input matInput formControlName="unidadMedida" placeholder="Ej: Kg, Unidades">
+              <input matInput formControlName="unidadMedida" placeholder="Ej: Kg, Unidades, Litros">
             </mat-form-field>
 
             <!-- Control y Revisión -->
             <mat-form-field appearance="outline">
               <mat-label>Intervalo Revisión (Días)</mat-label>
-              <input type="text" matInput formControlName="intervaloTiempoRevision">
+              <input type="text" matInput formControlName="intervaloTiempoRevision" placeholder="Ej: 30 días, 6 meses">
             </mat-form-field>
 
             <mat-form-field appearance="outline">
               <mat-label>responsableEquipo</mat-label>
-              <input type="text" matInput formControlName="responsableEquipo">
+              <input type="text" matInput formControlName="responsableEquipo" placeholder="Ej: Juan Pérez ">
             </mat-form-field>
             <mat-form-field appearance="outline">
               <mat-label>historial</mat-label>
-              <input type="text" matInput formControlName="historial">
+              <input type="text" matInput formControlName="historial" placeholder="Ej: Mantenimiento realizado en 2026">
             </mat-form-field>
 
             <mat-form-field appearance="outline">
@@ -88,7 +88,7 @@
 
             <mat-form-field appearance="outline" class="full-width">
               <mat-label>Características</mat-label>
-              <textarea matInput formControlName="caracteristicas"></textarea>
+              <textarea matInput formControlName="caracteristicas"  placeholder="Ej: resistente al fuego, material acero inoxidable, uso industrial"></textarea>
             </mat-form-field>
           </div>
         </mat-card-content>
@@ -98,7 +98,7 @@
 
 
       <div>
-        <button mat-button matStepperNext>Next</button>
+        <button mat-button matStepperNext>Siguiente</button>
       </div>
     </form>
   </mat-step>
@@ -113,18 +113,19 @@
         matInput 
         formControlName="tipo"
         (input)="verificarLote($event)"
+        (blur)="validarSeleccion()"
           [matAutocomplete]="auto">
         <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete" [displayWith]="mostrarTipoStock" (optionSelected)="seleccionarLote($event)">
 
           @for (option of filtradorLote ; track option) {
-          <mat-option [value]="option">{{option.tipo}}</mat-option>
+          <mat-option [value]="option">{{option.tipo}} {{option.nombre}}</mat-option>
           }
         </mat-autocomplete>
       </mat-form-field>
 
       <div>
-        <button mat-button matStepperPrevious>Back</button>
-      <button mat-button (click)="stepper.reset()">Reset</button>
+        <button mat-button matStepperPrevious>Volver</button>
+      <button mat-button (click)="stepper.reset()">Limpiar</button>
       </div>
     </form>
   </mat-step>
@@ -138,7 +139,6 @@
   </button>
 </mat-card-actions>
 }@else{
-  {{data.data.id_informeIngresoMaterial}}-----
 <mat-card-actions align="end">
   <button mat-button type="button" (click)="cerrarDialog.close()">cancelar</button>
   <button mat-raised-button color="primary" type="button" [disabled]="materialForm.invalid || secondFormGroup.invalid" (click)="guardar(data.data.id_informeIngresoMaterial)">

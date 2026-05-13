@@ -1,5 +1,4 @@
 <mat-card class="example-card" appearance="outlined">
-    {{mostrarMaterial}}--{{mostrarProductos}}
     @if(!mostrarMaterial &&!mostrarProductos){
     <div>
         <mat-card-header>
@@ -27,26 +26,21 @@
     </div>
     }
     @if(mostrarMaterial &&!mostrarProductos){
-    <p>Administracion, pdras agregar nuevo valores crear nuevas requerimients</p>
-    <mat-card appearance="outlined">
-
-        <mat-card-header>
-            <mat-card-title> Administrador</mat-card-title>
-            <mat-card-subtitle>creaciones</mat-card-subtitle>
-        </mat-card-header>
-
-    </mat-card>
-    {{mostrarMaterial}}
-    <button (click)="mostrarMaterial=false;">volver </button>
 
     <div>
         <mat-card-header>
+            <div class="contenedor-boton">
+                <button mat-flat-button color="primary" (click)="mostrarMaterial=false;">
+                    <mat-icon>arrow_back</mat-icon>
+                    VOLVER
+                </button>
+            </div>
             <mat-card-title>Logistica</mat-card-title>
             <mat-card-subtitle>Bienvenido</mat-card-subtitle>
         </mat-card-header>
         <mat-card-actions align="end">
             <mat-form-field appearance="outline">
-                <mat-label>Filter</mat-label>
+                <mat-label>Buscar</mat-label>
                 <input matInput (keyup)="applyFilter($event)" placeholder="Ex. Mia" #input>
             </mat-form-field>
             <div style="flex-grow: 1; margin-right: 10px;">
@@ -72,7 +66,7 @@
 
                 <ng-container matColumnDef="lote">
                     <th mat-header-cell *matHeaderCellDef mat-sort-header> Progress </th>
-                    <td mat-cell *matCellDef="let row"> % </td>
+                    <td mat-cell *matCellDef="let row">{{row.loteMaterial.tipo}}  </td>
                 </ng-container>
 
                 <ng-container matColumnDef="responsable">
@@ -95,7 +89,7 @@
                         cantidades</td>
                 </ng-container>
                 <ng-container matColumnDef="opciones">
-                    <th mat-header-cell *matHeaderCellDef mat-sort-header> cantidad </th>
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header> Opcion </th>
                     <td mat-cell *matCellDef="let row">
                         
                         <button mat-icon-button (click)="eliminar(row)" title="eliminar">
@@ -123,13 +117,16 @@
     @if(mostrarProductos && !mostrarMaterial){
     <div>
         <mat-card-header>
+             <div class="contenedor-boton">
+                <button mat-flat-button color="primary" (click)="mostrarProductos=false">volver </button>
+        </div>
             <mat-card-title>Logistica</mat-card-title>
             <mat-card-subtitle>Bienvenido</mat-card-subtitle>
         </mat-card-header>
-        <button (click)="mostrarProductos=false">volver </button>
+       
         <mat-card-actions>
-            <mat-form-field>
-                <mat-label>Filter</mat-label>
+            <mat-form-field appearance="outline">
+                <mat-label>Buscar</mat-label>
                 <input matInput (keyup)="applyFilter($event)" placeholder="Ex. Mia" #input>
             </mat-form-field>
             <button matFab extended (click)="productoDialog()">
@@ -150,19 +147,24 @@
                 </ng-container>
 
                 <ng-container matColumnDef="id_loteProducto">
-                    <th mat-header-cell *matHeaderCellDef mat-sort-header> id_loteProducto </th>
-                    <td mat-cell *matCellDef="let row"> {{row.id_loteProducto}}% </td>
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header> lote </th>
+                    <td mat-cell *matCellDef="let row"> {{row.loteProducto.tipo??''}} </td>
                 </ng-container>
 
                 <ng-container matColumnDef="estado">
                     <th mat-header-cell *matHeaderCellDef mat-sort-header> estado </th>
-                    <td mat-cell *matCellDef="let row"> {{row.estado}} </td>
+                    <td mat-cell *matCellDef="let row"> {{row.estado??''}} </td>
                 </ng-container>
 
 
                 <ng-container matColumnDef="marca">
                     <th mat-header-cell *matHeaderCellDef mat-sort-header> marca </th>
-                    <td mat-cell *matCellDef="let row"> {{row.marca}} </td>
+                    <td mat-cell *matCellDef="let row"> {{row.marca??''}} </td>
+                </ng-container>
+                
+                <ng-container matColumnDef="nombre">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header> nombre </th>
+                    <td mat-cell *matCellDef="let row"> {{row.nombre??''}} </td>
                 </ng-container>
 
                 <ng-container matColumnDef="opciones">

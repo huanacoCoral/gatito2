@@ -44,6 +44,13 @@ export class jefeGuardiaService {
       
     }))
    }
+   listarVehiculos(): Observable<any> {
+  return this._http.get(`${this.API_URL}/vehiculos/vehiculo`).pipe(
+    tap((res: any) => {
+      // Aquí puedes manejar la respuesta si lo necesitas
+    })
+  );
+}
    // LISTAR TURNOS 
    listarTurnosTrayectos():Observable<any>{
     return this._http.get(this.API_URL+'/turno/listar-Turnos-Trayecto').pipe(tap((res:any)=>{
@@ -57,5 +64,70 @@ export class jefeGuardiaService {
       
     }))
    }
+    guardarEmergencia(datos:any):Observable<any>{
    
+      return this._http.post(this.API_URL+'/emergencias',datos).pipe(tap((res:any)=>{
+      
+      
+    }))
+   }
+    emergenciaTieneTipoEmergencia(datos:any):Observable<any>{
+    return this._http.post(this.API_URL+'/emergencias/asignar-tipo',datos).pipe(tap((res:any)=>{
+      
+      
+    }))
+   }
+   voluntarioRecepcionEmergencia(datos:any):Observable<any>{
+    return this._http.post(this.API_URL+'/emergencias/recepcion',datos).pipe(tap((res:any)=>{
+      
+      
+    }))
+   }
+   crearCondujoVhiculo(data: any): Observable<any> {
+
+  return this._http.post(
+    `${this.API_URL}/maquinista/crear_Condujo_vehi`,
+    data
+  );
+}
+crearParticipioVehiculo(data: any): Observable<any> {
+
+  return this._http.post(
+    `${this.API_URL}/vehiculos/crear-participacion`,
+    data
+  );
+
+  
+} 
+editarEmergencia(id: number,data: any): Observable<any> {
+
+  return this._http.put(
+
+    `${this.API_URL}/emergencias/${id}`,
+
+    data
+
+  );
+
+}
+eliminarEmergencia(id: number,data: any): Observable<any> {
+  return this._http.put(
+    `${this.API_URL}/emergencias/eliminar/${id}`,data  );
+}
+
+crearInformeEmergenciaTermino(data: any): Observable<any> {
+  return this._http.post(
+    `${this.API_URL}/emergencias/informe-emergencia-termino`,
+    data
+
+  );
+
+}
+actualizarInformeEmergenciaTerminor(data: any): Observable<any> {
+  return this._http.post(
+    `${this.API_URL}/emergencias/actualiza-infrome-emergencia-termino`,
+    data
+  );
+}
+
 }

@@ -225,18 +225,18 @@ listadoTurnos: any[] = [];
     this.turnoForm.get('d_voluntario')?.setValue(null);
     this.filtrarPersonal = [...this.listaPersonal]; 
   }
-}
-displayFn(id: number): string {
-  if (!id || !this.listaPersonal) return '';
-  const persona = this.listaPersonal.find((p:any) => p.id_voluntario === id);
-  return persona ? persona.ci.toString() : '';
-}
-get nombreSeleccionado(): string {
-  const id = this.turnoForm.get('d_voluntario')?.value;
-  if (!id) return '';
-  const persona = this.listaPersonal.find((p:any) => p.id_voluntario === id);
-  return persona ? `${persona.nombre} ${persona.apellido_paterno || ''} ${persona.apellido_materno || ''}` : '';
-}
+  }
+  displayFn(id: number): string {
+    if (!id || !this.listaPersonal) return '';
+    const persona = this.listaPersonal.find((p:any) => p.id_voluntario === id);
+    return persona ? persona.ci.toString() : '';
+  }
+  get nombreSeleccionado(): string {
+    const id = this.turnoForm.get('d_voluntario')?.value;
+    if (!id) return '';
+    const persona = this.listaPersonal.find((p:any) => p.id_voluntario === id);
+    return persona ? `${persona.nombre} ${persona.apellido_paterno || ''} ${persona.apellido_materno || ''}` : '';
+  }
 
   obtenerHistorial() {
     // Si necesitas filtrar por un voluntario específico, pasa el ID en el objeto
