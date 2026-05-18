@@ -71,10 +71,10 @@ export default class PersonalList implements OnInit,AfterViewInit {
   ngOnInit() {
     console.log('Tipo recibido:', this.tipoRol);
     if(this.tipoRol){
-      this.tipo=this.tipoRol
+      this.tipoRol=this.tipoRol
     }else{
 
-      this.tipo='personal'
+      this.tipoRol='personal'
     }
     
    this.listar();
@@ -154,9 +154,14 @@ export default class PersonalList implements OnInit,AfterViewInit {
 
     dialogRef.afterClosed().subscribe(result => {
       console.log('The dialog was closed');
-      /*if (result !== undefined) {
-        this.animal.set(result);
-      }*/
+      Swal.fire({
+      title: 'Creacion de voluntario',
+      text: 'Creacion correcta',
+      icon: 'success',
+      confirmButtonText: 'Aceptar'
+    });
+    this.listar();
+      
     });
 
   }
@@ -182,11 +187,7 @@ export default class PersonalList implements OnInit,AfterViewInit {
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      console.log('The dialog was closed');
       this.listar();
-      /*if (result !== undefined) {
-        this.animal.set(result);
-      }*/
     });
   }
   eliminar(row: any) {
@@ -384,7 +385,233 @@ editarMaquinista(row:any) {
       // Aquí llamas a tu servicio para guardar en la base de datos
     }
   });
-  console.log(row,"---------");
   
     }
-}
+    popupWin:any;
+  imprimir() {
+    console.log("----",this.todoPersonal);
+    const voluntarios=this.todoPersonal
+  this.popupWin = window.open(
+    '',
+    '_blank',
+    'top=0,left=0,height=100%,width=auto'
+  );
+
+  const fecha = new Date().toLocaleDateString();
+
+  let html = `
+  <html>
+
+  <head>
+    <title>Reporte Personal</title>
+
+    <style>
+
+      body{
+        font-family: Arial, Helvetica, sans-serif;
+        padding:20px;
+        color:#222;
+      }
+
+      .titulo{
+        text-align:center;
+        margin-bottom:30px;
+      }
+
+      .titulo h1{
+        margin:0;
+        color:#c62828;
+      }
+
+      .subtitulo{
+        color:gray;
+        font-size:14px;
+      }
+
+      .card{
+        border:1px solid #ddd;
+        border-radius:10px;
+        margin-bottom:25px;
+        padding:20px;
+      }
+
+      .nombre{
+        font-size:22px;
+        font-weight:bold;
+        color:#b71c1c;
+        margin-bottom:10px;
+      }
+
+      table{
+        width:100%;
+        border-collapse: collapse;
+        margin-top:10px;
+      }
+
+      td,th{
+        border:1px solid #ccc;
+        padding:8px;
+        font-size:13px;
+      }
+
+      th{
+        background:#f5f5f5;
+      }
+
+      .section{
+        margin-top:15px;
+      }
+
+      .badge{
+        display:inline-block;
+        background:#c62828;
+        color:white;
+        padding:4px 10px;
+        border-radius:20px;
+        margin:2px;
+        font-size:12px;
+      }
+
+      .footer{
+        margin-top:40px;
+        text-align:center;
+        color:gray;
+        font-size:12px;
+      }
+
+      @media print{
+        button{
+          display:none;
+        }
+      }
+
+    </style>
+  </head>
+
+  <body>
+
+  <div class="titulo">
+    <h1>CUERPO DE BOMBEROS</h1>
+    <div class="subtitulo">
+      Reporte de Personal Voluntario
+    </div>
+
+    <div class="subtitulo">
+      Fecha: ${fecha}
+    </div>
+
+    <br>
+
+    <button onclick="window.print()">
+      Imprimir
+    </button>
+  </div>
+  `;
+  voluntarios.forEach((v:any)=>{
+
+  const roles = v.rolesTrayecto
+    ?.map((r:any)=>`<span class="badge">${r.rol.nombre}</span>`)
+    .join('');
+
+  const cargos = v.cargosTrayecto
+    ?.map((c:any)=>`<span class="badge">${c.cargo.nombre}</span>`)
+    .join('');
+
+  const turnos = v.turnosTrayecto
+    ?.map((t:any)=>
+      `
+      <tr>
+        <td>${t.turno.nombre}</td>
+        <td>${t.dia}</td>
+        <td>${new Date(t.fechaInicio).toLocaleDateString()}</td>
+        <td>${new Date(t.fechaFin).toLocaleDateString()}</td>
+      </tr>
+      `
+    ).join('');
+
+  html += `
+
+  <div class="card">
+
+    <div class="nombre">
+      ${v.nombre} ${v.apellido_paterno} ${v.apellido_materno}
+    </div>
+
+    <table>
+      <tr>
+        <th>CI</th>
+        <td>${v.ci}</td>
+
+        <th>Sexo</th>
+        <td>${v.sexo}</td>
+      </tr>
+
+      <tr>
+        <th>Teléfono</th>
+        <td>${v.telefono}</td>
+
+        <th>Emergencia</th>
+        <td>${v.telefono_emergencia}</td>
+      </tr>
+
+      <tr>
+        <th>Correo</th>
+        <td colspan="3">${v.correo_personal}</td>
+      </tr>
+
+      <tr>
+        <th>Dirección</th>
+        <td colspan="3">${v.direccion}</td>
+      </tr>
+
+      <tr>
+        <th>Estado</th>
+        <td>${v.estado}</td>
+
+        <th>Usuario</th>
+        <td>${v.usuario?.email || 'Sin usuario'}</td>
+      </tr>
+    </table>
+
+    <div class="section">
+      <strong>Roles:</strong><br>
+      ${roles || 'Sin roles'}
+    </div>
+
+    <div class="section">
+      <strong>Cargos:</strong><br>
+      ${cargos || 'Sin cargos'}
+    </div>
+
+    <div class="section">
+      <strong>Turnos:</strong>
+
+      <table>
+        <tr>
+          <th>Turno</th>
+          <th>Día</th>
+          <th>Inicio</th>
+          <th>Fin</th>
+        </tr>
+
+        ${turnos || ''}
+      </table>
+    </div>
+
+  </div>
+  `;
+});
+html += `
+  <div class="footer">
+    Sistema de Gestión de Bomberos Voluntarios
+  </div>
+
+  </body>
+  </html>
+`;
+
+this.popupWin.document.open();
+this.popupWin.document.write(html);
+this.popupWin.document.close();
+  }
+  }

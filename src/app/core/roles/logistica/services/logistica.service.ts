@@ -245,7 +245,12 @@ listarEmergencias():Observable<any>{
       
     }))
    }
-
+   agregarKilometraje(datos:any):Observable<any>{
+    return this._http.post(this.API_URL+'/vehiculos/actualizar-kilometraje',datos).pipe(tap((res:any)=>{
+      //console.log("respuesta de creacio nde personal",res);
+      
+    }))
+   }
 
 crearRegistroMaterial(data:any): Observable<any> {
   return this._http.post(`${this.API_URL}/material/crear-registroMaterial/`,data).pipe(
@@ -290,5 +295,68 @@ crearRegistroMaterial(data:any): Observable<any> {
       
     }))
    }
+
+   ///////////////////////
+    // ======================================================
+  // SALIDA MATERIAL
+  // ======================================================
+
+  crearSalidaMaterial(data: any) {
+
+    return this._http.post(this.API_URL+`/material/salida`,
+      data,
+    );
+
+  }
+
+  // ======================================================
+  // DEVOLUCION MATERIAL
+  // ======================================================
+
+  crearDevolucionMaterial(data: any) {
+
+    return this._http.post(this.API_URL+`/material/devolucion`,
+      data,
+    );
+
+  }
+
+  // ======================================================
+  // MATERIAL DAÑADO
+  // ======================================================
+
+  registrarDanioMaterial(data: any) {
+
+    return this._http.post(this.API_URL+`/material//danado`,
+      data,
+    );
+
+  }
+
+  // ======================================================
+  // MATERIAL PERDIDO
+  // ======================================================
+
+  registrarPerdidaMaterial(data: any) {
+
+    return this._http.post(this.API_URL+`/material//perdida`,
+      data,
+    );
+
+  }
+
+  // ======================================================
+  // DAR BAJA MOVIMIENTO
+  // ======================================================
+
+  darBajaMovimientoMaterial(
+    id_registroMaterial: number,
+    id_modificacion: number,
+  ) {
+
+    return this._http.delete(this.API_URL+`/material/baja/${id_registroMaterial}/${id_modificacion}`,
+    );
+
+  }
 
 }

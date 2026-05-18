@@ -11,11 +11,12 @@
         <p>Registro y control de vehiculo</p>
       </div>
     </div>
-
+@if(tipo=="Logistica"){
     <button mat-flat-button color="primary" (click)="abrirFormulario()">
       <mat-icon>add</mat-icon>
       Crear Vehículo
     </button>
+  }
   </div>
 
   <mat-divider></mat-divider>
@@ -32,7 +33,7 @@
 
     <mat-card-content>
 
-      <!-- Empty state -->
+      <!-- Empty state @if(tipo=="Logistica"){ -->
       @if (vehiculos.length === 0) {
         <div class="empty-state">
           <mat-icon>directions_car</mat-icon>
@@ -81,17 +82,23 @@
             </ng-container>
 
             <ng-container matColumnDef="observaciones">
-              <th mat-header-cell *matHeaderCellDef>Observaciones</th>
-              <td mat-cell *matCellDef="let v" class="cell-muted">{{ v.observaciones || '—' }}</td>
+              <th mat-header-cell *matHeaderCellDef>Descripción</th>
+              <td mat-cell *matCellDef="let v" class="cell-muted">{{ v.descripcion || '—' }}</td>
             </ng-container>
 
             <ng-container matColumnDef="estado">
               <th mat-header-cell *matHeaderCellDef>Estado</th>
               <td mat-cell *matCellDef="let v">
+                @if(tipo=="Logistica"){
                 <button class="chip-maint" highlighted (click)="listarMatenimiento(v)">
                       <mat-icon matChipAvatar>build</mat-icon>
                       Mantenimiento
                     </button>
+                    }@else{
+                         <button mat-icon-button [disabled]="true" title="Bloqueado">
+        <mat-icon>lock</mat-icon>
+    </button>
+                    }
               </td>
             </ng-container>
 
@@ -100,10 +107,8 @@
               <th mat-header-cell *matHeaderCellDef>Acciones</th>
               <td mat-cell *matCellDef="let v">
                 <div class="action-row">
-
-                  
-
                   <!-- Mantenimiento -->
+                   @if(tipo=="Logistica"){
                   <button mat-stroked-button
                     [class.btn-maint-on]="v.estado === 'mantenimiento'"
                     [class.btn-maint-off]="v.estado !== 'mantenimiento'"
@@ -132,7 +137,11 @@
                     matTooltip="Vehiculo Utiizado">
                     <mat-icon>history_edu</mat-icon>
                   </button>
-
+                }@else{
+                         <button mat-icon-button [disabled]="true" title="Bloqueado">
+        <mat-icon>lock</mat-icon>
+    </button>
+                    }
                 </div>
               </td>
             </ng-container>

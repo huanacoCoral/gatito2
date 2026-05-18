@@ -2,10 +2,9 @@
 <div>
     <div class="card-vehiculo">
     <div class="header">
-        <h2>Detalle de Ingreso #6</h2>
+        <h2>Vehiculo {{data.nombre}}</h2>
         <span class="status-badge">Activo</span>
     </div>
-{{mostrar}}--------------
     <div class="grid-container">
         <!-- Información del Vehículo -->
         <div class="section">
@@ -32,6 +31,10 @@
             <p><strong>Nombre:</strong> {{mostrar.voluntario.nombre}} {{mostrar.voluntario.apellido_paterno}} {{mostrar.voluntario.apellido_materno}}</p>
             <p><strong>CI:</strong> {{mostrar.voluntario.ci}}</p>
         </div>
+        <div>
+            <h3>Kilometraje</h3>
+            <p><strong>kilometraje actual: {{kilometrajeActual}}</strong></p>
+        </div>
     </div>
 
     <div class="footer">
@@ -43,9 +46,19 @@
 
     <mat-form-field appearance="outline" class="field-grow">
       <mat-label>kilometraje</mat-label>
-      <input matInput [(ngModel)]="kilometraje" name="kilometraje"placeholder="Ej: Camioneta, Cisterna" />
+      <input matInput [(ngModel)]="kilometraje" name="kilometraje" [min]="kilometrajeActual" placeholder="Ej: 123.." />
       <mat-icon matSuffix>category</mat-icon>
     </mat-form-field>
+  <button 
+  (click)="kilometrajeRegistro()"
+  style="background: none; border: none; padding: 0; cursor: pointer; outline: none;">
+  
+  <img 
+    src="/assets/imagenes/iconos/auto.png" 
+    style="width: 24px; height: 24px; min-width: 24px; min-height: 24px; display: block;"
+    [class.auto-animado]="animarAuto">
+    
+</button>
   </div>
 
 

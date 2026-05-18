@@ -1,4 +1,4 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject, Input, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 // Angular Material
@@ -64,6 +64,7 @@ export class VehiculoComponent implements OnInit{
     'id', 'nombre', 'marca', 'kilometraje',
     'numeroPlaca', 'tipo', 'observaciones', 'estado', 'acciones',
   ];
+  @Input() tipo: string = 'Logistica';
 
   constructor(private dialog: MatDialog, private snack: MatSnackBar) {}
 
@@ -213,7 +214,7 @@ export class VehiculoComponent implements OnInit{
     console.log("datosss",row);
     
     const dialogRef = this.dialog.open(VehiculoUtilizado, {
-      width: '680px',
+      width: 'auto',
       maxWidth: '95vw',
       disableClose: false,   // permite cerrar con Escape o click fuera
        data: row

@@ -18,18 +18,17 @@
             <mat-card-subtitle> Turno </mat-card-subtitle>
             <p>Listar turnos</p>
 
-            <button (click)="listarTurno(creacion)">
-              <img src="/assets/imagenes/iconos/images.png" class="icono">
-            </button>
+              <img src="/assets/imagenes/iconos/turno.gif" class="icono" (click)="listarTurno(creacion)">
+           
           </div>
         </mat-card>
         <mat-card class="card-opcion">
           <div class="card-item">
             <mat-card-subtitle> Roles </mat-card-subtitle>
             <p>LISTAR ROL </p>
-            <button (click)="listarRol(creacion)">
-              <img src="/assets/imagenes/iconos/images.png" class="icono">
-            </button>
+           
+              <img src="/assets/imagenes/iconos/roll.avif" class="icono" (click)="listarRol(creacion)">
+         
           </div>
         </mat-card>
 
@@ -37,9 +36,9 @@
           <div class="card-item">
             <mat-card-subtitle>tipo de Gravedad </mat-card-subtitle>
             <p>Listar Gravedad</p>
-            <button (click)="listarGravedad(creacion)">
-              <img src="/assets/imagenes/iconos/images.png" class="icono">
-            </button>
+            
+              <img src="/assets/imagenes/iconos/riesgo.gif" class="icono" (click)="listarGravedad(creacion)">
+           
           </div>
 
         </mat-card>
@@ -49,9 +48,9 @@
 
             <mat-card-subtitle> Tipo Emergencia </mat-card-subtitle>
             <p>tipo de Emergencia </p>
-            <button (click)="listarEmergencia(creacion)">
-              <img src="/assets/imagenes/iconos/images.png" class="icono">
-            </button>
+            
+              <img src="/assets/imagenes/iconos/emergencia.gif" class="icono" (click)="listarEmergencia(creacion)">
+            
           </div>
 
         </mat-card>
@@ -61,9 +60,9 @@
 
             <mat-card-subtitle> Tipo Cargo </mat-card-subtitle>
             <p>tipo de Cargo </p>
-            <button (click)="listarCargo(creacion)">
-              <img src="/assets/imagenes/iconos/images.png" class="icono">
-            </button>
+            
+              <img src="/assets/imagenes/iconos/cargo.jpg" class="icono" (click)="listarCargo(creacion)">
+           
           </div>
 
         </mat-card>
@@ -111,15 +110,13 @@
           <li class="header">
             <span>ID</span>
             <span>Nombre</span>
-            <span>Usuario</span>
-            <span style="text-align: right;">Acciones</span>
+            
           </li>
 
-          @for(turno of listaTurno; track turno.id_turno) {
+          @for(turno of listaTurno; track $index) {
           <li class="fila">
             <span>{{turno.id_turno}}</span>
             <span>{{turno.nombre}}</span>
-            <span>{{turno.id_modificacion}}</span>
             <div class="acciones">
               <button class="btn-editar" title="Editar" (click)="editarTurnoAdmin(turno)">✏️</button>
               <button class="btn-eliminar" title="Eliminar" (click)="eliminar(turno)">🗑️</button>
@@ -127,6 +124,7 @@
           </li>
           }
         </ul>
+        <div style="display: flex; gap: 8px; align-items: center;">
         @if(!actaulizarTurno){
         <button mat-raised-button color="primary" (click)="crearTurno()">
           + Crear Nuevo Turno
@@ -140,7 +138,7 @@
          <button mat-raised-button color="primary" (click)="cancelarTurno()">
            Cancelar
         </button>
-
+        </div>
       </div>
       }
       @if(opcion=="crearRol"){
@@ -148,13 +146,16 @@
 
       <div class="bloque">
         <ul class="lista">
-          <li class="header"><strong>ID - Nombre - Usuario</strong></li>
+          <li class="header"><strong>ID - Nombre </strong></li>
 
-          @for(rol of listaRol; track rol.id_rol) {
+          @for(rol of listaRol; track $index) {
           <li class="fila">
             <span>{{rol.id_rol}}</span>
             <span>{{rol.nombre}}</span>
-            <span>{{rol.id_modificacion}}</span>
+            @if (mostrarAcciones(rol.id_rol)) {
+            <button class="btn-editar" title="Editar" (click)="editarRolAdmin(rol)">✏️</button>
+              <button class="btn-eliminar" title="Eliminar" (click)="eliminarRol(rol)">🗑️</button>
+            }
           </li>
           }
         </ul>
@@ -163,8 +164,15 @@
           <mat-label>Rol</mat-label>
           <input matInput [(ngModel)]="data.Rol" name="nombreRol">
         </mat-form-field>
-
+        <div style="display: flex; gap: 8px; align-items: center;">
+        @if(!editRol){
         <button mat-raised-button color="primary" (click)="crearRol()">Crear</button>
+        }
+        @else{
+           <button mat-raised-button color="primary" (click)="actualizarRol()">Actualizar rol</button>
+        }
+        <button mat-raised-button color="primary" (click)="cancelaRol()">cancelar</button>
+        </div>
       </div>
       }
       @if(opcion=="crearGravedad"){
@@ -172,13 +180,15 @@
 
       <div class="bloque">
         <ul class="lista">
-          <li class="header"><strong>ID - Nombre - Usuario</strong></li>
-
-          @for(g of listaGravedad; track g.id_turno) {
+          <li class="header"><strong> Nombre </strong></li>
+          @for(g of listaGravedad; track $index) {
           <li class="fila">
-            <span>{{g.id_turno}}</span>
             <span>{{g.nombre}}</span>
-            <span>{{g.id_modificacion}}</span>
+           <div class="acciones">
+        <button class="btn-editar" title="Editar" (click)="editarGravedadAdmin(g)">✏️</button>
+        <button class="btn-eliminar" title="Eliminar" (click)="eliminarGravead(g)">🗑️</button>
+          
+          </div>
           </li>
           }
         </ul>
@@ -187,8 +197,14 @@
           <mat-label>Gravedad</mat-label>
           <input matInput [(ngModel)]="data.Gravedad">
         </mat-form-field>
-
-        <button mat-raised-button color="primary" (click)="crearGravedad()">Crear</button>
+        <div style="display: flex; gap: 8px; align-items: center;">
+        @if(!seleccionEditar){
+          <button mat-raised-button color="primary" (click)="crearGravedad()">Crear</button>
+        }@else{
+          <button mat-raised-button color="primary" (click)="actualizarGravedad()">Actualizar</button>
+        }
+        <button mat-raised-button color="primary" (click)="cancelarGravedad()">cancelar</button>
+        </div>
       </div>
       }
 
@@ -198,14 +214,17 @@
         <p>Tipo de Gravedad</p>
         <ul>
           <li>
-            <strong>ID - Nombre - ID Usuario</strong>
+            <strong> Nombre </strong>
           </li>
 
-          @for(emergencia of listacrearEmergencia; track emergencia.codigo) {
+          @for(emergencia of listacrearEmergencia; track $index) {
           <li>
 
             <span>{{emergencia.nombre}}</span> -
             <span>{{emergencia.codigo}}</span>
+            <button class="btn-editar" title="Editar" (click)="editarEmergeAdmin(emergencia)">✏️</button>
+              <button class="btn-eliminar" title="Eliminar" (click)="eliminarEmerge(emergencia)">🗑️</button>
+          
           </li>
           }
         </ul>
@@ -218,10 +237,20 @@
           <mat-label>codigo</mat-label>
           <input type="text" matInput [(ngModel)]="data.codigoEmergencia" name="codigoEmergencia" placeholder="Codigo">
         </mat-form-field>
-
-        <button (click)="crearEmergencia()">
-          crear gravedad
+        <div style="display: flex; gap: 8px; align-items: center;">
+        @if(!seleccionEditarEmerge){
+          <button mat-raised-button color="primary" (click)="crearEmergencia()">
+          crear emergencia
         </button>
+        }@else{
+          <button mat-raised-button color="primary" (click)="actualizarEmergencia()">
+          actualizar emergencia
+        </button>
+        }
+        <button mat-raised-button color="primary" (click)="cancelarEmergencia()">
+          cancelar
+        </button>
+        </div>
       </div>
       }
 
@@ -231,13 +260,16 @@
         <p>Cargo</p>
         <ul>
           <li>
-            <strong>ID - Nombre </strong>
+            <strong>Nombre </strong>
           </li>
 
-          @for(cargo of listarCargoArray; track cargo.codigo) {
+          @for(cargo of listarCargoArray; track $index) {
           <li>
 
             <span>{{cargo.nombre}}</span>
+             <button class="btn-editar" title="Editar" (click)="editarCargo(cargo)">✏️</button>
+              <button class="btn-eliminar" title="Eliminar" (click)="eliminarCargo(cargo)">🗑️</button>
+          
           </li>
           }
         </ul>
@@ -246,10 +278,19 @@
           <input type="text" matInput [(ngModel)]="data.nombreCargo" name="nombreCargo" placeholder="Nombre">
 
         </mat-form-field>
-
-        <button (click)="crearCargo()">
-          crear Cargo
-        </button>
+          @if(!editarC){
+          <button mat-raised-button color="primary" (click)="crearCargo()">
+                    crear Cargo
+                  </button>
+          }@else{
+          <button mat-raised-button color="primary" (click)="actualizarCargo()">
+                    actualizar Cargo
+                  </button>
+          }
+          <button mat-raised-button color="primary" (click)="cancelarCargo()">
+                  Cancelar
+                  </button>
+        
       </div>
       }
 

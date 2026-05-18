@@ -1,29 +1,70 @@
-import { Component, inject, OnInit, ViewChild, AfterViewInit } from '@angular/core';
-import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
+import {
+  Component,
+  inject,
+  OnInit,
+  ViewChild,
+  AfterViewInit,
+} from '@angular/core';
+
+import {
+  FormBuilder,
+  FormGroup,
+  FormsModule,
+  ReactiveFormsModule,
+  Validators,
+} from '@angular/forms';
+
+import { CommonModule } from '@angular/common';
+
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
-import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
-import { MatSort, MatSortModule } from '@angular/material/sort';
-import { MatTableDataSource, MatTableModule } from '@angular/material/table';
+
+import {
+  MatPaginator,
+  MatPaginatorModule,
+} from '@angular/material/paginator';
+
+import {
+  MatSort,
+  MatSortModule,
+} from '@angular/material/sort';
+
+import {
+  MatTableDataSource,
+  MatTableModule,
+} from '@angular/material/table';
+
 import { MatSelectModule } from '@angular/material/select';
-import { MatAutocompleteModule } from '@angular/material/autocomplete';
-import { MatDatepickerModule } from '@angular/material/datepicker';
-import { MatNativeDateModule } from '@angular/material/core';
+
+import {
+  MatAutocompleteModule,
+} from '@angular/material/autocomplete';
+
+import {
+  MatDatepickerModule,
+} from '@angular/material/datepicker';
+
+import {
+  MatNativeDateModule,
+} from '@angular/material/core';
+
 import { MatDialogModule } from '@angular/material/dialog';
-import { CommonModule } from '@angular/common';
+
 import { logisticaService } from '../../services/logistica.service';
 
 @Component({
   selector: 'app-asignar-material',
   standalone: true,
+
   imports: [
     CommonModule,
     FormsModule,
     ReactiveFormsModule,
+
     MatButtonModule,
     MatDividerModule,
     MatIconModule,
@@ -37,502 +78,536 @@ import { logisticaService } from '../../services/logistica.service';
     MatAutocompleteModule,
     MatDatepickerModule,
     MatNativeDateModule,
-    MatDialogModule
+    MatDialogModule,
   ],
+
   templateUrl: './asignar-material.html',
   styleUrl: './asignar-material.css',
 })
-export class AsignarMaterial implements OnInit, AfterViewInit {
-  // ========== INYECCIONES ==========
+export class AsignarMaterial
+  implements OnInit, AfterViewInit {
+  // ======================================================
+  // INYECCIONES
+  // ======================================================
+
   private fb = inject(FormBuilder);
+
   protected http = inject(logisticaService);
 
-  // ========== FORMULARIOS ==========
-  asignacionForm!: FormGroup;
-  
-  // ========== DATA TABLES ==========
-  columnasAsignacion: string[] = ['id', 'material', 'loteTipo', 'cantidadAsignada', 'estado','destino', 'fecha', 'responsable',  'acciones'];
-  asignacionesSource = new MatTableDataSource<any>([]);
-  
-  @ViewChild(MatPaginator) paginator!: MatPaginator;
-  @ViewChild(MatSort) sort!: MatSort;
+  // ======================================================
+  // FORMULARIO
+  // ======================================================
 
-  // ========== DATA LISTAS ==========
+  asignacionForm!: FormGroup;
+
+  columnasAsignacion: string[] = [
+    'id',
+    'material',
+    'cantidad',
+    'tipoMovimiento',
+    'destino',
+    'fecha',
+    'estado',
+    'acciones',
+  ];
+
+  asignacionesSource = new MatTableDataSource<any>([]);
+
+  @ViewChild(MatPaginator)
+  paginator!: MatPaginator;
+
+  @ViewChild(MatSort)
+  sort!: MatSort;
+
+  // ======================================================
+  // LISTAS
+  // ======================================================
+
   lotesMaterial: any[] = [];
+
   lotesMaterialFiltrados: any[] = [];
-  emergencias: any[] = [];
-  voluntarios: any[] = [];
-  
+
   listaEmergencia: any[] = [];
-   listaFiltradoEmergencia: any[] = [];
-  // ========== ESTADO ==========
+
+  listaFiltradoEmergencia: any[] = [];
+
+  // ======================================================
+  // ESTADOS
+  // ======================================================
+
   loteMaterialSeleccionado: any = null;
+
   cargando = false;
+
   mostrarFormulario = false;
 
-  ngOnInit() {
+  // ======================================================
+  // INIT
+  // ======================================================
+
+  ngOnInit(): void {
     this.inicializarFormulario();
     this.cargarDatos();
-    this.asignacionesSource.filterPredicate = (data: any, filter: string) => {
-      console.log('inforrr',data);
-      
-      const texto = filter.trim().toLowerCase();
-      const material = data.loteMaterial?.tipo ?? '';
-      const destino = data.tipoDestino?.nombre || data.tipoDestino?.direccion || data.tipoDestino || '';
-      const responsable = data.responsableNombre ?? '';
-      const cantidad = String(data.cantidadUsada ?? data.cantidad ?? '');
-      const estado = String(data.estado ?? '');
-      const fecha = String(data.fecha_creacion ?? data.fechaAsignacion ?? '');
-      return [material, destino, responsable, cantidad, estado, fecha].join(' ').toLowerCase().includes(texto);
-    };
+    this.asignacionesSource.filterPredicate =
+      (data: any, filter: string) => {
+        const texto = filter.trim().toLowerCase();
+        const material =data.lotes?.[0]?.loteMaterial?.tipo ?? '';
+        const cantidad = data.lotes?.[0]?.cantidad ?? '';
+        const movimiento = data.tipoMovimiento ?? '';
+        const destino = data.destino ?? '';
+        return `
+          ${material}
+          ${cantidad}
+          ${movimiento}
+          ${destino}
+        `
+          .toLowerCase()
+          .includes(texto);
+      };
   }
 
-  ngAfterViewInit() {
-    this.asignacionesSource.paginator = this.paginator;
-    this.asignacionesSource.sort = this.sort;
+  ngAfterViewInit(): void {
+
+    this.asignacionesSource.paginator =this.paginator;
+    this.asignacionesSource.sort =this.sort;
   }
 
-  // ========== INICIALIZACIÓN ==========
-  inicializarFormulario() {
-    this.asignacionForm = this.fb.group({
-      loteMaterial: ['', Validators.required],
-      cantidad: [0, [Validators.required, Validators.min(1)]],
-      tipoDestino: ['', Validators.required],
-      //destino: ['', Validators.required],
-      fechaAsignacion: [new Date(), Validators.required],
-      descripcion: ['', Validators.required],
-      responsable: [Number(localStorage.getItem('usuario')) || 0, Validators.required]
-    });
+  // ======================================================
+  // FORM
+  // ======================================================
+  listaMaterialAsignar:any []=[];
+listandoMaterial() {
+  const lote = this.asignacionForm.get('loteMaterial')?.value;
+  const cantidadSolicitada = this.asignacionForm.get('cantidad')?.value;
 
-    // Listener para cambios en tipoDestino
-    this.asignacionForm.get('tipoDestino')?.valueChanges.subscribe(tipo => {
-      this.cargarDestinos(tipo);
-    });
-
-    // Listener para búsqueda de lotes
-    this.asignacionForm.get('loteMaterial')?.valueChanges.subscribe(valor => {
-      this.filtrarLotesMaterial(valor);
-    });
-  }
-
-  // ========== CARGA DE DATOS ==========
-  cargarDatos() {
-    this.cargando = true;
+  if (cantidadSolicitada > 0 && this.cantidadMateria >= cantidadSolicitada) {
     
-    // Cargar lotes de material disponibles
-    this.http.listarLoteMaterial().subscribe({
-      next: (resp: any) => {
-        console.log("-----",resp);
-        
-        this.lotesMaterial = resp.filter((lote: any) => lote.stock > 0);
-        this.lotesMaterialFiltrados = [...this.lotesMaterial];
-        this.cargando = false;
-      },
-      error: (err) => {
-        console.error('Error cargando lotes', err);
-        this.cargando = false;
-      }
-    });
-    // Cargar lotes de emergencias disponibles
-    this.http.listarEmergencias().subscribe({
-      next: (resp: any) => {
-        console.log(resp,"-----");
-        
-        this.listaEmergencia = resp.map((e: any) => ({
-          id_emergencia: e.id_emergencia,
-          nombre: e.nombrePersona,
-          direccion: e.direccion,
-          hora: e.hora,
-          gravedad: e.gravedad?.nombre
-        }));
-        this.listaFiltradoEmergencia = [...this.listaEmergencia];
-        //this.cargando = false;
-      },
-      error: (err) => {
-        console.error('Error cargando lotes', err);
-        this.cargando = false;
-      }
-    });
+    const yaExiste = this.listaMaterialAsignar.some(
+      item => item.id_loteMaterial === lote?.id_loteMaterial
+    );
 
-    // Cargar asignaciones existentes
+    if (yaExiste) {
+      alert('Este material ya ha sido agregado.');
+      return;
+    }
+
+    const datos = {
+      id_loteMaterial: lote.id_loteMaterial,
+      cantidad: cantidadSolicitada,
+      unidad: this.asignacionForm.get('unidad')?.value,
+      tipo: lote.tipo,
+      nombre: lote.nombre,
+    };
+
+    this.listaMaterialAsignar = [
+      ...this.listaMaterialAsignar,
+      datos
+    ];
+
+    this.asignacionForm.patchValue({
+      loteMaterial: null,
+      unidad: null,
+      cantidad: null
+    });
+  }
+}
+eliminarMaterialSeleccionado(material: any): void {
+  this.listaMaterialAsignar = this.listaMaterialAsignar.filter(
+    item => item !== material
+  );
+}
+  inicializarFormulario(): void {
+    this.asignacionForm =
+      this.fb.group({
+        loteMaterial: [''],
+        cantidad: [
+          0,
+          [],
+        ],
+
+        tipoMovimiento: [
+          'SALIDA',Validators.required,],
+        destino: ['',Validators.required,],
+
+        id_emergencia: [
+          null,
+        ],
+
+        unidad: [
+          '',
+        ],
+
+        responsable: [
+          Number( localStorage.getItem('usuario')) || 0,
+        ],
+      });
+
+    // filtrar lote
+    this.asignacionForm .get('loteMaterial')?.valueChanges.subscribe((valor) => {
+        this.filtrarLotesMaterial(valor);
+      });
+  }
+
+  // ======================================================
+  // CARGAR DATOS
+  // ======================================================
+
+  cargarDatos(): void {
+
+    this.cargando = true;
+
+    // =========================
+    // LOTES
+    // =========================
+
+    this.http.listarLoteMaterial()
+      .subscribe({
+
+        next: (resp: any) => {
+
+          this.lotesMaterial =
+            resp.filter(
+              (x: any) =>
+                x.estado === 'A'
+            );
+
+          this.lotesMaterialFiltrados =
+            [...this.lotesMaterial];
+
+          this.cargando = false;
+        },
+
+        error: (err) => {
+
+          console.error(
+            'Error cargando lotes',
+            err
+          );
+
+          this.cargando = false;
+        },
+      });
+
+    // =========================
+    // EMERGENCIAS
+    // =========================
+
+    this.http.listarEmergencias()
+      .subscribe({
+
+        next: (resp: any) => {
+
+          this.listaEmergencia = resp;
+
+          this.listaFiltradoEmergencia =
+            [...this.listaEmergencia];
+        },
+
+        error: (err) => {
+
+          console.error(
+            'Error emergencias',
+            err
+          );
+        },
+      });
+
+    // =========================
+    // MOVIMIENTOS
+    // =========================
+
     this.cargarAsignaciones();
   }
 
-  cargarAsignaciones() {
-    this.http.listarRegistroMaterial().subscribe({
-      next:(x)=>{
-        console.log(x,"@---");
-        
-        this.asignacionesSource.data = x;
-      },
-      error(err) {
-        console.error("erro a listar ",err);
-        
-      },
-    })
-    
+  cargarAsignaciones(): void {
+
+    this.http
+      .listarRegistroMaterial()
+      .subscribe({
+
+        next: (resp: any) => {
+
+          console.log(
+            'movimientos',
+            resp
+          );
+
+          this.asignacionesSource.data =
+            resp;
+        },
+
+        error: (err) => {
+
+          console.error(
+            'Error listando',
+            err
+          );
+        },
+      });
   }
 
-  cargarDestinos(tipo: string) {
-    this.asignacionForm.get('destino')?.reset();
+  // ======================================================
+  // FILTROS
+  // ======================================================
 
-    if (tipo === 'emergencia') {
-      this.emergencias = [];
-    } else if (tipo === 'voluntario') {
-      this.voluntarios = [];
-    }
-  }
+  filtrarLotesMaterial(valor: any): void {
 
-  // ========== FILTROS ==========
-  filtrarLotesMaterial(valor: any) {
     if (!valor) {
-      this.lotesMaterialFiltrados = [...this.lotesMaterial];
+
+      this.lotesMaterialFiltrados =
+        [...this.lotesMaterial];
+
       return;
     }
 
     if (typeof valor === 'string') {
-      const busqueda = valor.toLowerCase();
-      this.lotesMaterialFiltrados = this.lotesMaterial.filter(lote =>
-        lote.tipo?.toLowerCase().includes(busqueda)
-      );
+
+      const texto =
+        valor.toLowerCase();
+
+      this.lotesMaterialFiltrados =
+        this.lotesMaterial.filter(
+          (x: any) =>
+            x.tipo
+              ?.toLowerCase()
+              .includes(texto)
+        );
+
     } else {
-      this.loteMaterialSeleccionado = valor;
-      this.lotesMaterialFiltrados = [valor];
+
+      this.loteMaterialSeleccionado =
+        valor;
     }
   }
 
-  aplicarFiltroTabla(event: Event) {
-    const filterValue = (event.target as HTMLInputElement).value;
-    this.asignacionesSource.filter = filterValue.trim().toLowerCase();
+  aplicarFiltroTabla(event: Event): void {
+
+    const valor =
+      (event.target as HTMLInputElement)
+        .value;
+
+    this.asignacionesSource.filter =
+      valor.trim().toLowerCase();
+
     if (this.asignacionesSource.paginator) {
-      this.asignacionesSource.paginator.firstPage();
+
+      this.asignacionesSource
+        .paginator
+        .firstPage();
     }
   }
 
-  mostrarTipoStock(lote: any): string {
-    if (!lote) return '';
-    if (typeof lote === 'string') return lote;
-    return `${lote.tipo} ${lote.nombre} (Stock: ${lote.stock})`;
-  }
+  // ======================================================
+  // DISPLAY
+  // ======================================================
+
   mostrarLote(lote: any): string {
-  if (!lote) return '';
 
-  return `${lote.tipo} |  ${lote.nombre}| Stock: ${lote.stock}`;
-}
+    if (!lote) return '';
 
-  // ========== SELECCIÓN ==========
-  onLoteSeleccionado(event: any) {
-    this.loteMaterialSeleccionado = event.option.value;
-    
-    const cantidadControl = this.asignacionForm.get('cantidad');
-    const maxCantidad = this.loteMaterialSeleccionado.stock;
-    
-    if (cantidadControl) {
-      cantidadControl.setValidators([
-        Validators.required,
-        Validators.min(1),
-        Validators.max(maxCantidad)
-      ]);
-      cantidadControl.updateValueAndValidity();
+    if (typeof lote === 'string') {
+      return lote;
     }
-  }
-  oemergenciaSeleccionado(event: any) {
-  const emergencia = event.option.value;
 
-  console.log('Seleccionado:', emergencia);
-
-  this.asignacionForm.get('tipoDestino')?.setValue(emergencia);
-}
-filtrarEmergencias(event: any) {
-  const valor = (event.target?.value ?? '').toLowerCase();
-
-  if (!valor) {
-    this.listaFiltradoEmergencia = [...this.listaEmergencia];
-    return;
+    return `
+      ${lote.tipo}
+      | ${lote.nombre ?? ''}
+      | Stock: ${lote.stock}
+    `;
   }
 
-  this.listaFiltradoEmergencia = this.listaEmergencia.filter((e: any) =>
-    `${e.id_emergencia ?? ''} ${e.nombrePersona ?? ''} ${e.direccion ?? ''}`
-      .toLowerCase()
-      .includes(valor)
-  );
-}
-mostrarEmergencia(e: any): string {
-  console.log("----**/",e);
-  
-  if (!e) return '';
+  mostrarEmergencia(e: any): string {
 
-  return `${e.id_emergencia} - ${e.nombre} | ${e.direccion} | ${e.hora} | ${e.gravedad}`;
-}
+    if (!e) return '';
 
-  // ========== OPERACIONES ==========
-  /*guardarAsignacion() {
-    if (this.asignacionForm.invalid) {
-      console.error('Formulario inválido', this.asignacionForm.errors);
+    return `
+      ${e.id_emergencia}
+      - ${e.nombrePersona}
+      - ${e.direccion}
+    `;
+  }
+
+  // ======================================================
+  // SELECCION
+  // ======================================================
+cantidadMateria:any
+  onLoteSeleccionado(event: any): void {
+
+    this.loteMaterialSeleccionado =
+      event.option.value;
+    console.log("sss",this.loteMaterialSeleccionado);
+    
+    const cantidadControl =
+      this.asignacionForm.get(
+        'cantidad'
+      );
+      this.cantidadMateria=this.loteMaterialSeleccionado.stock;
+     
+  }
+
+  // ======================================================
+  // GUARDAR
+  // ======================================================
+
+  guardarAsignacion(): void {
+    console.log("this.asignacionForm.",this.asignacionForm.value);
+    
+    if (this.asignacionForm.invalid ) {
+      console.error('Formulario inválido');
       return;
     }
-    let idMaterial;
-    const formValue = this.asignacionForm.value;
-    console.log("---ayudaaaaaa",formValue);
-    
-    const cantidadAsignada = formValue.cantidad;
-    const nuevoStock = this.loteMaterialSeleccionado.stock - cantidadAsignada;
-    //PASO 1 CREAR REGISTRO
-    const datosRegistro={ 
-       cantidadUnidad: formValue.descripcion,
-        cantidadUsada: formValue.cantidad,
-        id_modificacion: Number(localStorage.getItem('usuario'))
-    }
-    this.http.crearRegistroMaterial(datosRegistro).subscribe({
-      next:(value)=> {
-        console.log("*****registramos Material",value);
-        //Paso2 unir a emergencia
-    const datos={
-          id_emergencia:formValue.tipoDestino.id_emergencia,
-          id_registroMaterial:value.id_registroMaterial,//this.--DEBO CREARLO PRIMERO
-          id_modificacion:Number(localStorage.getItem('usuario'))
-        }
-        this.http.relacionEmergenciaMaterial(datos).subscribe({
-          next(value) {
-            console.log(value,'@---*');
-            //------------------------------------------actualizar
-            
-          },
-        })
-        idMaterial=value.id_registroMaterial
-        const datoLoteMaterial={
-      id_registroMaterial: value.id_registroMaterial,
-        id_loteMaterial: this.loteMaterialSeleccionado.id_loteMaterial,
-        id_modificacion:Number(localStorage.getItem('usuario'))
-     }
-     this.http.crearResitroMaterTieneLote(datoLoteMaterial).subscribe({
-      next(value) {
-        console.log("registtro material tiene lote mater",value);
-        
-      },
-     })
-      },
-    })
-    //paso 3 enlazar con stok  materia relacion tienelote material
-    
 
-    // PASO 4: Descontar del stock
-    const actualizarLote = {
-      stock: nuevoStock,
-      tipo: this.loteMaterialSeleccionado.tipo
+    if (!this.loteMaterialSeleccionado) {
+      console.error(
+        'Seleccione un lote'
+      );
+      return;
+    }
+
+    const form = this.asignacionForm.value;
+
+    // =========================
+    // validar stock
+    // =========================
+
+    if (
+      form.tipoMovimiento ==='SALIDA') {
+      if (form.cantidad > this.loteMaterialSeleccionado.stock) {
+
+        alert(
+          'No hay stock suficiente'
+        );
+
+        return;
+      }
+    }
+
+    const data = {
+      tipoMovimiento:form.tipoMovimiento,
+      destino:form.destino,
+      id_emergencia:form.id_emergencia?.id_emergencia,
+      id_modificacion:Number(localStorage.getItem('usuario')),
+      lotes:this.listaMaterialAsignar
+      /*lotes: [
+        {
+          id_loteMaterial:this.loteMaterialSeleccionado.id_loteMaterial,
+          cantidad:Number(form.cantidad),
+          unidad: form.unidad,
+        },
+      ],*/
     };
 
-    this.http.actualizarLote(this.loteMaterialSeleccionado.id_loteMaterial, actualizarLote).subscribe({
-      next: (resp: any) => {
-        console.log('Lote actualizado:', resp);
-        this.registrarAsignacion(formValue, cantidadAsignada);
-      },
-      error: (err) => {
-        console.error('Error actualizando lote', err);
-      }
-    });
-     
+    console.log('enviando',data);
 
-  }*/
- guardarAsignacion() {
+    // =========================
+    // SALIDA
+    // =========================
 
-  if (this.asignacionForm.invalid) {
-    console.error('Formulario inválido');
-    return;
+    if (form.tipoMovimiento ==='SALIDA') {
+
+      this.http.crearSalidaMaterial(data).subscribe({
+          next: (resp: any) => {
+            console.log(
+              'salida creada',
+              resp
+            );
+            this.limpiarFormulario();
+            this.cargarDatos();
+          },
+          error: (err) => {
+            console.error('Error salida',err);
+          },
+        });
+      return;
+    }
+
+    // =========================
+    // DEVOLUCION
+    // =========================
+
+    
   }
 
-  const formValue = this.asignacionForm.value;
+  // ======================================================
+  // ELIMINAR
+  // ======================================================
 
-  const cantidadAsignada = formValue.cantidad;
+  eliminarAsignacion(
+    asignacion: any
+  ): void {
 
-  // validar stock
-  if (cantidadAsignada > this.loteMaterialSeleccionado.stock) {
-    console.error('No hay suficiente stock');
-    return;
-  }
+    const ok = confirm(
+      '¿Desea eliminar el movimiento?'
+    );
 
-  const nuevoStock =
-    this.loteMaterialSeleccionado.stock - cantidadAsignada;
+    if (!ok) return;
 
-  // PASO 1
-  const datosRegistro = {
-    cantidadUnidad: formValue.descripcion,
-    cantidadUsada: formValue.cantidad,
-    id_modificacion: Number(localStorage.getItem('usuario'))
-  };
+    this.http
+      .darBajaMovimientoMaterial(
+        asignacion.id_registroMaterial,
 
-  this.http.crearRegistroMaterial(datosRegistro).subscribe({
+        Number(
+          localStorage.getItem(
+            'usuario'
+          )
+        )
+      )
+      .subscribe({
 
-    next: (registro: any) => {
+        next: () => {
 
-      console.log('Registro creado', registro);
-
-      // PASO 2
-      const datosEmergencia = {
-        id_emergencia: formValue.tipoDestino.id_emergencia,
-        id_registroMaterial: registro.id_registroMaterial,
-        id_modificacion: Number(localStorage.getItem('usuario'))
-      };
-
-      this.http.relacionEmergenciaMaterial(datosEmergencia).subscribe({
-
-        next: (respEmer: any) => {
-
-          console.log('Relacion emergencia OK', respEmer);
-
-          // PASO 3
-          const datoLoteMaterial = {
-            id_registroMaterial: registro.id_registroMaterial,
-            id_loteMaterial: this.loteMaterialSeleccionado.id_loteMaterial,
-            id_modificacion: Number(localStorage.getItem('usuario'))
-          };
-
-          this.http.crearResitroMaterTieneLote(datoLoteMaterial)
-            .subscribe({
-
-            next: (respLote: any) => {
-
-              console.log('Relacion lote OK', respLote);
-
-              // PASO 4 actualizar stock
-              const actualizarLote = {
-                stock: nuevoStock,
-                tipo: this.loteMaterialSeleccionado.tipo
-              };
-
-              this.http.actualizarLote(
-                this.loteMaterialSeleccionado.id_loteMaterial,
-                actualizarLote
-              ).subscribe({
-
-                next: (respStock: any) => {
-
-                  console.log('Stock actualizado', respStock);
-
-                  // PASO FINAL
-                  this.registrarAsignacion(
-                    formValue,
-                    cantidadAsignada
-                  );
-
-                  console.log('TODO OK');
-                },
-
-                error: (err) => {
-                  console.error(
-                    'Error actualizando stock',
-                    err
-                  );
-                }
-
-              });
-
-            },
-
-            error: (err) => {
-              console.error(
-                'Error relacionando lote',
-                err
-              );
-            }
-
-          });
-
+          this.cargarDatos();
         },
 
         error: (err) => {
+
           console.error(
-            'Error relacionando emergencia',
+            'Error eliminando',
             err
           );
-        }
-
-      });
-
-    },
-
-    error: (err) => {
-      console.error(
-        'Error creando registro material',
-        err
-      );
-    }
-
-  });
-
-}
-
-  registrarAsignacion(formValue: any, cantidadAsignada: number) {
-    const dataAsignacion = {
-      id_loteMaterial: this.loteMaterialSeleccionado.id_loteMaterial,
-      cantidad: cantidadAsignada,
-      tipoDestino: formValue.tipoDestino,
-      destinoId: formValue.destino,
-      fechaAsignacion: new Date(formValue.fechaAsignacion).toISOString(),
-      descripcion: formValue.descripcion,
-      id_voluntario: formValue.responsable,
-      estado: 'A'
-    };
-
-    console.log('Asignación a registrar:', dataAsignacion);
-    this.limpiarFormulario();
-    this.cargarAsignaciones();
-  }
-
-  // ========== ACCIONES EN TABLA ==========
-  editarAsignacion(asignacion: any) {
-    console.log('Editar asignación:', asignacion);
-  }
-
-  eliminarAsignacion(asignacion: any) {
-    if (confirm('¿Estás seguro de que deseas eliminar esta asignación?')) {
-      console.log('Eliminar asignación:', asignacion);
-      this.http.eliminarAsignacionMaterial({id_registroMaterial:asignacion.id_registroMaterial}).subscribe({
-        next:(value)=>{
-          this.cargarAsignaciones();
         },
-      })
-    }
-
+      });
   }
 
-  devolverMaterial(asignacion: any) {
-    console.log('Devolver material:', asignacion);
-  }
+  // ======================================================
+  // UTILIDADES
+  // ======================================================
 
-  // ========== UTILIDADES ==========
-  limpiarFormulario() {
+  limpiarFormulario(): void {
+
     this.asignacionForm.reset({
-      tipoDestino: '',
-      destino: '',
-      fechaAsignacion: new Date(),
-      responsable: Number(localStorage.getItem('usuario')) || 0
+
+      tipoMovimiento:
+        'SALIDA',
+
+      responsable:
+        Number(
+          localStorage.getItem(
+            'usuario'
+          )
+        ) || 0,
     });
-    this.loteMaterialSeleccionado = null;
-    this.mostrarFormulario = false;
+
+    this.loteMaterialSeleccionado =
+      null;
   }
 
-  toggleFormulario() {
-    this.mostrarFormulario = !this.mostrarFormulario;
-    if (!this.mostrarFormulario) {
+  toggleFormulario(): void {
+
+    this.mostrarFormulario =
+      !this.mostrarFormulario;
+
+    if (
+      !this.mostrarFormulario
+    ) {
+
       this.limpiarFormulario();
-    }else{
-      this.cargarAsignaciones();
     }
   }
 
-  obtenerNombreDestino(tipoDestino: string, destinoId: number): string {
-    if (tipoDestino === 'emergencia') {
-      const emergencia = this.emergencias.find(e => e.id === destinoId);
-      return emergencia?.direccion || 'Emergencia desconocida';
-    } else if (tipoDestino === 'voluntario') {
-      const voluntario = this.voluntarios.find(v => v.id_voluntario === destinoId);
-      return voluntario?.nombre || 'Voluntario desconocido';
-    }
-    return 'Destino desconocido';
-  }
 
-  //-----------------------
+  //-------------------------------------------------
+  //-------------------------------------------
   
 
 }

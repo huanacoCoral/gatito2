@@ -1,0 +1,15 @@
+/* Limita la altura y activa el scroll de arriba a abajo */
+.table-scroll-container {
+  max-height: 400px; /* Ajusta este valor al alto que desees */
+  overflow-y: auto;  /* Activa scroll vertical */
+  overflow-x: auto;  /* Mantiene compatibilidad por si es muy ancha */
+}
+
+.full-width {
+  width: 100%;
+}
+
+/* Evita que el fondo del encabezado se vuelva transparente al hacer sticky */
+.mat-mdc-header-row {
+  background-color: white; 
+}

@@ -1,4 +1,4 @@
-import { Component, inject, OnInit, ViewChild } from '@angular/core'; // Añadido ViewChild
+import { Component, inject, Input, OnInit, ViewChild } from '@angular/core'; // Añadido ViewChild
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator'; // Importante para el paginador
 import { MatSort, MatSortModule } from '@angular/material/sort'; // Importante para el ordenamiento
@@ -39,6 +39,7 @@ export class Emergencia implements OnInit {
   // Referencias para que el paginador y el sort funcionen
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
+  @Input() tipo: string = 'Jefe de Guardia';
   constructor(private dialog: MatDialog) {}
   ngOnInit(): void {
     this.listar();

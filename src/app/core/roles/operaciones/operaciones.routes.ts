@@ -31,6 +31,10 @@ export const routesOperaciones: Routes = [
     loadComponent: () =>
       import('../operaciones/pages/reportes/reportes').then(m=>m.Reportes)
     },
+    {path: 'admin',                                // ruta vacía
+    loadComponent: () =>
+      import('../../roles/admin/admin').then(m=>m.Admin)
+    },
 
     
 ]

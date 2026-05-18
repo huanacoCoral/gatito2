@@ -37,14 +37,22 @@ export class adminService {
    }
 
    crearRol(data:any):Observable<any>{
-    console.log("---2",data);
     
-    return this._http.post(this.API_URL+'/rol',data)
+    return this._http.post(this.API_URL+'/rol/crear',data)
     .pipe(tap((res:any)=>{
       console.log(res);
       
     }))
    }
+    editarRolNuevo(data:any):Observable<any>{
+    
+    return this._http.post(this.API_URL+'/rol/editar',data)
+    .pipe(tap((res:any)=>{
+      console.log(res);
+      
+    }))
+   }
+
 
    listarGravedad():Observable<any>{
     return this._http.get(this.API_URL+'/gravedad')
@@ -58,6 +66,15 @@ export class adminService {
     console.log("---2",data);
     
     return this._http.post(this.API_URL+'/gravedad',data)
+    .pipe(tap((res:any)=>{
+      console.log(res);
+      
+    }))
+   }
+   editarGravead(data:any):Observable<any>{
+    console.log("---2",data);
+    
+    return this._http.post(this.API_URL+'/gravedad/editar',data)
     .pipe(tap((res:any)=>{
       console.log(res);
       
@@ -82,6 +99,23 @@ listarEmergencia():Observable<any>{
       
     }))
    }
+   editarTipoEmergencia(data:any):Observable<any>{
+    
+    return this._http.post(this.API_URL+'/emergencias/editar-tipo-emergencia',data)
+    .pipe(tap((res:any)=>{
+      console.log(res);
+      
+    }))
+   }
+   eliminarTipoEmergencia(data:any):Observable<any>{
+    
+    return this._http.post(this.API_URL+'/emergencias/eliminar-tipo-emergencia',data)
+    .pipe(tap((res:any)=>{
+      console.log(res);
+      
+    }))
+   }
+
    listarCargo():Observable<any>{
     return this._http.get(this.API_URL+'/cargo')
     .pipe(tap((res:any)=>{
@@ -91,6 +125,20 @@ listarEmergencia():Observable<any>{
    }
    crearCargo(data:any):Observable<any>{
     return this._http.post(this.API_URL+'/cargo',data)
+    .pipe(tap((res:any)=>{
+      console.log(res);
+      
+    }))
+   }
+   editarCargo(data:any):Observable<any>{
+    return this._http.post(this.API_URL+'/cargo/editar',data)
+    .pipe(tap((res:any)=>{
+      console.log(res);
+      
+    }))
+   }
+   eliminarCargo(data:any):Observable<any>{
+    return this._http.post(this.API_URL+'/cargo/eliminar',data)
     .pipe(tap((res:any)=>{
       console.log(res);
       

@@ -1,279 +1,373 @@
-<mat-card class="asignar-material-container" appearance="outlined">
-  <!-- ========== VISTA PRINCIPAL ========== -->
-  @if(!mostrarFormulario) {
-    <mat-card-header>
-      <mat-card-title>Asignación de Material</mat-card-title>
-      <mat-card-subtitle>Gestione la asignación de materiales a emergencias y voluntarios</mat-card-subtitle>
-    </mat-card-header>
+<div class="contenedor-asignacion">
 
-    <mat-card-content>
-      <div class="content-container">
-        <div class="descripcion">
-          <p>
-            En esta sección puede asignar material disponible en stock a emergencias específicas o voluntarios.
-            El stock se descontará automáticamente al realizar la asignación.
-          </p>
-        </div>
+  <!-- ===================================================== -->
+  <!-- HEADER -->
+  <!-- ===================================================== -->
 
-        <!-- TABLA DE ASIGNACIONES -->
-        <div class="tabla-asignaciones">
-          <div class="tabla-header">
-            <h3>Asignaciones Realizadas</h3>
-            <mat-form-field appearance="outline" class="tabla-search">
-              <mat-label>Buscar asignación</mat-label>
-              <input matInput (keyup)="aplicarFiltroTabla($event)" placeholder="Buscar por material, destino, responsable...">
-              <mat-icon matSuffix>search</mat-icon>
-            </mat-form-field>
-            <button mat-fab extended color="primary" (click)="toggleFormulario()">
-              <mat-icon>add</mat-icon>
-              Nueva Asignación
-            </button>
-          </div>
-
-          <div class="mat-elevation-z8">
-            <table mat-table [dataSource]="asignacionesSource" matSort>
-              <!-- ID Column -->
-              <ng-container matColumnDef="id">
-                <th mat-header-cell *matHeaderCellDef mat-sort-header>ID</th>
-                <td mat-cell *matCellDef="let row; let i = index" >{{  i + 1 }}</td>
-              </ng-container>
-
-              <!-- Material Column -->
-              <ng-container matColumnDef="material">
-                <th mat-header-cell *matHeaderCellDef mat-sort-header>Material</th>
-                <td mat-cell *matCellDef="let row">{{ row.lotes[0]?.loteMaterial.nombre }}</td>
-              </ng-container>
-
-              <!-- Lote Column -->
-              <ng-container matColumnDef="loteTipo">
-                <th mat-header-cell *matHeaderCellDef mat-sort-header>Lote</th>
-                <td mat-cell *matCellDef="let row">{{ row.lotes[0]?.loteMaterial.tipo }}</td>
-              </ng-container>
-
-              <!-- Cantidad Column -->
-              <ng-container matColumnDef="cantidadAsignada">
-                <th mat-header-cell *matHeaderCellDef mat-sort-header>Cantidad</th>
-                <td mat-cell *matCellDef="let row">{{ row.cantidadUsada }} unidades</td>
-              </ng-container>
-              <ng-container matColumnDef="estado">
-                <th mat-header-cell *matHeaderCellDef mat-sort-header>Estado</th>
-                <td mat-cell *matCellDef="let row">
-                  <span [class.estado-activo]="row.estado === 'A'" 
-                        [class.estado-inactivo]="row.estado !== 'A'">
-                    {{ row.cantidadUnidad }}
-                  </span>
-                </td>
-              </ng-container>
-
-              <!-- Destino Column -->
-              <ng-container matColumnDef="destino">
-                <th mat-header-cell *matHeaderCellDef mat-sort-header>Destino</th>
-                <td mat-cell *matCellDef="let row">
-                 {{row.emergenciasUso[0].emergencia.gravedad.nombre??''}}--{{row.emergenciasUso[0].emergencia.tiposEmergencia[0].tipoEmergencia.nombre??''}}
-                </td>
-              </ng-container>
-
-              <!-- Fecha Column -->
-              <ng-container matColumnDef="fecha">
-                <th mat-header-cell *matHeaderCellDef mat-sort-header>Fecha</th>
-                <td mat-cell *matCellDef="let row">
-                  {{ row.fecha_creacion | date: 'short' }}
-                </td>
-              </ng-container>
-
-              <!-- Responsable Column -->
-              <ng-container matColumnDef="responsable">
-                <th mat-header-cell *matHeaderCellDef mat-sort-header>Responsable</th>
-                  <td mat-cell *matCellDef="let row">{{ row.emergenciasUso[0].emergencia.voluntario.nombre??'' }} {{ row.emergenciasUso[0].emergencia.voluntario.apellido_paterno??'' }} {{ row.emergenciasUso[0].emergencia.voluntario.apellido_materno??'' }}</td>
-              </ng-container>
-
-              <!-- Estado Column -->
-              
-
-              <!-- Acciones Column -->
-              <ng-container matColumnDef="acciones">
-                <th mat-header-cell *matHeaderCellDef>Acciones</th>
-                <td mat-cell *matCellDef="let row">
-                  <div class="action-buttons">
-                    <!--button mat-icon-button color="primary" (click)="editarAsignacion(row)" matTooltip="Editar">
-                      <mat-icon>edit</mat-icon>
-                    </button>
-                    <button mat-icon-button color="accent" (click)="devolverMaterial(row)" matTooltip="Devolver material">
-                      <mat-icon>undo</mat-icon>
-                    </button-->
-                    <button mat-icon-button color="warn" (click)="eliminarAsignacion(row)" matTooltip="Eliminar">
-                      <mat-icon>delete</mat-icon>
-                    </button>
-                  </div>
-                </td>
-              </ng-container>
-
-              <tr mat-header-row *matHeaderRowDef="columnasAsignacion"></tr>
-              <tr mat-row *matRowDef="let row; columns: columnasAsignacion;"></tr>
-
-              <tr class="mat-row" *matNoDataRow>
-                <td class="mat-cell" [attr.colspan]="columnasAsignacion.length">
-                  No hay asignaciones registradas
-                </td>
-              </tr>
-            </table>
-
-            <mat-paginator 
-              [pageSizeOptions]="[5, 10, 25, 100]" 
-              showFirstLastButtons
-              aria-label="Seleccione página de asignaciones">
-            </mat-paginator>
-          </div>
-        </div>
+  <mat-card class="card-header">
+    <div class="header-top">
+      <div>
+        <h2>
+          Gestión de Material
+        </h2>
+        <p>
+          Registro de salidas, devoluciones, daños y pérdidas
+        </p>
       </div>
-    </mat-card-content>
-  }
 
-  <!-- ========== FORMULARIO DE ASIGNACIÓN ========== -->
-  @if(mostrarFormulario) {
-    <mat-card-header>
-      <mat-card-title>Nueva Asignación de Material</mat-card-title>
-      <mat-card-subtitle>Complete el formulario para asignar material</mat-card-subtitle>
-    </mat-card-header>
+      <button mat-raised-button color="primary" (click)="toggleFormulario()">
+        <mat-icon>
+          add
+        </mat-icon>
+        Nuevo Movimiento
+      </button>
+    </div>
+  </mat-card>
 
-    <mat-card-content>
-      <form [formGroup]="asignacionForm" (ngSubmit)="guardarAsignacion()">
-        <div class="formulario-container">
-          <!-- SECCIÓN 1: SELECCIONAR LOTE -->
-          <div class="seccion">
-            <h3>1. Seleccione el Material</h3>
-            
-            <mat-form-field appearance="outline" class="full-width">
-              <mat-label>Lote de Material</mat-label>
-              <input 
-                matInput 
-                formControlName="loteMaterial"
-                [matAutocomplete]="auto"
-                placeholder="Buscar por tipo de material...">
-              <mat-autocomplete 
-                #auto="matAutocomplete"
-                [displayWith]="mostrarLote"
+  <!-- ===================================================== -->
+  <!-- FORMULARIO -->
+  <!-- ===================================================== -->
+
+  <mat-card *ngIf="mostrarFormulario" class="card-formulario">
+    <h3>
+      Registrar Movimiento
+    </h3>
+    <form [formGroup]="asignacionForm">
+      <div class="grid-form">
+
+        <!-- ===================================== -->
+        <!-- TIPO MOVIMIENTO -->
+        <!-- ===================================== -->
+
+        <mat-form-field appearance="outline">
+          <mat-label> Tipo Movimiento </mat-label>
+          <mat-select formControlName="tipoMovimiento">
+            <mat-option value="SALIDA"> SALIDA</mat-option>
+            <mat-option value="DEVOLUCION"> DEVOLUCIÓN </mat-option>
+            <mat-option value="DANADO"> DAÑADO </mat-option>
+            <mat-option value="PERDIDA"> PÉRDIDA </mat-option>
+          </mat-select>
+        </mat-form-field>
+
+        <div class="row g-3 align-items-center">
+
+          <div class="col-md-6">
+            <mat-form-field appearance="outline" class="w-100">
+              <mat-label> Material </mat-label>
+              <input type="text" matInput formControlName="loteMaterial" [matAutocomplete]="autoMaterial">
+              <mat-autocomplete #autoMaterial="matAutocomplete" [displayWith]="mostrarLote"
                 (optionSelected)="onLoteSeleccionado($event)">
-                @for(lote of lotesMaterialFiltrados; track lote.id_loteMaterial) {
-                  <mat-option [value]="lote">
-                    {{ mostrarTipoStock(lote) }}
-                  </mat-option>
-                }
+                <mat-option *ngFor=" let lote of lotesMaterialFiltrados" [value]="lote">
+                  {{ lote.tipo }} | {{ lote.nombre }} | Stock: {{ lote.stock }}
+                </mat-option>
               </mat-autocomplete>
             </mat-form-field>
-
-            @if(loteMaterialSeleccionado) {
-              <div class="lote-info">
-                <p><strong>Tipo:</strong> {{ loteMaterialSeleccionado.tipo }}</p>
-                <p><strong>Nombre:</strong> {{ loteMaterialSeleccionado.nombre }}</p>
-                <p><strong>Stock Disponible:</strong> {{ loteMaterialSeleccionado.stock }} unidades</p>
-              </div>
-            }
           </div>
 
-          <!-- SECCIÓN 2: CANTIDAD -->
-          <div class="seccion">
-            <h3>2. Cantidad a Asignar</h3>
-            
-            <mat-form-field appearance="outline" class="full-width">
-              <mat-label>Cantidad</mat-label>
-              <input 
-                matInput 
-                type="number" 
-                formControlName="cantidad"
-                min="1"
-                [max]="loteMaterialSeleccionado?.stock"
-                placeholder="Ingrese la cantidad">
-              <mat-hint>Máximo disponible: {{ loteMaterialSeleccionado?.stock || 0 }} unidades</mat-hint>
+          <div class="col-md-2">
+            <mat-form-field appearance="outline">
+              <mat-label> Unidad </mat-label>
+              <input matInput formControlName="unidad" placeholder="Ej: cajas, litros, unidades">
             </mat-form-field>
-            <mat-form-field appearance="outline" class="full-width">
-              <mat-label>Cantidad Unidad</mat-label>
-              <textarea 
-                matInput 
-                formControlName="descripcion"
-                rows="1"
-                placeholder="Describa el motivo o detalles de la asignación..."></textarea>
+          </div>
+          <div class="col-md-2">
+
+            <mat-form-field appearance="outline" class="w-100">
+              <mat-label> Cantidad </mat-label>
+              <input matInput type="number" formControlName="cantidad" [max]="cantidadMateria "
+                (blur)="listandoMaterial()">
             </mat-form-field>
           </div>
 
-          <!-- SECCIÓN 3: DESTINO -->
-          <div class="seccion">
-            <h3>3. Destino de la Asignación</h3>
-            
-            <!---mat-form-field appearance="outline" class="full-width">
-              <mat-label>Tipo de Destino</mat-label>
-              <mat-select formControlName="tipoDestino">
-                <mat-option value="emergencia">Emergencia</mat-option>
-                <mat-option value="voluntario">Voluntario</mat-option>
-              </mat-select>
-            </mat-form-field-->
-            <mat-form-field appearance="outline" class="full-width">
-              <mat-label>Emergencia</mat-label>
-              <input 
-                matInput 
-                formControlName="tipoDestino"
-                (input)="filtrarEmergencias($event)"
-                [matAutocomplete]="autox"
-                placeholder="Buscar por tipo de material...">
-               <mat-autocomplete
-                #autox="matAutocomplete"
-                [displayWith]="mostrarEmergencia"
-                (optionSelected)="oemergenciaSeleccionado($event)">
-
-                @for(e of listaFiltradoEmergencia; track $index) {
-                    <mat-option [value]="e">
-                    {{ e.id_emergencia }} - {{ e.nombrePersona }} | {{ e.direccion }} | {{ e.hora }} | {{ e.gravedad?.nombre }}
-                    </mat-option>
-                }
-
-                </mat-autocomplete>
-            </mat-form-field>
-
-        
-          </div>
-
-          <!-- SECCIÓN 4: INFORMACIÓN ADICIONAL -->
-          <div class="seccion">
-            <h3>4. Información Adicional</h3>
-            
-            <mat-form-field appearance="outline" class="full-width">
-              <mat-label>Fecha de Asignación</mat-label>
-              <input 
-                matInput 
-                [matDatepicker]="picker"
-                formControlName="fechaAsignacion">
-              <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
-              <mat-datepicker #picker></mat-datepicker>
-            </mat-form-field>
-
-            
-          </div>
-
-          <!-- BOTONES DE ACCIÓN -->
-          <div class="botones-accion">
-            <button 
-              type="button"
-              mat-stroked-button 
-              (click)="toggleFormulario()">
-              <mat-icon>close</mat-icon>
-              Cancelar
-            </button>
-            <pre style="color: red;">
-            ¿Es válido?: {{ asignacionForm.valid?'informacion correcta ':'incormacion  incorrecta' }}
-            </pre>
-
-
-            <button 
-              type="submit"
-              mat-raised-button 
-              color="primary"
-              [disabled]="asignacionForm.invalid || cargando">
-              <mat-icon>{{ cargando ? 'pending' : 'save' }}</mat-icon>
-              {{ cargando ? 'Guardando...' : 'Guardar Asignación' }}
-            </button>
-          </div>
         </div>
-      </form>
-    </mat-card-content>
-  }
-</mat-card>
+        <div class="table-responsive">
+          <table class="table table-striped table-hover">
+            <thead>
+              <tr>
+                <th>Material</th>
+                <th>Cantidad</th>
+                <th>Unidad</th>
+                <th>Opcion</th>
+              </tr>
+            </thead>
+            <tbody>
+              @for (material of listaMaterialAsignar; track $index) {
+              <tr>
+                <td>{{ material.nombre }}</td>
+                <td>{{ material.cantidad }}</td>
+                <td>{{ material.unidad }}</td>
+                <td><button mat-icon-button color="warn" type="button" (click)="eliminarMaterialSeleccionado(material)">
+                    <mat-icon>delete</mat-icon>
+                  </button></td>
+              </tr>
+              }
+            </tbody>
+          </table>
+        </div>
+
+
+        <!-- ===================================== -->
+        <!-- DESTINO -->
+        <!-- ===================================== -->
+
+        <mat-form-field appearance="outline">
+          <mat-label> Destino </mat-label>
+          <input matInput formControlName="destino" placeholder="Ej: Emergencia incendio">
+        </mat-form-field>
+
+        <!-- ===================================== -->
+        <!-- EMERGENCIA -->
+        <!-- ===================================== -->
+
+        <mat-form-field appearance="outline">
+          <mat-label> Emergencia </mat-label>
+          <input type="text" matInput formControlName="id_emergencia" [matAutocomplete]="autoEmergencia">
+          <mat-autocomplete #autoEmergencia="matAutocomplete" [displayWith]="mostrarEmergencia">
+            <mat-option *ngFor="let e of listaFiltradoEmergencia" [value]="e">
+              {{ e.id_emergencia }} - {{ e.nombrePersona }} - {{ e.direccion }}
+            </mat-option>
+          </mat-autocomplete>
+        </mat-form-field>
+
+
+      </div>
+
+      <!-- ===================================== -->
+      <!-- BOTONES -->
+      <!-- ===================================== -->
+
+      <div class="acciones-form">
+
+        <button mat-raised-button color="primary" type="button" [disabled]="listaMaterialAsignar.length==0"
+          (click)="guardarAsignacion()">
+
+          <mat-icon> save </mat-icon>Guardar </button>
+
+        <button mat-raised-button color="warn" type="button" (click)="limpiarFormulario()">
+          <mat-icon> clear </mat-icon>Limpiar
+        </button>
+
+      </div>
+
+    </form>
+
+  </mat-card>
+
+  <!-- ===================================================== -->
+  <!-- TABLA -->
+  <!-- ===================================================== -->
+
+  <mat-card class="card-tabla">
+
+    <!-- ===================================== -->
+    <!-- BUSCADOR -->
+    <!-- ===================================== -->
+
+    <div class="tabla-header">
+
+      <mat-form-field appearance="outline">
+
+        <mat-label>
+          Buscar movimiento
+        </mat-label>
+
+        <input matInput (keyup)="aplicarFiltroTabla($event)" placeholder="Buscar...">
+
+        <mat-icon matSuffix>
+          search
+        </mat-icon>
+
+      </mat-form-field>
+
+    </div>
+
+    <!-- ===================================== -->
+    <!-- TABLA -->
+    <!-- ===================================== -->
+
+    <div class="tabla-container">
+
+      <table mat-table [dataSource]="asignacionesSource" matSort>
+
+        <!-- ================================= -->
+        <!-- ID -->
+        <!-- ================================= -->
+
+        <ng-container matColumnDef="id">
+
+          <th mat-header-cell *matHeaderCellDef>
+            ID
+          </th>
+
+          <td mat-cell *matCellDef="let row">
+            {{ row.id_registroMaterial }}
+          </td>
+
+        </ng-container>
+
+        <!-- ================================= -->
+        <!-- MATERIAL -->
+        <!-- ================================= -->
+
+        <ng-container matColumnDef="material">
+
+          <th mat-header-cell *matHeaderCellDef>
+            Material
+          </th>
+
+          <td mat-cell *matCellDef="let row">
+
+            {{
+            row.lotes?.[0]
+            ?.loteMaterial?.tipo
+            }}
+
+            |
+
+            {{
+            row.lotes?.[0]
+            ?.loteMaterial?.nombre
+            }}
+
+          </td>
+
+        </ng-container>
+
+        <!-- ================================= -->
+        <!-- CANTIDAD -->
+        <!-- ================================= -->
+
+        <ng-container matColumnDef="cantidad">
+
+          <th mat-header-cell *matHeaderCellDef>
+            Cantidad
+          </th>
+
+          <td mat-cell *matCellDef="let row">
+
+            {{row.lotes?.[0]?.cantidad }}
+
+            {{ row.lotes?.[0]?.unidad}}
+
+          </td>
+
+        </ng-container>
+
+        <!-- ================================= -->
+        <!-- MOVIMIENTO -->
+        <!-- ================================= -->
+
+        <ng-container matColumnDef="tipoMovimiento">
+
+          <th mat-header-cell *matHeaderCellDef>
+            Movimiento
+          </th>
+
+          <td mat-cell *matCellDef="let row">
+            {{ row.tipoMovimiento }}
+          </td>
+
+        </ng-container>
+
+        <!-- ================================= -->
+        <!-- DESTINO -->
+        <!-- ================================= -->
+
+        <ng-container matColumnDef="destino">
+
+          <th mat-header-cell *matHeaderCellDef>
+            Destino
+          </th>
+
+          <td mat-cell *matCellDef="let row">
+            {{ row.destino }}
+          </td>
+
+        </ng-container>
+
+        <!-- ================================= -->
+        <!-- FECHA -->
+        <!-- ================================= -->
+
+        <ng-container matColumnDef="fecha">
+
+          <th mat-header-cell *matHeaderCellDef>
+            Fecha
+          </th>
+
+          <td mat-cell *matCellDef="let row">
+
+            {{row.fecha_creacion| date:'dd/MM/yyyy HH:mm'}}
+
+          </td>
+
+        </ng-container>
+
+        <!-- ================================= -->
+        <!-- ESTADO -->
+        <!-- ================================= -->
+
+        <ng-container matColumnDef="estado">
+
+          <th mat-header-cell *matHeaderCellDef>
+            Estado
+          </th>
+
+          <td mat-cell *matCellDef="let row">
+            {{ row.estado }}
+          </td>
+
+        </ng-container>
+
+        <!-- ================================= -->
+        <!-- ACCIONES -->
+        <!-- ================================= -->
+
+        <ng-container matColumnDef="acciones">
+
+          <th mat-header-cell *matHeaderCellDef>
+            Acciones
+          </th>
+
+          <td mat-cell *matCellDef="let row">
+
+            <button mat-icon-button color="warn" (click)="eliminarAsignacion(row)">
+
+              <mat-icon>
+                delete
+              </mat-icon>
+
+            </button>
+
+          </td>
+
+        </ng-container>
+
+        <!-- ================================= -->
+        <!-- HEADER -->
+        <!-- ================================= -->
+
+        <tr mat-header-row *matHeaderRowDef=" columnasAsignacion">
+        </tr>
+
+        <!-- ================================= -->
+        <!-- ROW -->
+        <!-- ================================= -->
+
+        <tr mat-row *matRowDef="let row;columns: columnasAsignacion ">
+        </tr>
+
+      </table>
+
+    </div>
+
+    <!-- ===================================== -->
+    <!-- PAGINADOR -->
+    <!-- ===================================== -->
+
+    <mat-paginator [pageSize]="10" [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons>
+    </mat-paginator>
+
+  </mat-card>
+
+</div>

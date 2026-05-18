@@ -1,0 +1,252 @@
+<p>devolucion-material works!</p>
+<form [formGroup]="formDevolucion" class="form-devolucion">
+
+  <!-- ===================================== -->
+  <!-- TITULO -->
+  <!-- ===================================== -->
+
+  <div class="mb-3">
+    <h2>Devolución de Material</h2>
+    <p>
+      Registrar materiales devueltos al almacén
+    </p>
+  </div>
+
+  <!-- ===================================== -->
+  <!-- FILA MATERIAL -->
+  <!-- ===================================== -->
+
+  <div class="row g-3 align-items-center">
+
+    <!-- MATERIAL -->
+
+    <div class="col-md-5">
+
+      <mat-form-field appearance="outline" class="w-100">
+
+        <mat-label>
+          Material
+        </mat-label>
+
+        <input
+          type="text"
+          matInput
+          formControlName="loteMaterial"
+          [matAutocomplete]="autoMaterial">
+
+        <mat-autocomplete
+          #autoMaterial="matAutocomplete"
+          [displayWith]="mostrarLote"
+          (optionSelected)="onLoteSeleccionado($event)">
+
+          <mat-option
+            *ngFor="let lote of lotesMaterialFiltrados"
+            [value]="lote">
+
+            {{ lote.tipo }}
+            |
+            {{ lote.nombre }}
+            |
+            Stock: {{ lote.stock }}
+
+          </mat-option>
+
+        </mat-autocomplete>
+
+      </mat-form-field>
+
+    </div>
+
+    <!-- UNIDAD -->
+
+    <div class="col-md-2">
+
+      <mat-form-field appearance="outline" class="w-100">
+
+        <mat-label>
+          Unidad
+        </mat-label>
+
+        <input
+          matInput
+          formControlName="unidad"
+          placeholder="Ej: cajas">
+
+      </mat-form-field>
+
+    </div>
+
+    <!-- CANTIDAD -->
+
+    <div class="col-md-2">
+
+      <mat-form-field appearance="outline" class="w-100">
+
+        <mat-label>
+          Cantidad
+        </mat-label>
+
+        <input
+          matInput
+          type="number"
+          formControlName="cantidad">
+
+      </mat-form-field>
+
+    </div>
+
+    <!-- BOTON -->
+
+    <div class="col-md-2">
+
+      <button
+        mat-raised-button
+        color="primary"
+        type="button"
+        (click)="agregarMaterial()">
+
+        <mat-icon>
+          add
+        </mat-icon>
+
+        Agregar
+
+      </button>
+
+    </div>
+
+  </div>
+
+  <!-- ===================================== -->
+  <!-- OBSERVACION -->
+  <!-- ===================================== -->
+
+  <div class="row mt-3">
+
+    <div class="col-md-12">
+
+      <mat-form-field appearance="outline" class="w-100">
+
+        <mat-label>
+          Observación
+        </mat-label>
+
+        <textarea
+          matInput
+          rows="4"
+          formControlName="observacion"
+          placeholder="Ej: Material devuelto en buen estado">
+        </textarea>
+
+      </mat-form-field>
+
+    </div>
+
+  </div>
+
+  <!-- ===================================== -->
+  <!-- TABLA -->
+  <!-- ===================================== -->
+
+  <div class="table-responsive mt-4">
+
+    <table class="table table-bordered table-hover">
+
+      <thead>
+
+        <tr>
+          <th>Tipo</th>
+          <th>Nombre</th>
+          <th>Cantidad</th>
+          <th>Unidad</th>
+          <th>Acción</th>
+        </tr>
+
+      </thead>
+
+      <tbody>
+
+        @for (material of listaMaterialDevolucion; track $index) {
+
+          <tr>
+
+            <td>
+              {{ material.tipo }}
+            </td>
+
+            <td>
+              {{ material.nombre }}
+            </td>
+
+            <td>
+              {{ material.cantidad }}
+            </td>
+
+            <td>
+              {{ material.unidad }}
+            </td>
+
+            <td>
+
+              <button
+                mat-icon-button
+                color="warn"
+                type="button"
+                (click)="eliminarMaterial(material)">
+
+                <mat-icon>
+                  delete
+                </mat-icon>
+
+              </button>
+
+            </td>
+
+          </tr>
+
+        }
+
+      </tbody>
+
+    </table>
+
+  </div>
+
+  <!-- ===================================== -->
+  <!-- BOTONES -->
+  <!-- ===================================== -->
+
+  <div class="d-flex gap-3 mt-4">
+
+    <button
+      mat-raised-button
+      color="primary"
+      type="button"
+      [disabled]="listaMaterialDevolucion.length === 0"
+      (click)="guardarDevolucion()">
+
+      <mat-icon>
+        save
+      </mat-icon>
+
+      Guardar
+
+    </button>
+
+    <button
+      mat-raised-button
+      color="warn"
+      type="button"
+      (click)="limpiarFormulario()">
+
+      <mat-icon>
+        clear
+      </mat-icon>
+
+      Limpiar
+
+    </button>
+
+  </div>
+
+</form>

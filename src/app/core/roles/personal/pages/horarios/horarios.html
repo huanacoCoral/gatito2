@@ -1,19 +1,20 @@
-<div class="container mt-4">
-  <h2>Gestión de Turnos</h2>
-  <hr>
+<div>
 
   <!-- SECCIÓN: FORMULARIO DE ASIGNACIÓN -->
   <div class="card mb-4 shadow-sm">
-  <div class="card-header bg-primary text-white">
-    <h5 class="mb-0">Asignar Nuevo Turno</h5>
-  </div>
+  <mat-card-header>
+    <mat-card-title>Asignar Nuevo Turno</mat-card-title>
+    <div style="margin-top: 15px;">
+      <mat-card-subtitle>Asignando turnos</mat-card-subtitle>
+    </div>
+    
+  </mat-card-header>
   <div class="card-body">
     <form [formGroup]="turnoForm"  class="row g-3">
       
-      <mat-form-field class="example-full-width">
+      <mat-form-field class="example-full-width" appearance="outline" >
   <mat-label>CI Voluntario</mat-label>
-  <input 
-         type="text"
+  <input type="text"
          matInput
          formControlName="d_voluntario"
          placeholder="Ej: 1234567"
@@ -117,18 +118,18 @@
     {{editarBoton}}
     <div class="col-12 text-end">
         @if(!editarBoton){
-           <button type="submit" class="btn btn-success" [disabled]="turnoForm.invalid" (click)="asignar()">
+           <button type="submit" mat-raised-button color="primary" [disabled]="turnoForm.invalid" (click)="asignar()">
           Asignar Turno
         </button>
         }@else{
-           <button type="submit" class="btn btn-success" [disabled]="turnoForm.invalid" (click)="actualizar()">
+           <button type="submit" mat-raised-button color="primary" [disabled]="turnoForm.invalid" (click)="actualizar()">
           Actualizar 
         </button>
         }
        
       </div>
       <div class="col-6 text-end">
-        <button type="submit" class="btn btn-success" (click)="cancelar()">cancelar</button>
+        <button type="submit" mat-raised-button color="primary" (click)="cancelar()">cancelar</button>
       </div>
   </div>
 </div>

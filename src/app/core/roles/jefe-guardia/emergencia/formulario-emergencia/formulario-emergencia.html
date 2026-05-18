@@ -59,7 +59,7 @@
       <mat-label>Tipo de emergencia</mat-label>
       <mat-select formControlName="nivelEmergencia">
         @for (item of listarTipoEmergenciaGravedadOriginal; track item.id_tipoEmergencia) {
-        <mat-option [value]="item.id_tipoEmergencia">{{ item.nombre }}</mat-option>
+        <mat-option [value]="item.id_tipoEmergencia">{{item.codigo}}  -  {{ item.nombre }}</mat-option>
         }
       </mat-select>
     </mat-form-field>

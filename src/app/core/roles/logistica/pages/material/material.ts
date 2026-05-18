@@ -45,7 +45,8 @@ export interface UserData {
   styleUrl: './material.css',
 })
 export class Material {
-tablaMaterial: string[] = ['id', 'lote', 'responsable', 'tipo','estado','cantidad','opciones'];//
+  // @Input() tipoRol: string = ''; 
+  tablaMaterial: string[] = ['id', 'lote', 'responsable', 'tipo','estado','cantidad','opciones'];//
   materialSource!: MatTableDataSource<UserData>;//---cracion de tabla
 
   @ViewChild(MatPaginator) paginatorMaterial!: MatPaginator;
@@ -59,13 +60,12 @@ productoColumns: string[] = ['id', 'id_loteProducto', 'estado', 'marca','nombre'
   @ViewChild(MatPaginator) paginatorProducto!: MatPaginator;
   @ViewChild(MatSort) sortProducto!: MatSort;
   
-
-
   mostrarProductos:boolean =false;
   protected http=inject(logisticaService);
 
  @Input() tipo: string = 'Logistica';
   constructor() {
+   
     // Create 100 users
     //const users = Array.from({length: 100}, (_, k) => createNewUser(k + 1));
 
@@ -79,6 +79,7 @@ productoColumns: string[] = ['id', 'id_loteProducto', 'estado', 'marca','nombre'
   }
 
   ngAfterViewInit() {
+     console.log('Tipo recibido:--->', this.tipo);
     this.productoSource.paginator = this.paginatorProducto;
     this.productoSource.sort = this.sortProducto;
   }

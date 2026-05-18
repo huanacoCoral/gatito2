@@ -27,11 +27,11 @@ export const routesRoles: Routes = [
     loadChildren: () =>
       import('../roles/jefe-guardia/jefe-guardia.routes').then(m => m.jefeGuardia)
   },
-   {
+/*   {
     path: 'admin',
     canActivate: [],
     loadComponent: () => import('../roles/admin/admin').then(m => m.Admin)
-  },
+  },*/
 
 
   { path: '**', redirectTo: 'dashboard' }

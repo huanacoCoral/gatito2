@@ -7,6 +7,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { Router, RouterLink } from '@angular/router';
 import { AuthService } from '../service-auth/auth.service';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-log-in.component',
@@ -58,7 +59,14 @@ export default class LogInComponent {
       },
       error: (error) => {
         console.error('log In Ocurrió ****:', error);
+        Swal.fire({
+                  title: '¡Error!',
+                  text: 'Usted no puede ingresar ',
+                  icon: 'error',
+                  confirmButtonText: 'Aceptar'
+                });
       }
     })
   }
+  ocultarContrasena = true;
 }

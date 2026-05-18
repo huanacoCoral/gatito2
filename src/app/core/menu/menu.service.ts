@@ -15,14 +15,15 @@ export class MenuService {
       { label: 'Material', route: '/rol/logistica/material' },
       { label: 'Vehículos', route: '/rol/logistica/vehiculos' },
       { label: 'Asignar material', route: '/rol/logistica/asignar-material' },
-      { label: 'Asignar producto', route: '/rol/logistica/asignar-producto' }
+      { label: 'Asignar producto', route: '/rol/logistica/asignar-producto' },
+      { label: 'Devolucion material', route: '/rol/logistica/devolver-producto'}//devolver-producto
     ],
     OPERACIONES: [
+      { label: 'Administración', route: '/rol/operaciones/admin' },
       { label: 'Verificar personal', route: '/rol/operaciones/personal' },
       { label: 'Verificar material / producto', route: '/rol/operaciones/material' },
       { label: 'Verificar estado de vehículo', route: '/rol/operaciones/vehiculo' },
       { label: 'Registrar emergencias', route: '/rol/operaciones/emergencia' },
-      { label: 'Consultar reportes', route: '/rol/operaciones/reporte-emergencia' }
     ],
     
     JEFE_GUARDIA: [
@@ -34,7 +35,7 @@ export class MenuService {
     ],
     COMANDANTE: [
       { label: 'Dashboard', route: '/jefe/dashboard' },
-      { label: 'Personal', route: '/jefe/personal' }
+      { label: 'Personal', route: '/rol/logistica/personal' }
     ]
   };
 

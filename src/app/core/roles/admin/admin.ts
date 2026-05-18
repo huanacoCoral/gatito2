@@ -30,18 +30,7 @@ import { MatTimepickerModule } from '@angular/material/timepicker';
 export class Admin {
   private _formBuilder = inject(FormBuilder);
   private http = inject(adminService);
-  /*dataHora = {
-    horaInicio: new Date(),
-    horaFin: new Date()
-  };*/
-
-
- /* firstFormGroup = this._formBuilder.group({
-    //firstCtrl: ['', Validators.required],
-  });
-  secondFormGroup = this._formBuilder.group({
-   // secondCtrl: ['', Validators.required],
-  });*/
+ 
   opcion="";
   nombreStock='';
   stock:any[]=[];
@@ -50,25 +39,22 @@ export class Admin {
   listaRol:any;
    listaGravedad:any;
    listacrearEmergencia:any
-  listarCargoArray:any;
+  listarCargoArray:any[] = [];
+  actaulizarTurno=false;
+idTurno:any;
+idUsuario=Number(localStorage.getItem('usuario'))
+seleccionEditar=false;
+  idGravead:any;
    constructor(){
-   /* this.http.listarLote().subscribe({
-      next:(value)=> {
-        console.log("----0",value);
-        
-        this.stock=value
-      },
-    })*/
+  
   }
   listarTurno(stepper: MatStepper){
     this.opcion='crearTurno';
- /* this.opcion="crearTurno"
-    const datos={
-    "stock": 0,
-    "tipo": this.nombreStock,
-    "id_vehiculo": 0,
-  }*/
-  this.http.listarTurno().subscribe({
+  this.soloListTurno();
+  stepper.next();
+  }
+  soloListTurno(){
+    this.http.listarTurno().subscribe({
     next:(value:any)=>{
       console.log("----|>",value);
       this.listaTurno=value
@@ -78,7 +64,6 @@ export class Admin {
       
     },
   })
-  stepper.next();
   }
   crearTurno(){
     const hInicio = this.data.horaInicio ? new Date(this.data.horaInicio).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: false }) : '';
@@ -106,7 +91,11 @@ const hFin = this.data.horaFin ? new Date(this.data.horaFin).toLocaleTimeString(
 
   listarRol(stepper: MatStepper){
     this.opcion='crearRol';
-  this.http.listarRol().subscribe({
+    this.soloListaRol();
+    stepper.next();
+  }
+  soloListaRol(){
+    this.http.listarRol().subscribe({
     next:(value:any)=>{
       console.log("----|>",value);
       this.listaRol=value
@@ -116,73 +105,156 @@ const hFin = this.data.horaFin ? new Date(this.data.horaFin).toLocaleTimeString(
       
     },
   })
-    stepper.next();
   }
   crearRol(){
      const dato={
-      "nombre":this.data.Rol
+      "nombre":this.data.Rol,
+      "id_modificacion":this.idUsuario
      }
      console.log("1",dato);
      
      this.http.crearRol(dato).subscribe({
-    next(value) {
-      console.log("----|>-->",value);
+    next:(value)=> {
+      this.soloListaRol();
       
     },
   })
   }
-
+  editRol=false;
+  idRol:any;
+  editarRolAdmin(row:any){
+    console.log(row,"-----");
+    
+    this.data.Rol=row.nombre,
+    this.editRol=true;
+    this.idRol=row.id_rol
+  }
+  actualizarRol(){
+    const dato={
+      "idRol":this.idRol,
+      "nombre":this.data.Rol,
+      "id_modificacion":this.idUsuario,
+      "estado":'A'
+     }
+     this.http.editarRolNuevo(dato).subscribe({
+      next:(value)=> {
+        this.soloListaRol();
+      },
+     })
+     this.data.Rol=null;
+  }
+  eliminarRol(row:any){
+    const dato={
+      "idRol":row.id_rol,
+      "nombre":row.nombre,
+      "id_modificacion":this.idUsuario,
+      "estado":'I'
+     }
+     this.http.editarRolNuevo(dato).subscribe({
+      next:(value)=> {
+        this.soloListaRol();
+      },
+     })
+  }
+  cancelaRol(){
+    this.editRol=false;
+    this.idRol=null;
+    this.data.Rol=null;
+  }
  
   listarGravedad(stepper: MatStepper){
     this.opcion="crearGravedad";
+    this.soloList()
+    stepper.next();
+  }
+  soloList(){
     this.http.listarGravedad().subscribe({
       next:(value:any)=>{
         console.log('----',value);
         this.listaGravedad=value
       },
     })
-    stepper.next();
   }
   crearGravedad(){
      const dato={
-      "nombre":this.data.Gravedad
+      "nombre":this.data.Gravedad,
+      "id_modificacion":this.idUsuario
      }
      console.log("1",dato);
      
      this.http.crearGravedad(dato).subscribe({
-    next(value) {
+    next:(value)=> {
       console.log("----|>-->",value);
-      
+      this.soloList();
+      this.cancelarGravedad();
     },
   })
   }
+  
+  editarGravedadAdmin(row:any){
+    this.data.Gravedad=row.nombre;
+    this.seleccionEditar=true;
+    this.idGravead=row.id_gravedad
+  }
+  eliminarGravead(row:any){
+    
+    const dato= {
+      id_gravedad:row.id_gravedad,
+        nombre:this.data.Gravedad,
+        id_modificacion:this.idUsuario,
+        estado:'I'
+      }
+      this.http.editarGravead(dato).subscribe({
+    next:(value)=> {
+      this.soloList()
+     this.cancelarGravedad();
+      
+    },
+  })
+     
+  }
+  actualizarGravedad(){
+    
+    const dato= {
+      id_gravedad:this.idGravead,
+        nombre:this.data.Gravedad,
+        id_modificacion:this.idUsuario,
+        estado:'A'
+      }
+      
+      this.http.editarGravead(dato).subscribe({
+    next:(value)=> {
+      this.soloList()
+     this.cancelarGravedad();
+      
+    },
+  })
+       
 
+  }
+  cancelarGravedad(){
+    this.seleccionEditar=false
+    this.data.Gravedad=""
+    this.idGravead=null;
+  }
   
   listarEmergencia(stepper: MatStepper){
     this.opcion="crearTipoEmergencia";
-    this.http.listarEmergencia().subscribe({
-      next:(value:any)=>{
-        console.log('---tipo emergencia-',value);
-        this.listacrearEmergencia=value
-      },
-    })
+    this.soloListEmerg();
     stepper.next();
   }
    crearEmergencia(){
     
      const dato={
       "nombre": this.data.nombreEmergencia,
-        "codigo": this.data.codigoEmergencia
+        "codigo": this.data.codigoEmergencia,
+        "id_modificacion":this.idUsuario,
       }
      console.log("1",dato);
      
      this.http.crearEmergencia(dato).subscribe({
     next:(value)=> {
-      this.http.listarEmergencia().subscribe({
-      next:(value:any)=>{
-        this.listacrearEmergencia=value
-      },
-    })
+      this.soloListEmerg();
     },
     error(err) {
       console.error("error al crear Emergencia");
@@ -190,8 +262,67 @@ const hFin = this.data.horaFin ? new Date(this.data.horaFin).toLocaleTimeString(
     },
   })
   }
+  soloListEmerg(){
+    this.http.listarEmergencia().subscribe({
+      next:(value:any)=>{
+        console.log('---tipo emergencia-',value);
+        this.listacrearEmergencia=value
+      },
+    })
+  }
+//editarTipoEmergencia
+ seleccionEditarEmerge=false;
+  idEmerge:any
+  editarEmergeAdmin(row:any){
+    this.data.nombreEmergencia=row.nombre;
+    this.data.codigoEmergencia=row.codigo;
 
+    this.seleccionEditarEmerge=true;
+    this.idEmerge=row.id_tipoEmergencia
+  }
+  eliminarEmerge(row:any){
+    
+    const dato= {
+      id_tipoEmergencia:row.id_tipoEmergencia,
+        nombre:this.data.nombreEmergencia,
+        codigo:this.data.codigoEmergencia,
+        id_modificacion:this.idUsuario,
+        estado:'I'
+      }
+      this.http.eliminarTipoEmergencia(dato).subscribe({
+    next:(value)=> {
+      this.soloListEmerg()
+     this.cancelarEmergencia();
+      
+    },
+  })
+     
+  }
+  actualizarEmergencia(){
+    const dato= {
+      id_tipoEmergencia:this.idEmerge,
+        nombre:this.data.nombreEmergencia,
+        codigo:this.data.codigoEmergencia,
+        id_modificacion:this.idUsuario,
+        estado:'A'
+      }
+      
+      this.http.editarTipoEmergencia(dato).subscribe({
+    next:(value)=> {
+      this.soloListEmerg()
+     this.cancelarEmergencia();
+      
+    },
+  })
+       
 
+  }
+  cancelarEmergencia(){
+    this.seleccionEditarEmerge=false
+    this.data.nombreEmergencia=""
+    this.data.codigoEmergencia=''
+    this.idEmerge=null;
+  }
 
   
   listarCargo(stepper: MatStepper){
@@ -209,18 +340,62 @@ const hFin = this.data.horaFin ? new Date(this.data.horaFin).toLocaleTimeString(
   }
   crearCargo(){
     const query={
-      nombre:this.data.nombreCargo
+      nombre:this.data.nombreCargo,
+      id_modificacion:this.idUsuario,
     }
     this.http.crearCargo(query).subscribe({
       next:(value)=>{
         this.listarCargoArray=value;
         this.listandoCargo();
+        this.cancelarCargo();
       }
     })
   }
+  editarC=false;
+  idCargo:any;
+  editarCargo(wor:any){
+    this.data.nombreCargo=wor.nombre;
+    this.idCargo=wor.id_cargo;
+    this.editarC=true;
+  }
+  actualizarCargo(){
+    const query={
+      id_cargo:this.editarC,
+      nombre:this.data.nombreCargo,
+      id_modificacion:this.idUsuario,
+    }
+    this.http.editarCargo(query).subscribe({
+      next:(value)=>{
+      //  this.listarCargoArray=value;
+        this.listandoCargo();
+      }
+    })
+    this.cancelarCargo();
+  }
+  eliminarCargo(row:any){
+    const query={
 
-actaulizarTurno=false;
-idTurno:any;
+      id_cargo:row.id_cargo,
+      nombre:this.data.nombreCargo,
+      id_modificacion:this.idUsuario,
+    }
+    this.http.eliminarCargo(query).subscribe({
+      next:(value)=>{
+       // this.listarCargoArray=value;
+        this.listandoCargo();
+      }
+    })
+  }
+  cancelarCargo(){
+    this.editarC=false;
+    this.idCargo=null;
+    this.data.nombreCargo=null;
+  }
+
+
+
+
+
   editarTurnoAdmin(row:any){
     this.actaulizarTurno=true
     const partes = row.nombre.split('/'); // Resultado: ['x', '00:00', '00:30']
@@ -251,9 +426,12 @@ fechaFin.setHours(horaFin, minFin, 0, 0);
 
   }
   actualizarTurno(){
+    const hInicio = this.data.horaInicio ? new Date(this.data.horaInicio).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: false }) : '';
+const hFin = this.data.horaFin ? new Date(this.data.horaFin).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: false }) : '';
+
     const dato={
       id_turno:this.idTurno,
-      nombre:this.data.turno,
+      nombre:this.data.turno+"/"+hInicio+"/"+hFin,
 
       estado:'A',
 
@@ -262,9 +440,9 @@ fechaFin.setHours(horaFin, minFin, 0, 0);
     console.log(dato);
     
     this.http.editarTurnoAdmin(dato).subscribe({
-      next(value) {
+      next:(value)=> {
         console.log(value);
-        
+        this.soloListTurno();
       },
     })
   }
@@ -278,9 +456,9 @@ fechaFin.setHours(horaFin, minFin, 0, 0);
       id_modificacion:Number(localStorage.getItem('usuario'))
     }
     this.http.editarTurnoAdmin(dato).subscribe({
-      next(value) {
+      next:(value)=> {
         console.log(value);
-        
+        this.soloListTurno();
       },
     })
   }
@@ -317,5 +495,15 @@ fechaFin.setHours(horaFin, minFin, 0, 0);
     }
   });
 }*/
+  actulizar(){
+
+  }
+  rolesOcultos = [1, 2, 12, 13, 14, 15];
+
+// Función para validar en el HTML
+mostrarAcciones(idRol: any): boolean {
+  // Convertimos a número por si acaso llega como string
+  return !this.rolesOcultos.includes(Number(idRol));
+}
 }
 

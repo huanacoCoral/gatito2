@@ -5,7 +5,9 @@ import { FormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
-import { JsonPipe } from '@angular/common';
+import { CommonModule, JsonPipe } from '@angular/common';
+import { MatCardModule } from '@angular/material/card';
+import { MatChipsModule } from '@angular/material/chips';
 
 @Component({
   selector: 'app-ver-datos.ts',
@@ -18,7 +20,10 @@ import { JsonPipe } from '@angular/common';
     MatDialogContent,
     MatDialogActions,
     MatDialogClose,
-    JsonPipe
+    JsonPipe,
+    MatCardModule,
+    MatChipsModule,
+    CommonModule 
   ],
   templateUrl: './ver-datos.ts.html',
   styleUrl: './ver-datos.ts.css',

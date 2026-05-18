@@ -1,52 +1,260 @@
-  
-<mat-dialog-content>
-    <p>Datos del Personal Seleccionado</p>
-    <p><strong>id </strong>
-    {{data.datos.id_voluntario}}</p>
-    <p><strong>Nombre completo:</strong> 
-      {{ data.datos.nombre }} {{ data.datos.apellido_paterno }} {{ data.datos.apellido_materno }}
-    </p>
-    <p><strong>Cedula de identidad:</strong> 
-      {{ data.datos.ci }} 
-    </p>
-    <p><strong>telefono:</strong> 
-      {{ data.datos.ci }} 
-    </p>
-    <p><strong>telefono Emergencia</strong>
-        {{data.datos.telefono_emergencia?data.datos.telefono_emergencia:"no cuenta"}}
-    </p>
-    <p><strong>fecha_nacimiento</strong>
-        {{data.datos.fecha_nacimiento?data.datos.fecha_nacimiento:"no cuenta"}}
-    </p>
-    <p><strong>sexo</strong>
-        {{data.datos.sexo?data.datos.sexo:"no cuenta"}}
-    </p>
-    <p><strong>direccion</strong>
-        {{data.datos.direccion?data.datos.direccion:"no cuenta"}}
-    </p>
-    <p><strong>correo_personal</strong>
-        {{data.datos.correo_personal?data.datos.correo_personal:"no cuenta"}}
-    </p>
-    <p><strong>estado</strong>
-        {{data.datos.estado?data.datos.estado:"no cuenta"}}
-    </p>
-    <p><strong>observaciones</strong>
-        {{data.datos.observaciones?data.datos.observaciones:"no cuenta"}}
-    </p>
-    
-    
-    <!-- Visualización opcional para depuración si la necesitas -->
-    <!--details>
-      <summary>Ver JSON crudo</summary>
-      <pre>{{ data | json }}</pre>
-    </details>
-  <p>What's your favorite animal?</p>
-  <mat-form-field>
-    <mat-label>Favorite Animal</mat-label>
-    <input matInput [(ngModel)]="animal" />
-  </mat-form-field-->
+<mat-dialog-content class="dialog-content">
+
+  <div class="header-personal">
+    <div class="avatar">
+      {{ data.datos.nombre?.charAt(0) }}{{ data.datos.apellido_paterno?.charAt(0) }}
+    </div>
+
+    <div>
+      <h2>
+        {{ data.datos.nombre }}
+        {{ data.datos.apellido_paterno }}
+        {{ data.datos.apellido_materno }}
+      </h2>
+      <p class="subtitulo">
+        ID: {{ data.datos.id_voluntario }}
+      </p>
+    </div>
+  </div>
+  <mat-card class="card-section">
+    <mat-card-header>
+      <mat-card-title>Información Personal</mat-card-title>
+    </mat-card-header>
+
+    <mat-card-content>
+      <div class="grid-info">
+        <div class="item">
+          <span class="label">CI</span>
+          <span class="value">{{ data.datos.ci || 'No registrado' }}</span>
+        </div>
+        <div class="item">
+  <span class="label">Sexo</span>
+  <span class="value">
+    {{ data.datos.sexo ? (data.datos.sexo === 'M' ? 'Masculino' : 'Femenino') : 'No registrado' }}
+  </span>
+</div>
+
+        <div class="item">
+          <span class="label">Fecha Nacimiento</span>
+          <span class="value">
+            {{ data.datos.fecha_nacimiento | date:'dd/MM/yyyy' }}
+          </span>
+        </div>
+
+        <div class="item">
+          <span class="label">Teléfono</span>
+          <span class="value">{{ data.datos.telefono || 'No registrado' }}</span>
+        </div>
+
+        <div class="item">
+          <span class="label">Emergencia</span>
+          <span class="value">
+            {{ data.datos.telefono_emergencia || 'No registrado' }}
+          </span>
+        </div>
+
+        <div class="item full">
+          <span class="label">Dirección</span>
+          <span class="value">{{ data.datos.direccion || 'No registrado' }}</span>
+        </div>
+
+        <div class="item full">
+          <span class="label">Correo</span>
+          <span class="value">
+            {{ data.datos.correo_personal || 'No registrado' }}
+          </span>
+        </div>
+
+      </div>
+
+    </mat-card-content>
+  </mat-card>
+
+  <!-- ========================================= -->
+  <!-- INFORMACION INSTITUCIONAL -->
+  <!-- ========================================= -->
+
+  <mat-card class="card-section">
+
+    <mat-card-header>
+      <mat-card-title>Información Institucional</mat-card-title>
+    </mat-card-header>
+
+    <mat-card-content>
+
+      <div class="grid-info">
+
+        <div class="item">
+          <span class="label">Estado</span>
+
+          <span
+            class="estado"
+            [ngClass]="{
+              'activo': data.datos.estado === 'A',
+              'inactivo': data.datos.estado !== 'A'
+            }"
+          >
+            {{ data.datos.estado === 'A' ? 'Activo' : 'Inactivo' }}
+          </span>
+        </div>
+
+        <div class="item">
+          <span class="label">Fecha Ingreso</span>
+          <span class="value">
+            {{ data.datos.fecha_ingreso | date:'dd/MM/yyyy' }}
+          </span>
+        </div>
+
+        <div class="item">
+          <span class="label">Usuario</span>
+          <span class="value">
+            {{ data.datos.usuario?.email || 'No registrado' }}
+          </span>
+        </div>
+
+      </div>
+
+    </mat-card-content>
+  </mat-card>
+
+  <!-- ========================================= -->
+  <!-- ROLES -->
+  <!-- ========================================= -->
+
+  <mat-card class="card-section">
+
+    <mat-card-header>
+      <mat-card-title>Roles</mat-card-title>
+    </mat-card-header>
+
+    <mat-card-content>
+
+      <div class="chips-container">
+
+        @for (rol of data.datos.rolesTrayecto; track rol.id_rolTrayecto) {
+
+          <mat-chip color="primary">
+            {{ rol.rol?.nombre }}
+          </mat-chip>
+
+        }
+
+      </div>
+
+    </mat-card-content>
+
+  </mat-card>
+
+  <!-- ========================================= -->
+  <!-- TURNOS -->
+  <!-- ========================================= -->
+
+  <mat-card class="card-section">
+
+    <mat-card-header>
+      <mat-card-title>Turnos</mat-card-title>
+    </mat-card-header>
+
+    <mat-card-content>
+
+      @if(data.datos.turnosTrayecto?.length){
+
+        <div class="turnos-container">
+
+          @for (turno of data.datos.turnosTrayecto; track turno.id_turnoTrayecto) {
+
+            <div class="turno-item">
+
+              <div>
+                <strong>{{ turno.turno?.nombre }}</strong>
+              </div>
+
+              <div class="turno-fechas">
+                {{ turno.fechaInicio | date:'dd/MM/yyyy' }}
+                -
+                {{ turno.fechaFin | date:'dd/MM/yyyy' }}
+              </div>
+
+            </div>
+
+          }
+
+        </div>
+
+      } @else {
+
+        <p>No tiene turnos asignados</p>
+
+      }
+
+    </mat-card-content>
+
+  </mat-card>
+
+  <!-- ========================================= -->
+  <!-- MAQUINISTA -->
+  <!-- ========================================= -->
+
+  @if(data.datos.maquinista){
+
+    <mat-card class="card-section">
+
+      <mat-card-header>
+        <mat-card-title>Información de Maquinista</mat-card-title>
+      </mat-card-header>
+
+      <mat-card-content>
+
+        <div class="grid-info">
+
+          <div class="item">
+            <span class="label">Tipo Licencia</span>
+            <span class="value">
+              {{ data.datos.maquinista.tipoLicencia || 'No registrado' }}
+            </span>
+          </div>
+
+          <div class="item">
+            <span class="label">Fecha Registro</span>
+            <span class="value">
+              {{ data.datos.maquinista.fecha | date:'dd/MM/yyyy' }}
+            </span>
+          </div>
+
+        </div>
+
+      </mat-card-content>
+
+    </mat-card>
+
+  }
+
+  <!-- ========================================= -->
+  <!-- OBSERVACIONES -->
+  <!-- ========================================= -->
+
+  <mat-card class="card-section">
+
+    <mat-card-header>
+      <mat-card-title>Observaciones</mat-card-title>
+    </mat-card-header>
+
+    <mat-card-content>
+
+      <p class="observaciones">
+        {{ data.datos.observaciones || 'Sin observaciones' }}
+      </p>
+
+    </mat-card-content>
+
+  </mat-card>
+
 </mat-dialog-content>
-<mat-dialog-actions>
-  <!--button mat-button (click)="onNoClick()">No Thanks</button-->
-  <button mat-button [mat-dialog-close]="animal" cdkFocusInitial>Listo</button>
+
+<mat-dialog-actions align="end">
+
+  <button mat-stroked-button (click)="onNoClick()">
+    Cerrar
+  </button>
+
 </mat-dialog-actions>

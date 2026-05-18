@@ -10,6 +10,7 @@ import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { Formulario } from './formulario/formulario';
 import { OperacionesService } from '../../service/operaciones.service';
+import { Emergencia } from '../../../jefe-guardia/emergencia/emergencia';
 export interface PeriodicElement {
   name: string;
   position: number;
@@ -33,64 +34,10 @@ const ELEMENT_DATA: PeriodicElement[] = [
 
 @Component({
   selector: 'app-registro-emergencia',
-  imports: [MatFormFieldModule, 
-    MatInputModule, 
-    MatTableModule,
-    MatCardModule, 
-    MatButtonModule,
-    MatPaginatorModule,
-  MatIconModule,
-
-  //MAT_DIALOG_DATA,
-  MatDialogActions,
-  MatDialogClose,
-  MatDialogContent,
-  MatDialogTitle,
-  
-],
+  imports: [ Emergencia ],
   templateUrl: './registro-emergencia.html',
   styleUrl: './registro-emergencia.css',
 })
-export class RegistroEmergencia implements AfterViewInit , OnInit {
-  displayedColumns: string[] = ['id', 'fecha', 'nombrePersona', 'cel_ref','recepcion','opciones'];
-  dataSource = new MatTableDataSource<any>();
-  @ViewChild(MatPaginator) paginator!: MatPaginator;
-  @ViewChild(MatSort) sort!: MatSort;
-  ngOnInit(){
-    this.http.listarEmergencia().subscribe({
-      next:(res:any)=>{
-        console.log('morire',res);
-        this.dataSource.data=res;
-      },
-      error(err) {
-        console.error(err);
-        
-      },
-    })
-  }
-  applyFilter(event: Event) {
-    const filterValue = (event.target as HTMLInputElement).value;
-    this.dataSource.filter = filterValue.trim().toLowerCase();
-  }
-  ngAfterViewInit() {
-    this.dataSource.paginator = this.paginator;
-    this.dataSource.sort = this.sort;
-  }
-  readonly dialog = inject(MatDialog);
-  readonly animal = signal('');
-  readonly http=inject(OperacionesService);
-  materialNuevoEdit(row?:any){
-    const dialogRef = this.dialog.open(Formulario, {
-      data: {name: "this.name()", animal: "this.animal()"},
-    });
-
-    dialogRef.afterClosed().subscribe(result => {
-      console.log('crerando dialog');
-      if (result !== undefined) {
-        this.animal.set(result);
-        console.log(this.animal,"nooo puede ser ");
-        
-      }
-    });
-  }
+export class RegistroEmergencia{
+ 
 }

@@ -89,8 +89,14 @@ export class PersonalService {
     }))
    }
    agregarCargo(data:any):Observable<any>{
-    return this._http.post(this.API_URL+'/personal/agregar_cargo ',data).pipe(tap((res:any)=>{
+    return this._http.post(this.API_URL+'/personal/agregar_cargo',data).pipe(tap((res:any)=>{
       console.log("cargo",res);
+      
+    }))
+   }
+   agregarUsuario(data:any):Observable<any>{
+    return this._http.post(this.API_URL+'/auth/sign-up',data).pipe(tap((res:any)=>{
+      console.log("usuario registrado",res);
       
     }))
    }
@@ -161,10 +167,22 @@ export class PersonalService {
 
 
     bajaMaquinista(id: number,dato:any) {
-
-     // return this._http.patch(`${this.url}/eliminar/${id}`, dto);
       return this._http.patch(`${this.API_URL}/maquinista/eliminar/${id}`,dato).pipe(tap((res:any)=>{
       console.log("maquinista",res);
+      
+    }))
+    }
+
+    actualizarUsuario(dato:any) {
+      return this._http.post(`${this.API_URL}/auth/actualizar-usuario`,dato).pipe(tap((res:any)=>{
+      console.log("auth",res);
+      
+    }))
+    }
+
+    quitarUsuario(dato:any) {
+      return this._http.post(`${this.API_URL}/auth/quitar-usuario`,dato).pipe(tap((res:any)=>{
+      console.log("auth",res);
       
     }))
     }

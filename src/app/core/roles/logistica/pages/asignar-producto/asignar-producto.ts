@@ -60,6 +60,18 @@ export class AsignarProducto implements OnInit, AfterViewInit {
   ngOnInit() {
     this.inicializarFormulario();
     this.cargarDatos();
+    // 2. Escucha los cambios para habilitar/deshabilitar
+  this.asignacionForm.valueChanges.subscribe(valores => {
+    const cantidadControl = this.asignacionForm.get('cantidad');
+    
+    // Verifica si ambos campos tienen un valor válido
+    if (valores.loteProducto && valores.unidad) {
+      cantidadControl?.enable({ emitEvent: false });
+    } else {
+      cantidadControl?.disable({ emitEvent: false });
+      cantidadControl?.setValue('', { emitEvent: false }); // Limpia el valor si se desactiva
+    }
+  });
   }
 
   ngAfterViewInit() {
@@ -72,7 +84,8 @@ export class AsignarProducto implements OnInit, AfterViewInit {
       loteProducto: ['', Validators.required],
       cantidad: [0, [Validators.required, Validators.min(1)]],
       tipoDestino: ['', Validators.required],
-      destino: ['', Validators.required],
+      unidad:[''],
+      //destino: ['', Validators.required],
       fechaAsignacion: [new Date(), Validators.required],
       descripcion: ['', Validators.required],
       responsable: [Number(localStorage.getItem('usuario')) || 0, Validators.required]
@@ -172,6 +185,46 @@ export class AsignarProducto implements OnInit, AfterViewInit {
     }
   }
 
+    listaProductos:any[]=[]
+  listarProductos(){
+    console.log("-----1");
+    
+   if (this.asignacionForm.get('cantidad')?.value<=this.loteProductoSeleccionado.stock) {
+      const producto = this.asignacionForm.get('loteProducto')?.value;
+      const cantidad = this.asignacionForm.get('cantidad')?.value;
+      const unidad = this.asignacionForm.get('unidad')?.value;
+ 
+  if (producto && cantidad) {
+    const productoExistente = this.listaProductos.find(p => p.id_loteProducto === producto);
+    if (productoExistente) {
+      
+    }else{
+      this.listaProductos = [
+      ...this.listaProductos,
+      { id_loteProducto: producto.id_loteProducto,
+         cantidad: cantidad,
+         unidad: unidad??'sin definir'
+        }
+    ];
+    // Opcional: Resetear campos para permitir agregar otro producto
+    this.asignacionForm.get('loteProducto')?.reset();
+    this.asignacionForm.get('cantidad')?.reset();
+    this.loteProductoSeleccionado = null;
+  }
+    }
+    
+
+    
+   }
+
+  
+
+  }
+  eliminarSeleccion(row:any){
+    console.log(row,"@-----");
+    
+    this.listaProductos= this.listaProductos.filter(p => p.id_loteProducto !== row.id_loteProducto);
+  }
   toggleFormulario() {
     this.mostrarFormulario = !this.mostrarFormulario;
     if (!this.mostrarFormulario) {
@@ -182,15 +235,16 @@ export class AsignarProducto implements OnInit, AfterViewInit {
      console.log("asignacionForm--",this.asignacionForm.value);
     const valor=this.asignacionForm.value
     const datos={
-      destino: valor.tipoDestino+"",
-  unidad: valor.descripcion,
-  cantidad: valor.cantidad,
-  id_emergencia: valor.tipoDestino,
-      id_modificacion:Number(localStorage.getItem('usuario')),
-      lotes: [{
+      destino: valor.descripcion,
+  unidad: valor.descripcion,//-----
+  cantidad: valor.cantidad,//-----
+  id_emergencia: valor.tipoDestino,///----
+      id_modificacion:Number(localStorage.getItem('usuario')),//---
+      /*lotes: [{
          "id_loteProducto": valor.loteProducto.id_loteProducto,
          "cantidad":valor.cantidad
-      }]
+      }]*/
+     lotes:this.listaProductos
     }
     console.log("---miraaa",datos);
     
@@ -247,7 +301,8 @@ export class AsignarProducto implements OnInit, AfterViewInit {
       id_voluntario: formValue.responsable,
       estado: 'A'
     };
-
+    console.log("---mira",data);
+    
     this.http.crearAsignacionProducto(data).subscribe({
       next: () => {
         this.cargarDatos();
