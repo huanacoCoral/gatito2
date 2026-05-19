@@ -263,7 +263,7 @@ export default class PersonalForm implements OnInit {
           console.log('estamossssss crear usuario', res);
           Swal.fire({
                 title: 'Actualizo correctamente',
-                text: 'No se pudo asignar un usuario al voluntario',
+                text: 'Se asigno un usuario al voluntario',
                 icon: 'success',
                 confirmButtonText: 'Aceptar'
               });

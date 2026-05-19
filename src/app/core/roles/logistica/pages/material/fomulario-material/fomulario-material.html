@@ -105,7 +105,7 @@
   <mat-step [stepControl]="secondFormGroup">
     <form [formGroup]="secondFormGroup">
       <ng-template matStepLabel>SELECCIONA TIPO</ng-template>
-      <mat-form-field class="example-full-width">
+      <mat-form-field appearance="outline" class="example-full-width">
         <mat-label>tipo</mat-label>
         <input type="text" 
         placeholder="tipo" 
@@ -115,7 +115,7 @@
         (input)="verificarLote($event)"
         (blur)="validarSeleccion()"
           [matAutocomplete]="auto">
-        <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete" [displayWith]="mostrarTipoStock" (optionSelected)="seleccionarLote($event)">
+        <mat-autocomplete requireSelection  autoActiveFirstOption #auto="matAutocomplete" [displayWith]="mostrarTipoStock" (optionSelected)="seleccionarLote($event)">
 
           @for (option of filtradorLote ; track option) {
           <mat-option [value]="option">{{option.tipo}} {{option.nombre}}</mat-option>
