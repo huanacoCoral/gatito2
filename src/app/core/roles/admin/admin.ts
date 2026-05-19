@@ -498,7 +498,7 @@ const hFin = this.data.horaFin ? new Date(this.data.horaFin).toLocaleTimeString(
   actulizar(){
 
   }
-  rolesOcultos = [1, 2, 12, 13, 14, 15];
+  rolesOcultos = [1, 2,3, 4, 5, 6];
 
 // Función para validar en el HTML
 mostrarAcciones(idRol: any): boolean {
